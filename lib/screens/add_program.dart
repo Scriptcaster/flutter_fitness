@@ -4,12 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter_fitness/providers/provider.dart';
 import 'package:flutter_fitness/models/program.dart';
 
-class AddTaskScreen extends StatefulWidget {
+class AddProgramScreen extends StatefulWidget {
   @override
-  _AddTaskScreenState createState() => _AddTaskScreenState();
+  _AddProgramScreenState createState() => _AddProgramScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
+class _AddProgramScreenState extends State<AddProgramScreen> {
   final taskTitleController = TextEditingController();
   bool completedStatus = false;
 
@@ -24,11 +24,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     final bool completed = completedStatus;
     if (textVal.isNotEmpty) {
       final Program program = Program(
-        id: '1',
+        // id: '3',
         name: textVal,
-        completed: 0,
+        // completed: 0
       );
-      // Provider.of<TodosModel>(context, listen: false).addProgram(program);
+      Provider.of<TodosModel>(context, listen: false).addProgram(program);
       Navigator.pop(context);
     }
   }

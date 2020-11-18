@@ -1,16 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness/utils/uuid.dart';
+import 'package:flutter_fitness/utils/seq.dart';
+import 'package:json_annotation/json_annotation.dart';
 
 part 'program.g.dart';
 
+@JsonSerializable()
 class Program {
-  String id;
-  String name;
+  String id, name;
   int completed;
 
-  Program({@required this.id, this.name, this.completed});
+  Program({
+    String id,
+    this.name, 
+    this.completed = 0,
+  }): 
+  this.id = id ?? Uuid().generateV4();
+
+  // Program({this.name, this.completed}) : this.id = id ?? Uuid().generateV4();
+
+  // Program copy({String id, String name, int completed}) {
+  //   return Program(
+  //     id ?? this.id,
+  //     name: name ?? this.name,
+  //     completed: completed ?? this.completed,
+  //   );
+  // }
 
   void toggleCompleted() {
-    // completed != !completed;
+    if (completed == 0) {
+      completed = 1;
+    } else {
+      completed = 0;
+    }
   }
 
   /// A necessary factory constructor for creating a new User instance

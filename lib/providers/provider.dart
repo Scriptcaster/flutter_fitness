@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness/models/program.dart';
 import 'database.dart';
-// import 'package:todos/providers/default_data.dart';
+import 'package:flutter_fitness/providers/default_data.dart';
 
 
 // import 'db.dart';
@@ -17,17 +17,16 @@ class TodosModel extends ChangeNotifier {
   // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
 
   void getPrograms() async {
-  //  var isNew = !await DBProvider.db.dbExists();
-  //   if (isNew) {
+   var isNew = !await DBProvider.db.dbExists();
+    if (isNew) {
       // print(DefaultData.defaultData.programs);
-      // await _db.addPrograms(DefaultData.defaultData.programs);
+      await _db.addPrograms(DefaultData.defaultData.programs);
       // await _db.addWeeks(DefaultData.defaultData.weeks);
       // await _db.addDays(DefaultData.defaultData.days);
       // await _db.addExercises(DefaultData.defaultData.exercises);
       // await _db.addRounds(DefaultData.defaultData.rounds);
-    // }
+    }
     _programs = await _db.getAllPrograms();
-    // print(_programs);
     // _weeks = await _db.getAllWeeks();
     // _days = await _db.getAllDaysAll();
     // _exercises = await _db.getAllExercisesAll();
@@ -47,11 +46,13 @@ class TodosModel extends ChangeNotifier {
   void toggleProgram(Program program) {
     final programIndex = _programs.indexOf(program);
     _programs[programIndex].toggleCompleted();
+    _db.updateProgram(program);
     notifyListeners();
   }
 
-  void deleteProgram(Program program) {
+  void removeProgram(Program program) {
     _programs.remove(program);
+    _db.removeProgram(program);
     notifyListeners();
   }
 }

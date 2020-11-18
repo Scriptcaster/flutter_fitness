@@ -26,7 +26,7 @@ class ProgramListItem extends StatelessWidget {
           color: Colors.red,
         ),
         onPressed: () {
-          Provider.of<TodosModel>(context, listen: false).deleteProgram(program);
+          Provider.of<TodosModel>(context, listen: false).removeProgram(program);
         },
       ),
     );

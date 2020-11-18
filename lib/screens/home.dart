@@ -21,6 +21,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    Provider.of<TodosModel>(context, listen: false).getPrograms();
   }
 
   @override
@@ -39,14 +40,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 icon: Icon(Icons.add),
                 onPressed: () {
                   // Provider.of<TodosModel>(context, listen: false).addProgram(Program(id: 0, name: 'First Program', completed: 0 ));
-                  Provider.of<TodosModel>(context, listen: false).getPrograms();
-
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => AddTaskScreen(),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AddProgramScreen(),
+                    ),
+                  );
                 },
               ),
             ],

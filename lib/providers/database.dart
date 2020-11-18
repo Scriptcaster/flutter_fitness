@@ -29,7 +29,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy81.db");
+    return p.join(documentsDirectory, "db_benchy82.db");
   }
 
   Future<bool> dbExists() async {
@@ -96,10 +96,13 @@ class DBProvider {
     });
   }
 
-  // addPrograms(List<Program> programs) async {
-  //   final db = await database;
-  //   programs.forEach((it) async { var res = await db.insert("Program", it.toJson()); });
-  // }
+  addPrograms(List<Program> programs) async {
+    final db = await database;
+    programs.forEach((element) { 
+      print(element.toJson());
+    });
+    programs.forEach((it) async { var res = await db.insert("Program", it.toJson()); });
+  }
 
   // addWeeks(List<Week> weeks) async {
   //   // print(weeks.asMap());
@@ -415,10 +418,11 @@ class DBProvider {
   //   return await _db.rawInsert("INSERT Into Week (id, program, seq, name, completed, date)"" VALUES (?,?,?,?,?,?)",[ week.id, week.program, previousSeq, week.name, week.isCompleted, week.date ]);
   // }
 
-  // Future<int> updateProgram(Program program) async {
-  //   final db = await database;
-  //   return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
-  // }
+  Future<int> updateProgram(Program program) async {
+    final db = await database;
+    print(program.toJson());
+    return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
+  }
 
   // Future<int> updateWeek(Week week) async {
   //   final db = await database;
@@ -555,16 +559,16 @@ class DBProvider {
   //   return await db.rawUpdate('''UPDATE Exercise SET previousVolume = ? WHERE id = ?''', [previousVolume, id]);
   // }
 
-  // Future<void> removeProgram(Program program) async {
-  //   final db = await database;
-  //   return db.transaction<void>((txn) async {
-  //     await txn.delete('Round', where: 'programId = ?', whereArgs: [program.id]);
-  //     await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
-  //     await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
-  //     await txn.delete('Week', where: 'program = ?', whereArgs: [program.id]);
-  //     await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
-  //   });
-  // }
+  Future<void> removeProgram(Program program) async {
+    final db = await database;
+    return db.transaction<void>((txn) async {
+      // await txn.delete('Round', where: 'programId = ?', whereArgs: [program.id]);
+      // await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
+      // await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
+      // await txn.delete('Week', where: 'program = ?', whereArgs: [program.id]);
+      await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
+    });
+  }
 
   // Future<void> removeWeek(Week week) async {
   //   final db = await database;
