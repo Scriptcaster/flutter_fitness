@@ -37,7 +37,7 @@ class DBProvider {
   }
 
   initDB() async {
-    print('INIT DB');
+    // print('INIT DB');
     String path = await _dbPath;
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
@@ -192,7 +192,6 @@ class DBProvider {
   // }
 
   Future<List<Program>> getAllPrograms() async {
-    print('get');
     final _db = await database;
     var result = await _db.query('Program');
     return result.map((it) => Program.fromJson(it)).toList();

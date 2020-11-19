@@ -31,9 +31,9 @@ class TodosModel extends ChangeNotifier {
       // await _db.addRounds(DefaultData.defaultData.rounds);
     }
     _programs = await _db.getAllPrograms();
-    _programs.forEach((element) {
-      print(element.toJson());
-    });
+    // _programs.forEach((element) {
+    //   print(element.toJson());
+    // });
     // _weeks = await _db.getAllWeeks();
     // _days = await _db.getAllDaysAll();
     // _exercises = await _db.getAllExercisesAll();
@@ -42,6 +42,11 @@ class TodosModel extends ChangeNotifier {
     // _isLoading = false;
     await Future.delayed(Duration(milliseconds: 300));
     notifyListeners();
+  }
+
+  getTotal() async {
+    _programs = await _db.getAllPrograms();
+    return _programs.length;
   }
 
   void addProgram(Program program) {
