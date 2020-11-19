@@ -7,15 +7,33 @@ part 'program.g.dart';
 
 @JsonSerializable()
 class Program {
-  String id, name;
+  int id;
+  String name;
   int completed;
+  int date;
+
+  // Program({
+  //   this.id,
+  //   this.name, 
+  //   this.completed = 0,
+  //   this.date
+  // });
 
   Program({
-    String id,
+    this.id,
     this.name, 
     this.completed = 0,
-  }): 
-  this.id = id ?? Uuid().generateV4();
+    int date,
+  }) : this.date = date ?? Seq().generateDate();
+
+  
+
+  // Program({
+  //   String id,
+  //   this.name, 
+  //   this.completed = 0,
+  // }): 
+  // this.id = id ?? Uuid().generateV4();
 
   // Program({this.name, this.completed}) : this.id = id ?? Uuid().generateV4();
 

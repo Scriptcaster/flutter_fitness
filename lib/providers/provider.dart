@@ -16,6 +16,10 @@ class TodosModel extends ChangeNotifier {
   // UnmodifiableListView<Program> get incompletePrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 0));
   // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
 
+  bool get isLoading => _isLoading;
+
+  bool _isLoading = false;
+
   void getPrograms() async {
    var isNew = !await DBProvider.db.dbExists();
     if (isNew) {
@@ -27,6 +31,9 @@ class TodosModel extends ChangeNotifier {
       // await _db.addRounds(DefaultData.defaultData.rounds);
     }
     _programs = await _db.getAllPrograms();
+    _programs.forEach((element) {
+      print(element.toJson());
+    });
     // _weeks = await _db.getAllWeeks();
     // _days = await _db.getAllDaysAll();
     // _exercises = await _db.getAllExercisesAll();

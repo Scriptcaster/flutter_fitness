@@ -29,7 +29,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy82.db");
+    return p.join(documentsDirectory, "db_benchy93.db");
   }
 
   Future<bool> dbExists() async {
@@ -42,7 +42,8 @@ class DBProvider {
     return await openDatabase(path, version: 1, onOpen: (db) {},
         onCreate: (Database db, int version) async {
         await db.execute("CREATE TABLE Program ("
-          "id TEXT PRIMARY KEY,"
+          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+          // "id TEXT PRIMARY KEY,"
           "name TEXT,"
           "completed INTEGER NOT NULL DEFAULT 0"
         ")");
@@ -98,9 +99,9 @@ class DBProvider {
 
   addPrograms(List<Program> programs) async {
     final db = await database;
-    programs.forEach((element) { 
-      print(element.toJson());
-    });
+    // programs.forEach((element) { 
+    //   print(element.toJson());
+    // });
     programs.forEach((it) async { var res = await db.insert("Program", it.toJson()); });
   }
 
@@ -421,7 +422,7 @@ class DBProvider {
   Future<int> updateProgram(Program program) async {
     final db = await database;
     print(program.toJson());
-    return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
+    // return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
   }
 
   // Future<int> updateWeek(Week week) async {
@@ -566,7 +567,7 @@ class DBProvider {
       // await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Week', where: 'program = ?', whereArgs: [program.id]);
-      await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
+      // await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
     });
   }
 
