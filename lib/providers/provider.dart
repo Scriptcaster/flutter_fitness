@@ -20,6 +20,8 @@ class TodosModel extends ChangeNotifier {
 
   bool _isLoading = false;
 
+  List<Program> get programs => _programs.toList();
+
   void getPrograms() async {
    var isNew = !await DBProvider.db.dbExists();
     if (isNew) {
