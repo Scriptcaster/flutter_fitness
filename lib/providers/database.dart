@@ -29,7 +29,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy93.db");
+    return p.join(documentsDirectory, "db_benchy94.db");
   }
 
   Future<bool> dbExists() async {
@@ -45,7 +45,8 @@ class DBProvider {
           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
           // "id TEXT PRIMARY KEY,"
           "name TEXT,"
-          "completed INTEGER NOT NULL DEFAULT 0"
+          "completed INTEGER NOT NULL DEFAULT 0,"
+          "date INTEGER"
         ")");
       // await db.execute("CREATE TABLE Program ("
       //   "id TEXT PRIMARY KEY,"
