@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness/screens/program.dart';
 import 'package:intl/intl.dart';
 
 // import '../task_progress_indicator.dart';
@@ -42,22 +43,22 @@ class ProgramCard extends StatelessWidget {
         var topOffset = MediaQuery.of(context).size.height - backDropHeight;
 
         var rect = RelativeRect.fromLTRB(horizontalOffset, topOffset, horizontalOffset, bottomOffset);
-        // Navigator.push(
-        //   context,
-        //   ScaleRoute(
-        //     rect: rect,
-        //     widget: DetailScreen(
-        //       taskId: program.id,
-        //       heroIds: heroIds,
-        //     ),
-        //   ),
-        //   // MaterialPageRoute(
-        //   //   builder: (context) => DetailScreen(
-        //   //         taskId: program.id,
-        //   //         heroIds: heroIds,
-        //   //       ),
-        //   // ),
-        // );
+        Navigator.push(
+          context,
+          ScaleRoute(
+            rect: rect,
+            widget: DetailScreen(
+              id: program.id,
+              heroIds: heroIds,
+            ),
+          ),
+          // MaterialPageRoute(
+          //   builder: (context) => DetailScreen(
+          //         taskId: program.id,
+          //         heroIds: heroIds,
+          //       ),
+          // ),
+        );
       },
       child: Card(
         shape: RoundedRectangleBorder(

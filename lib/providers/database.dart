@@ -421,8 +421,7 @@ class DBProvider {
 
   Future<int> updateProgram(Program program) async {
     final db = await database;
-    print(program.toJson());
-    // return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
+    return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
   }
 
   // Future<int> updateWeek(Week week) async {

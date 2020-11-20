@@ -57,6 +57,14 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateProgram(Program program) {
+    var oldTask = _programs.firstWhere((it) => it.id == program.id);
+    var replaceIndex = _programs.indexOf(oldTask);
+    _programs.replaceRange(replaceIndex, replaceIndex + 1, [program]);
+    _db.updateProgram(program);
+    notifyListeners();
+  }
+
   void toggleProgram(Program program) {
     final programIndex = _programs.indexOf(program);
     _programs[programIndex].toggleCompleted();
