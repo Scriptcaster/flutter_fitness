@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness/providers/provider.dart';
+import 'package:provider/provider.dart';
 // import 'package:scoped_model/scoped_model.dart';
 
 // import '../scopedmodel/program.dart';
@@ -8,15 +10,14 @@ import '../models/program.dart';
 import '../utils/color_utils.dart';
 
 class AddProgramScreen extends StatefulWidget {
-  AddProgramScreen();
-
   @override
-  State<StatefulWidget> createState() {
-    return _AddProgramScreenState();
-  }
+  _AddProgramScreenState createState() => _AddProgramScreenState();
 }
 
 class _AddProgramScreenState extends State<AddProgramScreen> {
+  final taskTitleController = TextEditingController();
+  bool completedStatus = false;
+
   String newTask;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Color taskColor;
@@ -28,14 +29,68 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
     setState(() {
       newTask = '';
       taskColor = ColorUtils.defaultColors[0];
-      taskIcon = Icons.work;
+      // taskIcon = Icons.work;
     });
   }
 
+  void dispose() {
+    taskTitleController.dispose();
+    super.dispose();
+  }
+
+  void onAdd() {
+    final String textVal = taskTitleController.text;
+    final bool completed = completedStatus;
+    if (textVal.isNotEmpty) {
+      final Program program = Program(
+        // id: '3',
+        name: textVal,
+        // completed: 0
+      );
+      Provider.of<TodosModel>(context, listen: false).addProgram(program);
+      Navigator.pop(context);
+    }
+  }
+
+
+
+    // return Scaffold(
+      // appBar: AppBar(
+      //   title: Text('Add Program'),
+      // ),
+      // body: ListView(
+      //   children: <Widget>[
+      //     Padding(
+      //       padding: EdgeInsets.all(15.0),
+      //       child: Container(
+      //         child: Column(
+      //           crossAxisAlignment: CrossAxisAlignment.stretch,
+      //           children: <Widget>[
+      //             TextField(controller: taskTitleController),
+      //             CheckboxListTile(
+      //               value: completedStatus,
+      //               onChanged: (checked) => setState(() {
+      //                 completedStatus = checked;
+      //               }),
+      //               title: Text('Complete?'),
+      //             ),
+      //             RaisedButton(
+      //               child: Text('Add'),
+      //               onPressed: onAdd,
+      //             ),
+      //           ],
+      //         ),
+      //       ),
+      //     )
+      //   ],
+      // ),
+    // );
+  // }
+
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<WeekListModel>(
-      builder: (BuildContext context, Widget child, WeekListModel model) {
+    return Consumer<TodosModel>(builder: (context, programs, child) {
+      // builder: (BuildContext context, Widget child, WeekListModel model) {
         return Scaffold(
           key: _scaffoldKey,
           backgroundColor: Colors.white,
@@ -70,7 +125,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                   onChanged: (text) {
                     setState(() => newTask = text);
                   },
-                  cursorColor: taskColor,
+                  cursorColor: Colors.black,
                   autofocus: true,
                   decoration: InputDecoration(
                     border: InputBorder.none,
@@ -87,20 +142,20 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                 Container(
                   height: 26.0,
                 ),
-                Row(
-                  children: [
-                    ColorPickerBuilder(
-                      color: taskColor,
-                      onColorChanged: (newColor) => setState(() => taskColor = newColor)),
-                    Container(
-                      width: 22.0,
-                    ),
-                    IconPickerBuilder(
-                      iconData: taskIcon,
-                      highlightColor: taskColor,
-                      action: (newIcon) => setState(() => taskIcon = newIcon)),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     ColorPickerBuilder(
+                //       color: taskColor,
+                //       onColorChanged: (newColor) => setState(() => taskColor = newColor)),
+                //     Container(
+                //       width: 22.0,
+                //     ),
+                //     IconPickerBuilder(
+                //       iconData: taskIcon,
+                //       highlightColor: taskColor,
+                //       action: (newIcon) => setState(() => taskIcon = newIcon)),
+                //   ],
+                // ),
               ],
             ),
           ),
@@ -117,26 +172,25 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                   if (newTask.isEmpty) {
                     final snackBar = SnackBar(
                       content: Text(
-                          'Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
+                        'Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
                       backgroundColor: taskColor,
                     );
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    model.addProgram(Program(
-                      newTask,
-                      codePoint: taskIcon.codePoint,
-                      color: taskColor.value
-                    ));
+                    final Program program = Program(name: newTask);
+                    Provider.of<TodosModel>(context, listen: false).addProgram(program);
                     Navigator.pop(context);
                   }
-                },
+                }
               );
             },
           ),
         );
-      },
-    );
+      
+      // };
+
+    });
   }
 }
 // Reason for wraping fab with builder (to get scafold context)

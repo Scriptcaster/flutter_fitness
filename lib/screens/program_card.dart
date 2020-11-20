@@ -18,7 +18,7 @@ class ProgramCard extends StatelessWidget {
   final Color color;
 
   // final TaskGetter<Program, int> getTotalTodos;
-  // final TaskGetter<Program, HeroId> getHeroIds;
+  final TaskGetter<Program, HeroId> getHeroIds;
   // final TaskGetter<Program, int> getTaskCompletionPercent;
 
   ProgramCard({
@@ -26,13 +26,13 @@ class ProgramCard extends StatelessWidget {
     @required this.color,
     @required this.program,
     // @required this.getTotalTodos,
-    // @required this.getHeroIds,
+    @required this.getHeroIds,
     // @required this.getTaskCompletionPercent,
   });
 
   @override
   Widget build(BuildContext context) {
-    // var heroIds = getHeroIds(program);
+    var heroIds = getHeroIds(program);
     return GestureDetector(
       onTap: () {
         final RenderBox renderBox = backdropKey.currentContext.findRenderObject();
@@ -97,15 +97,12 @@ class ProgramCard extends StatelessWidget {
               // ),
               Container(
                 margin: EdgeInsets.only(bottom: 4.0),
-                child: Hero(
-                  tag: 'tag',
-                  child: Text(DateFormat('MMM d').format(DateTime.fromMillisecondsSinceEpoch(program.date)).toString(), style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey[500]),
-                  ),
+                  child: Text(DateFormat('MMM d yyyy').format(DateTime.fromMillisecondsSinceEpoch(program.date)).toString(), style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey[500]),
                 ),
               ),
               Container(
                 child: Hero(
-                  tag: 'tag',
+                  tag: heroIds.titleId,
                   child: Text(program.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
                 ),
               ),

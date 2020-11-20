@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness/screens/program_card_add.dart';
 import 'package:flutter_fitness/screens/program_card.dart';
-import 'package:flutter_fitness/screens/program_card.dart';
 import 'package:flutter_fitness/utils/datetime_utils.dart';
 import 'package:flutter_fitness/utils/gradient_background.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_fitness/models/program.dart';
 
-import '../providers/provider.dart';
+import 'package:flutter_fitness/models/hero_id.dart';
+
+import 'package:flutter_fitness/providers/provider.dart';
 
 import '../providers/provider.dart';
 import '../providers/provider.dart';
@@ -22,6 +23,15 @@ class Home extends StatefulWidget {
   Home({Key key, this.title}) : super(key: key);
 
   final String title;
+
+  HeroId _generateHeroIds(Program program) {
+    return HeroId(
+      // codePointId: 'code_point_id_${program.id}',
+      // progressId: 'progress_id_${program.id}',
+      titleId: 'title_id_${program.id}',
+      // remainingTaskId: 'remaining_program_id_${program.id}',
+    );
+  }
 
   String currentDay(BuildContext context) {
     return DateTimeUtils.currentDay;
@@ -153,10 +163,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                               return ProgramCard(
                                 backdropKey: _backdropKey,
                                 program: _programs[index],
-                                color: Colors.white
+                                color: Colors.white,
                                 // (
                                 // id: _programs[index].color),
-                                // getHeroIds: widget._generateHeroIds,
+                                getHeroIds: widget._generateHeroIds,
                                 // getTaskCompletionPercent: model.getTaskCompletionPercent,
                                 // getTotalTodos: model.getTotalTodosFrom,
                                 

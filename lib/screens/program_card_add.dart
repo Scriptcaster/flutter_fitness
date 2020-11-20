@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness/screens/program_add.dart';
 
-// import '../page/program_add.dart';
 
 class AddProgramCard extends StatelessWidget {
   final Color color;
@@ -23,7 +23,7 @@ class AddProgramCard extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddTaskScreen(),
+                builder: (context) => AddProgramScreen(),
               ),
             );
           },
@@ -41,7 +41,7 @@ class AddProgramCard extends StatelessWidget {
                   height: 8.0,
                 ),
                 Text(
-                  'Add Category',
+                  'Add Program',
                   style: TextStyle(color: color),
                 ),
               ],
