@@ -1,59 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-import 'package:flutter_fitness/models/program.dart';
-import 'package:flutter_fitness/providers/provider.dart';
+// import '../task_progress_indicator.dart';
+import '../models/hero_id.dart';
+import '../models/program.dart';
+import '../route/scale_route.dart';
+import '../utils/color_utils.dart';
+
+// import '../page/program.dart';
+// import '../component/week_badge.dart';
+
+typedef TaskGetter<T, V> = V Function(T value);
 
 class ProgramCard extends StatelessWidget {
-  final Program program;
   final GlobalKey backdropKey;
+  final Program program;
+  final Color color;
+
+  // final TaskGetter<Program, int> getTotalTodos;
+  // final TaskGetter<Program, HeroId> getHeroIds;
+  // final TaskGetter<Program, int> getTaskCompletionPercent;
 
   ProgramCard({
+    @required this.backdropKey,
+    @required this.color,
     @required this.program,
-     @required this.backdropKey,
+    // @required this.getTotalTodos,
+    // @required this.getHeroIds,
+    // @required this.getTaskCompletionPercent,
   });
 
   @override
   Widget build(BuildContext context) {
-    // return ListTile(
-    //   leading: Checkbox(
-    //     // value: program.completed,
-    //     value: program.completed == 1 ? true : false,
-    //     onChanged: (bool checked) {
-    //       Provider.of<TodosModel>(context, listen: false).toggleProgram(program);
-    //     },
-    //   ),
-    //   title: Text(program.name),
-    //   trailing: IconButton(
-    //     icon: Icon(
-    //       Icons.delete,
-    //       color: Colors.red,
-    //     ),
-    //     onPressed: () {
-    //       Provider.of<TodosModel>(context, listen: false).removeProgram(program);
-    //     },
-    //   ),
-    // );
-
-
+    // var heroIds = getHeroIds(program);
     return GestureDetector(
       onTap: () {
         final RenderBox renderBox = backdropKey.currentContext.findRenderObject();
         var backDropHeight = renderBox.size.height;
-        var bottomOffset = 40.0;
-        var horizontalOffset = 40.0;
+        var bottomOffset = 60.0;
+        var horizontalOffset = 52.0;
         var topOffset = MediaQuery.of(context).size.height - backDropHeight;
+
         var rect = RelativeRect.fromLTRB(horizontalOffset, topOffset, horizontalOffset, bottomOffset);
         // Navigator.push(
         //   context,
-        //   // ScaleRoute(
-        //   //   rect: rect,
-        //   //   widget: DetailScreen(
-        //   //     taskId: program.id,
-        //   //     heroIds: heroIds,
-        //   //   ),
-        //   // ),
+        //   ScaleRoute(
+        //     rect: rect,
+        //     widget: DetailScreen(
+        //       taskId: program.id,
+        //       heroIds: heroIds,
+        //     ),
+        //   ),
         //   // MaterialPageRoute(
         //   //   builder: (context) => DetailScreen(
         //   //         taskId: program.id,
@@ -64,10 +61,10 @@ class ProgramCard extends StatelessWidget {
       },
       child: Card(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(4.0),
+          borderRadius: BorderRadius.circular(16.0),
         ),
         elevation: 4.0,
-        margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 40.0),
+        margin: EdgeInsets.symmetric(vertical: 16.0, horizontal: 12.0),
         color: Colors.white,
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
@@ -85,6 +82,19 @@ class ProgramCard extends StatelessWidget {
               Spacer(
                 flex: 8,
               ),
+              // Container(
+              //   margin: EdgeInsets.only(bottom: 4.0),
+              //   child: Hero(
+              //     tag: heroIds.remainingTaskId,
+              //     child: Text(
+              //       "${getTotalTodos(program)} Weeks",
+              //       style: Theme.of(context)
+              //           .textTheme
+              //           .body1
+              //           .copyWith(color: Colors.grey[500]),
+              //     ),
+              //   ),
+              // ),
               Container(
                 margin: EdgeInsets.only(bottom: 4.0),
                 child: Hero(
@@ -112,6 +122,5 @@ class ProgramCard extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

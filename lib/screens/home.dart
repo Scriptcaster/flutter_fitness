@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_fitness/screens/add_category.dart';
+import 'package:flutter_fitness/screens/program_card_add.dart';
 import 'package:flutter_fitness/screens/program_card.dart';
-import 'package:flutter_fitness/screens/task_card.dart';
+import 'package:flutter_fitness/screens/program_card.dart';
 import 'package:flutter_fitness/utils/datetime_utils.dart';
 import 'package:flutter_fitness/utils/gradient_background.dart';
 import 'package:provider/provider.dart';
@@ -12,7 +12,7 @@ import '../providers/provider.dart';
 import '../providers/provider.dart';
 import '../providers/provider.dart';
 import '../providers/provider.dart';
-import 'program_cards.dart';
+// import 'program_cards.dart';
 
 import 'add_program.dart';
 
@@ -112,30 +112,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
-                      margin:
-                          EdgeInsets.only(top: 0.0, left: 30.0, right: 10.0),
+                      margin: EdgeInsets.only(top: 0.0, left: 56.0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           // ShadowImage(),
                           Container(
                             margin: EdgeInsets.only(top: 22.0),
-                            child: Text(
-                              '${widget.currentDay(context)}',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline
-                                  .copyWith(color: Colors.white),
-                            ),
+                            child: Text('${widget.currentDay(context)}', style: Theme.of(context).textTheme.headline.copyWith(color: Colors.white),),
                           ),
-                          Text(
-                              '${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}',
-                              style: Theme.of(context).textTheme.title.copyWith(
-                                  color: Colors.white.withOpacity(0.7))),
+                          Text('${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}', style: Theme.of(context).textTheme.title.copyWith( color: Colors.white.withOpacity(0.7))),
                           Container(height: 16.0),
-                          Text('You have $_total programs to complete',
-                              style: Theme.of(context).textTheme.body1.copyWith(
-                                  color: Colors.white.withOpacity(0.7))),
+                          Text('You have $_total programs to complete', style: Theme.of(context).textTheme.body1.copyWith( color: Colors.white.withOpacity(0.7))),
                           // Container(child: SubscriberChart(data: newData)),
                         ],
                       ),
@@ -158,11 +146,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                           controller: _pageController,
                           itemBuilder: (BuildContext context, int index) {
                             if (index == _programs.length) {
-                              return AddPageCard(
+                              return AddProgramCard(
                                 color: Colors.blueGrey,
                               );
                             } else {
-                              return TaskCard(
+                              return ProgramCard(
                                 backdropKey: _backdropKey,
                                 program: _programs[index],
                                 color: Colors.white
