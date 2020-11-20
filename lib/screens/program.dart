@@ -80,20 +80,21 @@ class _ProgramScreenState extends State<DetailScreen>
     // return ScopedModelDescendant<WeekListModel>(
     //   builder: (BuildContext context, Widget child, WeekListModel model) {
         Program _program;
+        // Program _weeks;
         try {
           _program = programs.allPrograms.firstWhere((week) => week.id == widget.id);
+          
           //  print(_program.toJson());
         } catch (e) {
           return Container(
             color: Colors.white,
           );
         }
-        // var _weeks =
-        //     model.weeks.where((week) => week.program == widget.id).toList();
         var _hero = widget.heroIds;
         var _color = Colors.green;
         // var _color = ColorUtils.getColorFrom(id: _program.color);
         // var _icon = IconData(_program.codePoint, fontFamily: 'MaterialIcons');
+         var _weeks = programs.weeks.where((week) => week.id == widget.id).toList();
         return Theme(
           data: ThemeData(primarySwatch: _color),
           child: Scaffold(
@@ -121,13 +122,14 @@ class _ProgramScreenState extends State<DetailScreen>
                     );
                   },
                 ),
-                // SimpleAlertDialog(
-                //   color: _color,
-                //   onActionPressed: () {
-                //     model.removeProgram(_program);
-                //     Navigator.of(context).pop(true);
-                //   },
-                // ),
+                SimpleAlertDialog(
+                  color: _color,
+                  onActionPressed: () {
+                    // model.removeProgram(_program);
+                    Provider.of<TodosModel>(context, listen: false).removeProgram(_program);
+                    Navigator.of(context).pop(true);
+                  },
+                ),
               ],
             ),
             body: Padding(
@@ -179,98 +181,108 @@ class _ProgramScreenState extends State<DetailScreen>
                     ],
                   ),
                 ),
-                // Expanded(
-                //   child: Padding(
-                //     padding: EdgeInsets.only(top: 16.0),
-                //     child: ListView.builder(
-                //       itemBuilder: (BuildContext context, int index) {
-                //         _weeks.sort((a, b) => b.seq.compareTo(a.seq));
-                //         if (index == _weeks.length) {
-                //           return SizedBox(height: 56);
-                //         }
-                //         var week = _weeks[index];
-                //         return Dismissible(
-                //           key: UniqueKey(),
-                //           background: Container(color: Colors.red),
-                //           confirmDismiss: (DismissDirection direction) async {
-                //             return await showDialog(
-                //               context: context,
-                //               builder: (BuildContext context) {
-                //                 return AlertDialog(
-                //                   title: const Text("Confirm Removal"),
-                //                   content: const Text(
-                //                       "Are you sure you wish to delete this item?"),
-                //                   actions: <Widget>[
-                //                     FlatButton(
-                //                         child: const Text("DELETE"),
-                //                         onPressed: () {
-                //                           model.removeWeek(week);
-                //                           Navigator.of(context).pop(true);
-                //                         }),
-                //                     FlatButton(
-                //                       onPressed: () =>
-                //                           Navigator.of(context).pop(false),
-                //                       child: const Text("CANCEL"),
-                //                     ),
-                //                   ],
-                //                 );
-                //               },
-                //             );
-                //           },
-                //           child: ListTile(
-                //             onTap: () {
-                //               Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(
-                //                   builder: (context) => WeekLocal(
-                //                       id: week.id,
-                //                       name: week.name,
-                //                       date: week.date,
-                //                       programId: _program.id,
-                //                       taskId: widget.taskId,
-                //                       heroIds: widget.heroIds,
-                //                       color: _color),
-                //                 ),
-                //               );
-                //             },
-                //             // onTap: () => model.updateTodo(week.copy(
-                //             //     isCompleted: week.isCompleted == 1 ? 0 : 1)),
-                //             // contentPadding: EdgeInsets.symmetric(
-                //             //     horizontal: 0, vertical: 8.0),
-                //             leading: Checkbox(
-                //                 onChanged: (value) => model.updateWeek(
-                //                     week.copy(isCompleted: value ? 1 : 0)),
-                //                 value: week.isCompleted == 1 ? true : false),
-                //             // trailing: IconButton(
-                //             //   icon: Icon(Icons.delete_outline),
-                //             //   onPressed: () => model.removeTodo(week),
-                //             // ),
 
-                //             title: Text(
-                //               week.name,
-                //               style: TextStyle(
-                //                 fontSize: 18.0,
-                //                 fontWeight: FontWeight.w600,
-                //                 color: week.isCompleted == 1
-                //                     ? _color
-                //                     : Colors.black54,
-                //                 decoration: week.isCompleted == 1
-                //                     ? TextDecoration.lineThrough
-                //                     : TextDecoration.none,
-                //               ),
-                //             ),
-                //             subtitle: Text(DateFormat('MMM d')
-                //                 .format(DateTime.fromMillisecondsSinceEpoch(
-                //                     week.date))
-                //                 .toString()),
-                //             trailing: Icon(Icons.chevron_right),
-                //           ),
-                //         );
-                //       },
-                //       itemCount: _weeks.length + 1,
-                //     ),
-                //   ),
-                // ),
+
+
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 16.0),
+                    child: ListView.builder(
+                      itemBuilder: (BuildContext context, int index) {
+                        _weeks.sort((a, b) => b.id.compareTo(a.id));
+                        if (index == _weeks.length) {
+                          return SizedBox(height: 56);
+                        }
+                        var week = _weeks[index];
+                        return Dismissible(
+                          key: UniqueKey(),
+                          background: Container(color: Colors.red),
+                          confirmDismiss: (DismissDirection direction) async {
+                            return await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Confirm Removal"),
+                                  content: const Text(
+                                      "Are you sure you wish to delete this item?"),
+                                  actions: <Widget>[
+                                    // FlatButton(
+                                    //     child: const Text("DELETE"),
+                                    //     onPressed: () {
+                                    //       model.removeWeek(week);
+                                    //       Navigator.of(context).pop(true);
+                                    //     }),
+                                    // FlatButton(
+                                    //   onPressed: () =>
+                                    //       Navigator.of(context).pop(false),
+                                    //   child: const Text("CANCEL"),
+                                    // ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                          child: ListTile(
+                            // onTap: () {
+                            //   Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //       builder: (context) => WeekLocal(
+                            //           id: week.id,
+                            //           name: week.name,
+                            //           date: week.date,
+                            //           programId: _program.id,
+                            //           taskId: widget.taskId,
+                            //           heroIds: widget.heroIds,
+                            //           color: _color),
+                            //     ),
+                            //   );
+                            // },
+                            // onTap: () => model.updateTodo(week.copy(isCompleted: week.isCompleted == 1 ? 0 : 1)),
+                            // contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
+
+                            leading: Checkbox(
+                                onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleWeek(week),
+                                value: week.completed == 1 ? true : false
+                            ),
+
+                            // trailing: IconButton(
+                            //   icon: Icon(Icons.delete_outline),
+                            //   onPressed: () => model.removeTodo(week),
+                            // ),
+
+                            title: Text(
+                              week.name,
+                              style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                color: week.completed == 1
+                                    ? _color
+                                    : Colors.black54,
+                                decoration: week.completed == 1
+                                    ? TextDecoration.lineThrough
+                                    : TextDecoration.none,
+                              ),
+                            ),
+                            subtitle: Text(DateFormat('MMM d')
+                                .format(DateTime.fromMillisecondsSinceEpoch(
+                                    week.date))
+                                .toString()),
+                            trailing: Icon(Icons.chevron_right),
+                          ),
+                        );
+                      },
+                      itemCount: _weeks.length + 1,
+                    ),
+                  ),
+                ),
+
+
+
+
+
+
+
               ]),
             ),
             // floatingActionButton: FloatingActionButton(
@@ -359,7 +371,7 @@ class SimpleAlertDialog extends StatelessWidget {
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Delete this card?'),
+              title: Text('Delete this Program?'),
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[

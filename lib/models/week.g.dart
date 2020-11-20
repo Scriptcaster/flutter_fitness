@@ -1,25 +1,25 @@
-// // GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-// part of 'week.dart';
+part of 'week.dart';
 
-// // **************************************************************************
-// // JsonSerializableGenerator
-// // **************************************************************************
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
-// // Week _$TodoFromJson(Map<String, dynamic> json) {
-// //   return Week(json['name'] as String,
-// //     program: json['program'] as String,
-// //     seq: json['seq'] as int,
-// //     isCompleted: json['completed'] as int,
-// //     date: json['date'] as int,
-// //     id: json['id'] as String);
-// // }
+Week _$WeekFromJson(Map<String, dynamic> json) {
+  return Week(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    completed: json['completed'] as int,
+    date: json['date'] as int,
+    programId: json['programId'] as int,
+  );
+}
 
-// // Map<String, dynamic> _$TodoToJson(Week instance) => <String, dynamic>{
-// //   'id': instance.id,
-// //   'program': instance.program,
-// //   'seq': instance.seq,
-// //   'name': instance.name,
-// //   'completed': instance.isCompleted,
-// //   'date': instance.date
-// // };
+Map<String, dynamic> _$WeekToJson(Week instance) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'completed': instance.completed,
+  'date': instance.date,
+  'programId': instance.programId,
+};

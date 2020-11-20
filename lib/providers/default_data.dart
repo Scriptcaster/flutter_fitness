@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../models/program.dart';
-// import '../models/week.dart';
+import '../models/week.dart';
 // import '../models/day.dart';
 // import '../models/exercise.dart';
 // import '../models/round.dart';
@@ -59,15 +59,15 @@ class DefaultData {
   //   Day(id: 7, dayName: 'Sunday', target: 'Day Off', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
   // ];
 
-  // var weeks = [
-  //   Week('Week 1', date: new DateTime.now().millisecondsSinceEpoch, seq: 1, program: '1', isCompleted: 0, id: '39811115-7350-47a3-8f89-015e4daf64b8'),
-  // ];
+  var weeks = [
+    Week(name: 'First Week Of November', programId: 1),
+  ];
 
   var programs = [
     // Program('5 Days Split', id: '1',  color: Colors.purple.value, codePoint: Icons.fitness_center.codePoint),
     // Program('Pull & Push', id: '2', color: Colors.pink.value, codePoint: Icons.fitness_center.codePoint),
-    Program( name: 'Awesome Program One'),
-    Program( name: 'Awesome Program Two'),
+    Program(name: 'Awesome Program One'),
+    Program(name: 'Awesome Program Two'),
   ];
 
 }

@@ -155,6 +155,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                         child: PageView.builder(
                           controller: _pageController,
                           itemBuilder: (BuildContext context, int index) {
+                            // _programs.sort((a, b) => b.date.compareTo(a.date));
                             if (index == _programs.length) {
                               return AddProgramCard(
                                 color: Colors.blueGrey,

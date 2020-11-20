@@ -5,8 +5,9 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
-// import '../models/week.dart';
+
 import '../models/program.dart';
+import '../models/week.dart';
 // import '../models/day.dart';
 // import '../models/exercise.dart';
 // import '../models/round.dart';
@@ -29,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy94.db");
+    return p.join(documentsDirectory, "db_benchy100.db");
   }
 
   Future<bool> dbExists() async {
@@ -40,28 +41,20 @@ class DBProvider {
     // print('INIT DB');
     String path = await _dbPath;
     return await openDatabase(path, version: 1, onOpen: (db) {},
-        onCreate: (Database db, int version) async {
-        await db.execute("CREATE TABLE Program ("
-          "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-          // "id TEXT PRIMARY KEY,"
-          "name TEXT,"
-          "completed INTEGER NOT NULL DEFAULT 0,"
-          "date INTEGER"
-        ")");
-      // await db.execute("CREATE TABLE Program ("
-      //   "id TEXT PRIMARY KEY,"
-      //   "name TEXT,"
-      //   "color INTEGER,"
-      //   "code_point INTEGER"
-      //   ")");
-      // await db.execute("""CREATE TABLE Week (
-      //   id TEXT PRIMARY KEY,
-      //   name TEXT,
-      //   program TEXT,
-      //   seq INTEGER,
-      //   completed INTEGER NOT NULL DEFAULT 0,
-      //   date INTEGER DEFAULT (cast(strftime('%s','now') as int))
-      //   )""");
+      onCreate: (Database db, int version) async {
+      await db.execute("CREATE TABLE Program ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "name TEXT,"
+        "completed INTEGER NOT NULL DEFAULT 0,"
+        "date INTEGER"
+      ")");
+      await db.execute("""CREATE TABLE Week (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        completed INTEGER NOT NULL DEFAULT 0,
+        date INTEGER,
+        programId INTEGER
+      )""");
       // await db.execute("""CREATE TABLE Day (
       //   id INTEGER PRIMARY KEY,
       //   dayName TEXT,
@@ -106,11 +99,10 @@ class DBProvider {
     programs.forEach((it) async { var res = await db.insert("Program", it.toJson()); });
   }
 
-  // addWeeks(List<Week> weeks) async {
-  //   // print(weeks.asMap());
-  //   final db = await database;
-  //   weeks.forEach((week) async { var res = await db.insert("Week", week.toJson()); });
-  // }
+  addWeeks(List<Week> weeks) async {
+    final db = await database;
+    weeks.forEach((week) async { var res = await db.insert("Week", week.toJson()); });
+  }
 
   // addDays(List<Day> days) async {
   //   final db = await database;
@@ -193,15 +185,16 @@ class DBProvider {
 
   Future<List<Program>> getAllPrograms() async {
     final _db = await database;
-    var result = await _db.query('Program');
+    // var result = await _db.query('Program');
+    var result =  await _db.query('Program ORDER BY date DESC');
     return result.map((it) => Program.fromJson(it)).toList();
   }
 
-  // Future<List<Week>> getAllWeeks() async {
-  //   final db = await database;
-  //   var result = await db.query('Week ORDER BY seq DESC');
-  //   return result.map((it) => Week.fromJson(it)).toList();
-  // }
+  Future<List<Week>> getAllWeeks() async {
+    final db = await database;
+    var result = await db.query('Week ORDER BY id DESC');
+    return result.map((it) => Week.fromJson(it)).toList();
+  }
 
   // Future<List<Day>> getAllDaysAll() async {
   //   final db = await database;
@@ -424,10 +417,10 @@ class DBProvider {
     return db.update('Program', program.toJson(), where: 'id = ?', whereArgs: [program.id]);
   }
 
-  // Future<int> updateWeek(Week week) async {
-  //   final db = await database;
-  //   return db.update('Week', week.toJson(), where: 'id = ?', whereArgs: [week.id]);
-  // }
+  Future<int> updateWeek(Week week) async {
+    final db = await database;
+    return db.update('Week', week.toJson(), where: 'id = ?', whereArgs: [week.id]);
+  }
 
   // Future<int> updateDayTarget(Day day) async {
   //   final _db = await database;
@@ -566,7 +559,7 @@ class DBProvider {
       // await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Week', where: 'program = ?', whereArgs: [program.id]);
-      // await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
+      await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
     });
   }
 
