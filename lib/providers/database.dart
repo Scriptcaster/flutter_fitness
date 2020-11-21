@@ -30,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy100.db");
+    return p.join(documentsDirectory, "db_benchy102.db");
   }
 
   Future<bool> dbExists() async {
@@ -124,13 +124,14 @@ class DBProvider {
     return _db.insert('Program', program.toJson());
   }
 
-  // Future<int> addWeek(Week week) async {
-  //   final db = await database;
-  //   DefaultData.defaultData.days.forEach((day) async {
-  //     await db.insert("Day", Day(dayName: day.dayName, target: day.target, weekId: week.id, programId: week.program).toMap());
-  //   });
-  //   return await db.rawInsert("INSERT Into Week (id, program, seq, name, completed, date)"" VALUES (?,?,?,?,?,?)", [week.id, week.program, week.seq, week.name, week.isCompleted, week.date]);
-  // }
+  Future<int> addWeek(Week week) async {
+    final _db = await database;
+    return _db.insert('Week', week.toJson());
+    // DefaultData.defaultData.days.forEach((day) async {
+    //   await db.insert("Day", Day(dayName: day.dayName, target: day.target, weekId: week.id, programId: week.program).toMap());
+    // });
+    // return await db.rawInsert("INSERT Into Week (id, program, seq, name, completed, date)"" VALUES (?,?,?,?,?,?)", [week.id, week.program, week.seq, week.name, week.isCompleted, week.date]);
+  }
 
   // Future<int> addDay(Day day) async {
   //   final _db = await database;
@@ -187,12 +188,16 @@ class DBProvider {
     final _db = await database;
     // var result = await _db.query('Program');
     var result =  await _db.query('Program ORDER BY date DESC');
+    // print(result);
     return result.map((it) => Program.fromJson(it)).toList();
   }
 
   Future<List<Week>> getAllWeeks() async {
     final db = await database;
     var result = await db.query('Week ORDER BY id DESC');
+    // print(result);
+    // print(result);
+    // print('get Weeks');
     return result.map((it) => Week.fromJson(it)).toList();
   }
 
@@ -553,25 +558,25 @@ class DBProvider {
   // }
 
   Future<void> removeProgram(Program program) async {
-    final db = await database;
-    return db.transaction<void>((txn) async {
+    final _db = await database;
+    return _db.transaction<void>((txn) async {
       // await txn.delete('Round', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
       // await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
-      // await txn.delete('Week', where: 'program = ?', whereArgs: [program.id]);
+      await txn.delete('Week', where: 'programId = ?', whereArgs: [program.id]);
       await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
     });
   }
 
-  // Future<void> removeWeek(Week week) async {
-  //   final db = await database;
-  //   return db.transaction<void>((txn) async {
-  //     await txn.delete('Round', where: 'weekId = ?', whereArgs: [week.id]);
-  //     await txn.delete('Exercise', where: 'weekId = ?', whereArgs: [week.id]);
-  //     await txn.delete('Day', where: 'weekId = ?', whereArgs: [week.id]);
-  //     await txn.delete('Week', where: 'id = ?', whereArgs: [week.id]);
-  //   });
-  // }
+  Future<void> removeWeek(Week week) async {
+    final _db = await database;
+    return _db.transaction<void>((txn) async {
+      // await txn.delete('Round', where: 'weekId = ?', whereArgs: [week.id]);
+      // await txn.delete('Exercise', where: 'weekId = ?', whereArgs: [week.id]);
+      // await txn.delete('Day', where: 'weekId = ?', whereArgs: [week.id]);
+      await txn.delete('Week', where: 'id = ?', whereArgs: [week.id]);
+    });
+  }
 
   // Future<void> removeDay(Day day) async {
   //   final db = await database;

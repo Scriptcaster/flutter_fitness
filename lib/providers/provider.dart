@@ -16,6 +16,7 @@ class TodosModel extends ChangeNotifier {
 
 
   UnmodifiableListView<Program> get allPrograms => UnmodifiableListView(_programs);
+  UnmodifiableListView<Week> get allWeeks => UnmodifiableListView(_weeks);
   // UnmodifiableListView<Program> get incompletePrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 0));
   // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
 
@@ -38,9 +39,9 @@ class TodosModel extends ChangeNotifier {
     }
     _programs = await _db.getAllPrograms();
     _weeks = await _db.getAllWeeks();
-    _weeks.forEach((element) {
-      print(element.toJson());
-    });
+    // _weeks.forEach((element) {
+    //   print(element.toJson());
+    // });
     // _days = await _db.getAllDaysAll();
     // _exercises = await _db.getAllExercisesAll();
     // _rounds = await _db.getAllRoundsAll();
@@ -59,6 +60,14 @@ class TodosModel extends ChangeNotifier {
     _programs.add(program);
     _db.addProgram(program);
     notifyListeners();
+    getPrograms();
+  }
+
+  void addWeek(Week week) {
+    _weeks.add(week);
+    _db.addWeek(week);
+    notifyListeners();
+    getPrograms();
   }
 
   void updateProgram(Program program) {
@@ -66,6 +75,14 @@ class TodosModel extends ChangeNotifier {
     var replaceIndex = _programs.indexOf(oldTask);
     _programs.replaceRange(replaceIndex, replaceIndex + 1, [program]);
     _db.updateProgram(program);
+    notifyListeners();
+  }
+
+   void updateWeek(Week week) {
+    var oldWeek = _weeks.firstWhere((week) => week.id == week.id);
+    var replaceIndex = _weeks.indexOf(oldWeek);
+    _weeks.replaceRange(replaceIndex, replaceIndex + 1, [week]);
+    _db.updateWeek(week);
     notifyListeners();
   }
 
@@ -79,7 +96,7 @@ class TodosModel extends ChangeNotifier {
   void toggleWeek(Week week) {
     final weekIndex = _weeks.indexOf(week);
     _weeks[weekIndex].toggleCompleted();
-    print(week.toJson());
+    // print(week.toJson());
     _db.updateWeek(week);
     notifyListeners();
   }
@@ -87,6 +104,12 @@ class TodosModel extends ChangeNotifier {
   void removeProgram(Program program) {
     _programs.remove(program);
     _db.removeProgram(program);
+    notifyListeners();
+  }
+
+  void removeWeek(Week week) {
+    _weeks.remove(week);
+    _db.removeWeek(week);
     notifyListeners();
   }
 }

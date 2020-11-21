@@ -60,7 +60,8 @@ class DefaultData {
   // ];
 
   var weeks = [
-    Week(name: 'First Week Of November', programId: 1),
+    Week(name: 'First Week', programId: 1),
+    Week(name: 'Second Week', programId: 1),
   ];
 
   var programs = [

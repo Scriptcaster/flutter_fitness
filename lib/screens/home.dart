@@ -15,8 +15,6 @@ import '../providers/provider.dart';
 import '../providers/provider.dart';
 // import 'program_cards.dart';
 
-import 'add_program.dart';
-
 import 'package:flutter_fitness/utils/color_utils.dart';
 
 class Home extends StatefulWidget {
@@ -89,12 +87,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 icon: Icon(Icons.add),
                 onPressed: () {
                   // Provider.of<TodosModel>(context, listen: false).addProgram(Program(id: 0, name: 'First Program', completed: 0 ));
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddProgramScreen(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => AddProgramScreen(),
+                  //   ),
+                  // );
                 },
               ),
             ],

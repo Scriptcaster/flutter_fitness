@@ -2,19 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_fitness/screens/program_edit.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-// import 'package:scoped_model/scoped_model.dart';
-
-// import '../scopedmodel/program.dart';
-// import '../task_progress_indicator.dart';
-// import '../component/week_badge.dart';
-import '../providers/provider.dart';
-import '../utils/color_utils.dart';
-// import '../page/program_edit.dart';
+import '../models/week.dart';
 import '../models/hero_id.dart';
 import '../models/program.dart';
-import '../models/week.dart';
-// import 'week.dart';
-// import 'week_new.dart';
+import '../providers/provider.dart';
+import '../screens/week.dart';
 
 class DetailScreen extends StatefulWidget {
   final int id;
@@ -31,8 +23,7 @@ class DetailScreen extends StatefulWidget {
   }
 }
 
-class _ProgramScreenState extends State<DetailScreen>
-    with SingleTickerProviderStateMixin {
+class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderStateMixin {
   AnimationController _controller;
   Animation<Offset> _animation;
   TextEditingController _weekNameController = TextEditingController();
@@ -40,10 +31,8 @@ class _ProgramScreenState extends State<DetailScreen>
   @override
   void initState() {
     super.initState();
-    _controller =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 300));
-    _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0))
-        .animate(_controller);
+    _controller = AnimationController(vsync: this, duration: Duration(milliseconds: 300));
+    _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0)).animate(_controller);
   }
 
   getContainer(bool isCompleted, {Widget child}) {
@@ -54,16 +43,8 @@ class _ProgramScreenState extends State<DetailScreen>
           gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
-              stops: [
-                0.4,
-                0.6,
-                1
-              ],
-              colors: <Color>[
-                Colors.grey.shade100,
-                Colors.grey.shade50,
-                Colors.white
-              ]),
+              stops: [0.4, 0.6, 1],
+              colors: <Color>[ Colors.grey.shade100, Colors.grey.shade50, Colors.white ]),
         ),
         child: child,
       );
@@ -77,14 +58,12 @@ class _ProgramScreenState extends State<DetailScreen>
   Widget build(BuildContext context) {
     _controller.forward();
     return Consumer<TodosModel>(builder: (context, programs, child) {
-    // return ScopedModelDescendant<WeekListModel>(
-    //   builder: (BuildContext context, Widget child, WeekListModel model) {
+       
         Program _program;
-        // Program _weeks;
         try {
-          _program = programs.allPrograms.firstWhere((week) => week.id == widget.id);
-          
-          //  print(_program.toJson());
+          _program = programs.allPrograms.singleWhere((program) => program.id == widget.id, orElse: () => null);
+           print(_program.toJson());
+          // print(_program.toJson());
         } catch (e) {
           return Container(
             color: Colors.white,
@@ -92,9 +71,7 @@ class _ProgramScreenState extends State<DetailScreen>
         }
         var _hero = widget.heroIds;
         var _color = Colors.green;
-        // var _color = ColorUtils.getColorFrom(id: _program.color);
-        // var _icon = IconData(_program.codePoint, fontFamily: 'MaterialIcons');
-         var _weeks = programs.weeks.where((week) => week.id == widget.id).toList();
+        var _weeks = programs.allWeeks.where((week) => week.programId == widget.id).toList();
         return Theme(
           data: ThemeData(primarySwatch: _color),
           child: Scaffold(
@@ -115,8 +92,6 @@ class _ProgramScreenState extends State<DetailScreen>
                         builder: (context) => EditProgramScreen(
                           id: _program.id,
                           name: _program.name,
-                          // icon: _icon,
-                          // color: _color,
                         ),
                       ),
                     );
@@ -125,7 +100,6 @@ class _ProgramScreenState extends State<DetailScreen>
                 SimpleAlertDialog(
                   color: _color,
                   onActionPressed: () {
-                    // model.removeProgram(_program);
                     Provider.of<TodosModel>(context, listen: false).removeProgram(_program);
                     Navigator.of(context).pop(true);
                   },
@@ -189,7 +163,7 @@ class _ProgramScreenState extends State<DetailScreen>
                     padding: EdgeInsets.only(top: 16.0),
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
-                        _weeks.sort((a, b) => b.id.compareTo(a.id));
+                        // _weeks.sort((a, b) => b.id.compareTo(a.id));
                         if (index == _weeks.length) {
                           return SizedBox(height: 56);
                         }
@@ -203,8 +177,7 @@ class _ProgramScreenState extends State<DetailScreen>
                               builder: (BuildContext context) {
                                 return AlertDialog(
                                   title: const Text("Confirm Removal"),
-                                  content: const Text(
-                                      "Are you sure you wish to delete this item?"),
+                                  content: const Text("Are you sure you wish to delete this item?"),
                                   actions: <Widget>[
                                     // FlatButton(
                                     //     child: const Text("DELETE"),
@@ -223,21 +196,20 @@ class _ProgramScreenState extends State<DetailScreen>
                             );
                           },
                           child: ListTile(
-                            // onTap: () {
-                            //   Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //       builder: (context) => WeekLocal(
-                            //           id: week.id,
-                            //           name: week.name,
-                            //           date: week.date,
-                            //           programId: _program.id,
-                            //           taskId: widget.taskId,
-                            //           heroIds: widget.heroIds,
-                            //           color: _color),
-                            //     ),
-                            //   );
-                            // },
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => WeekScreen(
+                                    id: week.id,
+                                    name: week.name,
+                                    completed: week.completed,
+                                    date: week.date,
+                                    programId: _program.id
+                                  ),
+                                ),
+                              );
+                            },
                             // onTap: () => model.updateTodo(week.copy(isCompleted: week.isCompleted == 1 ? 0 : 1)),
                             // contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
 
@@ -285,57 +257,56 @@ class _ProgramScreenState extends State<DetailScreen>
 
               ]),
             ),
-            // floatingActionButton: FloatingActionButton(
-            //   heroTag: 'fab_new_program',
-            //   onPressed: () {
-            //     showDialog(
-            //         context: context,
-            //         builder: (BuildContext context) {
-            //           _weekNameController.text =
-            //               "Week ${model.getTotalTodosFrom(_program) + 1}";
-            //           return AlertDialog(
-            //             title: Text("New Week"),
-            //             content: TextField(
-            //               style:
-            //                   new TextStyle(fontSize: 20.0, color: Colors.blue),
-            //               keyboardType: TextInputType.text,
-            //               controller: _weekNameController,
-            //               onSubmitted: (value) =>
-            //                   _weekNameController.text = value,
-            //             ),
-            //             actions: <Widget>[
-            //               FlatButton(
-            //                 child: Text("Close"),
-            //                 onPressed: () => Navigator.of(context).pop(),
-            //               ),
-            //               FlatButton(
-            //                 child: Text("Save"),
-            //                 onPressed: () {
-            //                   if (_weekNameController.text.isEmpty) {
-            //                     final snackBar = SnackBar(
-            //                       content: Text(
-            //                           'Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
-            //                       backgroundColor: _color,
-            //                     );
-            //                     Scaffold.of(context).showSnackBar(snackBar);
-            //                   } else {
-            //                     model.addWeek(Week(
-            //                       _weekNameController.text,
-            //                       program: _program.id,
-            //                     ));
-            //                     Navigator.pop(context);
-            //                   }
-            //                 },
-            //               )
-            //             ],
-            //           );
-            //         });
-            //   },
-            //   tooltip: 'New Week',
-            //   backgroundColor: _color,
-            //   foregroundColor: Colors.white,
-            //   child: Icon(Icons.add),
-            // ),
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'fab_new_program',
+              onPressed: () {
+                showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  // _weekNameController.text = "Week ${model.getTotalTodosFrom(_program) + 1}";
+                  _weekNameController.text = "New Week Name";
+                  return AlertDialog(
+                    title: Text("New Week"),
+                    content: TextField(
+                      style: new TextStyle(fontSize: 20.0, color: Colors.blue),
+                      keyboardType: TextInputType.text,
+                      controller: _weekNameController,
+                      onSubmitted: (value) => _weekNameController.text = value,
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Close"),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                      FlatButton(
+                        child: Text("Save"),
+                        onPressed: () {
+                          if (_weekNameController.text.isEmpty) {
+                            final snackBar = SnackBar(
+                              content: Text('Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
+                              backgroundColor: _color,
+                            );
+                            Scaffold.of(context).showSnackBar(snackBar);
+                          } else {
+                            // print():
+                            Provider.of<TodosModel>(context, listen: false).addWeek(Week(name: _weekNameController.text, programId: widget.id));
+                            // model.addWeek(Week(
+                            //   _weekNameController.text,
+                            //   program: _program.id,
+                            // ));
+                            Navigator.pop(context);
+                          }
+                        },
+                      )
+                    ],
+                  );
+                });
+              },
+              tooltip: 'New Week',
+              backgroundColor: _color,
+              foregroundColor: Colors.white,
+              child: Icon(Icons.add),
+            ),
           ),
         );
       },
@@ -375,8 +346,7 @@ class SimpleAlertDialog extends StatelessWidget {
               content: SingleChildScrollView(
                 child: ListBody(
                   children: <Widget>[
-                    Text(
-                        'This is a one way street! Deleting this will remove all the program assigned in this card.'),
+                    Text('This is a one way street! Deleting this will remove all the program assigned in this card.'),
                   ],
                 ),
               ),
