@@ -7,6 +7,7 @@ import 'dart:io';
 
 
 import '../models/day.dart';
+import '../models/exercise.dart';
 import '../models/program.dart';
 import '../models/week.dart';
 // import '../models/day.dart';
@@ -31,7 +32,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy106.db");
+    return p.join(documentsDirectory, "db_benchy109.db");
   }
 
   Future<bool> dbExists() async {
@@ -64,18 +65,17 @@ class DBProvider {
         weekId INTEGER,
         programId INTEGER
       )""");
-      // await db.execute("""CREATE TABLE Exercise (
-      //   id INTEGER PRIMARY KEY,
-      //   name TEXT,
-      //   bestVolume INTEGER,
-      //   previousVolume INTEGER,
-      //   currentVolume INTEGER,
-      //   round TEXT,
-      //   dayId INTEGER,
-      //   weekId TEXT,
-      //   programId TEXT,
-      //   FOREIGN KEY (dayId) REFERENCES Day (id) ON DELETE NO ACTION ON UPDATE NO ACTION
-      // )""");
+      await db.execute("""CREATE TABLE Exercise (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        completed INTEGER NOT NULL DEFAULT 0,
+        bestVolume INTEGER,
+        previousVolume INTEGER,
+        currentVolume INTEGER,
+        dayId INTEGER,
+        weekId INTEGER,
+        programId INTEGER
+      )""");
       // await db.execute("""CREATE TABLE  Round (
       //   id INTEGER PRIMARY KEY,
       //   weight INTEGER,
@@ -109,6 +109,11 @@ class DBProvider {
     days.forEach((day) async { var res = await _db.insert("Day", day.toJson()); });
   }
 
+  addExercises(List<Exercise> exercises) async {
+    final _db = await database;
+    exercises.forEach((exercise) async { var res = await _db.insert("Exercise", exercise.toJson()); });
+  }
+
   // addExercises(List<Exercise> exercises) async {
   //   final db = await database;
   //   exercises.forEach((exercise) async { var res = await db.insert("Exercise", exercise.toMap()); });
@@ -133,11 +138,10 @@ class DBProvider {
     // return await db.rawInsert("INSERT Into Week (id, program, seq, name, completed, date)"" VALUES (?,?,?,?,?,?)", [week.id, week.program, week.seq, week.name, week.isCompleted, week.date]);
   }
 
-  // Future<int> addDay(Day day) async {
-  //   final _db = await database;
-  //   var _table = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Day");
-  //   return await _db.rawInsert("INSERT Into Day (id, dayName, target, completed, weekId, programId)"" VALUES (?,?,?,?,?,?)", [_table.first["id"], day.dayName, day.target, day.isCompleted, day.weekId, day.programId]);
-  // }
+  Future<int> addDay(Day day) async {
+    final _db = await database;
+    return _db.insert('Day', day.toJson());
+  }
 
   // Future<int> addExercise(Exercise exercise) async {
   //   final _db = await database;
@@ -206,6 +210,13 @@ class DBProvider {
     var result = await _db.query('Day');
     return result.map((it) => Day.fromJson(it)).toList();
   }
+
+  Future<List<Exercise>> getAllExercises() async {
+    final _db = await database;
+    var result = await _db.query('Exercise');
+    return result.map((it) => Exercise.fromJson(it)).toList();
+  }
+
 
 
 
@@ -427,6 +438,16 @@ class DBProvider {
     return db.update('Week', week.toJson(), where: 'id = ?', whereArgs: [week.id]);
   }
 
+  Future<int> updateDay(Day day) async {
+    final _db = await database;
+    return _db.update('Week', day.toJson(), where: 'id = ?', whereArgs: [day.id]);
+  }
+
+  Future<int> updateExercise(Exercise exercise) async {
+    final _db = await database;
+    return _db.update('Exercise', exercise.toJson(), where: 'id = ?', whereArgs: [exercise.id]);
+  }
+
   // Future<int> updateDayTarget(Day day) async {
   //   final _db = await database;
   //   return await _db.rawUpdate('''UPDATE Day SET target = ? WHERE id = ?''', [day.target, day.id]);
@@ -578,14 +599,14 @@ class DBProvider {
     });
   }
 
-  // Future<void> removeDay(Day day) async {
-  //   final db = await database;
-  //   return db.transaction<void>((txn) async {
-  //     await txn.delete('Round', where: 'dayId = ?', whereArgs: [day.id]);
-  //     await txn.delete('Exercise', where: 'dayId = ?', whereArgs: [day.id]);
-  //     await txn.delete('Day', where: 'id = ?', whereArgs: [day.id]);
-  //   });
-  // }
+  Future<void> removeDay(Day day) async {
+    final db = await database;
+    return db.transaction<void>((txn) async {
+      // await txn.delete('Round', where: 'dayId = ?', whereArgs: [day.id]);
+      // await txn.delete('Exercise', where: 'dayId = ?', whereArgs: [day.id]);
+      await txn.delete('Day', where: 'id = ?', whereArgs: [day.id]);
+    });
+  }
 
   // Future<void> removeExercise(Exercise exercise) async {
   //   final db = await database;

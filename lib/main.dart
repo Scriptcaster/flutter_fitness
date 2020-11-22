@@ -12,7 +12,7 @@ class TodosApp extends StatelessWidget {
       builder: (context) => TodosModel(),
       child: MaterialApp(
         title: 'Fitness App',
-        theme: ThemeData.dark(),
+        theme: ThemeData.light(),
         // home: HomeScreen(),
         home: Home(),
       ),

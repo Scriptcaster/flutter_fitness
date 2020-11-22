@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/program.dart';
 import '../models/week.dart';
 import '../models/day.dart';
-// import '../models/exercise.dart';
+import '../models/exercise.dart';
 // import '../models/round.dart';
 
 class DefaultData {
@@ -30,24 +30,24 @@ class DefaultData {
   //   Round( id: 12, weight: 50, round: 4, rep: 12, exerciseId: 12, dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
   // ];
 
-  //  var exercises = [
-  //   Exercise( id: 1, name: 'Chest Press', bestVolume: 7200, previousVolume: 0, currentVolume: 7200, round: [], dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 2, name: 'Incline Press', bestVolume: 6720, previousVolume: 0, currentVolume: 6720, round: [], dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 3, name: 'Dips', bestVolume: 6400, previousVolume: 0, currentVolume: 6400, round: [], dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+   var exercises = [
+    Exercise( name: 'Chest Press', dayId: 1, weekId: 1, programId: 1),
+    Exercise( name: 'Incline Press', dayId: 1, weekId: 1, programId: 1),
+    Exercise( name: 'Dips', dayId: 1, weekId: 1, programId: 1),
 
-  //   Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 5, name: 'Squat', bestVolume: 3600, previousVolume: 0, currentVolume: 3600, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 6, name: 'Deadlift', bestVolume: 7200, previousVolume: 0, currentVolume: 7200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 5, name: 'Squat', bestVolume: 3600, previousVolume: 0, currentVolume: 3600, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 6, name: 'Deadlift', bestVolume: 7200, previousVolume: 0, currentVolume: 7200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
 
-  //   Exercise( id: 7, name: 'Abs', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 3, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 7, name: 'Abs', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 3, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
 
-  //   Exercise( id: 8, name: 'Pull-ups', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 9, name: 'Reverse Pull-ups', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 10, name: 'Rows', bestVolume: 3120, previousVolume: 0, currentVolume: 3120, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 8, name: 'Pull-ups', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 9, name: 'Reverse Pull-ups', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 10, name: 'Rows', bestVolume: 3120, previousVolume: 0, currentVolume: 3120, round: [], dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
 
-  //   Exercise( id: 11, name: 'Sitting Press', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Exercise( id: 12, name: ' Standing Press 1.5', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  // ];
+    // Exercise( id: 11, name: 'Sitting Press', bestVolume: 4800, previousVolume: 0, currentVolume: 4800, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Exercise( id: 12, name: ' Standing Press 1.5', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+  ];
 
   var days = [
     Day(name: 'Monday', target: 'Chest & Triceps', weekId: 1, programId: 1),

@@ -1,78 +1,115 @@
-// import 'round.dart';
-// import 'package:json_annotation/json_annotation.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-// part 'exercise.g.dart';
+import 'round.dart';
 
-// @JsonSerializable()
+part 'exercise.g.dart';
 
-// class Exercise {
+@JsonSerializable()
 
-//   Exercise({
-//     this.id,
-//     this.name,
-//     this.bestVolume,
-//     this.previousVolume,
-//     this.currentVolume,
-//     this.round,
-//     this.dayId,
-//     this.weekId,
-//     this.programId
-//   });
+class Exercise {
 
-//   int id;
-//   String name;
-//   int bestVolume;
-//   int previousVolume;
-//   int currentVolume;
-//   List<Round> round;
-//   int dayId;
-//   String weekId; 
-//   String programId; 
-
-//   static final columns = [
-//     'id', 
-//     'name',
-//     'bestVolume' 
-//     'previousVolume', 
-//     'currentVolume', 
-//     'round', 
-//     'dayId',
-//     'weekId',
-//     'programId'
-//   ];
-
-//   Map<String, dynamic> toMap() => {
-//     'id': id,
-//     'name': name,
-//     'bestVolume': bestVolume,
-//     'previousVolume': previousVolume,
-//     'currentVolume': currentVolume,
-//     'round': round,
-//     'dayId': dayId,
-//     'weekId': weekId,
-//     'programId': programId
-//   };
-
-//   factory Exercise.fromMap(Map<String, dynamic> json) => new Exercise(
-//     id: json["id"],
-//     name: json["name"],
-//     bestVolume: json["bestVolume"],
-//     previousVolume: json["previousVolume"],
-//     currentVolume: json["currentVolume"],
-//     round: json["round"],
-//     dayId: json["dayId"],
-//     weekId: json["weekId"],
-//     programId: json["programId"]
-//   );
-
-//   /// A necessary factory constructor for creating a new User instance
-//   /// from a map. Pass the map to the generated `_$TodoFromJson()` constructor.
-//   /// The constructor is named after the source class, in this case User.
-//   factory Exercise.fromJson(Map<String, dynamic> json) => _$TodoFromJson(json);
-
-//   /// `toJson` is the convention for a class to declare support for serialization
-//   /// to JSON. The implementation simply calls the private, generated
-//   /// helper method `_$TodoFromJson`.
-//   Map<String, dynamic> toJson() => _$TodoToJson(this);
+  int id;
+  String name;
+  int completed;
+  int bestVolume;
+  int previousVolume;
+  int currentVolume;
+  // List<Round> round;
+  int dayId;
+  int weekId; 
+  int programId; 
   
-// }
+  Exercise({ 
+    this.id,
+    this.name,
+    this.completed = 0,
+    this.bestVolume = 0,
+    this.previousVolume = 0,
+    this.currentVolume = 0,
+    // this.round,
+    this.dayId,
+    this.weekId,
+    this.programId
+  });
+
+
+
+  // static final columns = [
+  //   'id', 
+  //   'dayName', 
+  //   'target', 
+  //   'completed',  
+  //   'weekId', 
+  //   'programId'
+  // ];
+
+  void toggleCompleted() {
+    if (completed == 0) {
+      completed = 1;
+    } else {
+      completed = 0;
+    }
+  }
+
+
+  // Map toMap() {
+  //   Map map = {
+  //     "dayName": dayName,
+  //     "target": target,
+  //     "weekId": weekId,
+  //   };
+  //   if (id != null) {
+  //     map["id"] = id;
+  //   }
+  //   return map;
+  // }
+
+  //  Map<String, dynamic> toMap() => {
+  //   "name": name,
+  //   "target": target,
+  //   "isCompleted": isCompleted,
+  //   // "exercise": exercise,
+  //   "weekId": weekId,
+  //   "programId": programId,
+  // };
+
+  // static fromMap(Map map) {
+  //   Day day = new Day();
+  //   day.id = map["id"];
+  //   day.dayName = map["dayName"];
+  //   day.weekId = map["weekId"];
+  //   return day;
+  // }
+
+  // factory Day.fromMap(Map<String, dynamic> json) => new Day(
+  //   id: json["id"],
+  //   dayName: json["dayName"],
+  //   target: json["target"],
+  //   isCompleted: json['isCompleted'],
+  //   // exercise: json["exercise"],
+  //   weekId: json["weekId"],
+  //   programId: json["programId"],
+  // );
+
+  //  Day copy({int id, String dayName, String target, int isCompleted, int weekId, int programId}) {
+  //   return Day(
+  //     id: id ?? this.id,
+  //     dayName: dayName ?? this.dayName,
+  //     target: target ?? this.target,
+  //     isCompleted: isCompleted ?? this.isCompleted,
+  //     weekId: weekId ?? this.weekId,
+  //     programId: programId ?? this.programId,
+  //   );
+  // }
+
+  /// A necessary factory constructor for creating a new User instance
+  /// from a map. Pass the map to the generated `_$ExerciseFromJson()` constructor.
+  /// The constructor is named after the source class, in this case User.
+  factory Exercise.fromJson(Map<String, dynamic> json) => _$ExerciseFromJson(json);
+
+  /// `toJson` is the convention for a class to declare support for serialization
+  /// to JSON. The implementation simply calls the private, generated
+  /// helper method `_$ExerciseFromJson`.
+  Map<String, dynamic> toJson() => _$ExerciseToJson(this);
+
+}

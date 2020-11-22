@@ -1,32 +1,28 @@
-// // GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-// part of 'exercise.dart';
+part of 'exercise.dart';
 
-// // **************************************************************************
-// // JsonSerializableGenerator
-// // **************************************************************************
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
-// Exercise _$TodoFromJson(Map<String, dynamic> json) {
-//   return Exercise(
-//     id: json['id'] as int,
-//     name: json['name'] as String,
-//     bestVolume: json['bestVolume'] as int,
-//     previousVolume: json['previousVolume'] as int,
-//     currentVolume: json['currentVolume'] as int,
-//     dayId: json['dayId'] as int,
-//     weekId: json['weekId'] as String,
-//     programId: json['programId'] as String
-//   );
-// }
+Exercise _$ExerciseFromJson(Map<String, dynamic> json) {
+  return Exercise(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    completed: json['completed'] as int,
+    dayId: json['dayId'] as int,
+    weekId: json['weekId'] as int,
+    programId: json['programId'] as int
+  );
+}
 
-// Map<String, dynamic> _$TodoToJson(Exercise instance) => <String, dynamic>{
-//   'id': instance.id,
-//   'dayName': instance.name,
-//   'bestVolume': instance.bestVolume,
-//   'previousVolume': instance.previousVolume,
-//   'currentVolume': instance.currentVolume,
-//   'dayId': instance.dayId,
-//   'weekId': instance.weekId,
-//   'programId': instance.programId
-// };
+Map<String, dynamic> _$ExerciseToJson(Exercise instance) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'completed': instance.completed,
+  'dayId': instance.dayId,
+  'weekId': instance.weekId,
+  'programId': instance.programId
+};
 

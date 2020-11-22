@@ -1,47 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_fitness/providers/provider.dart';
+// import 'exercise.dart';
 import '../models/day.dart';
-import '../models/week.dart';
-import 'day.dart';
+import '../models/exercise.dart';
+import '../providers/provider.dart';
 
+// import 'package:scoped_model/scoped_model.dart';
+// import '../scopedmodel/program.dart';
 
-class WeekScreen extends StatefulWidget {
-  WeekScreen({ this.id, this.name, this.completed, this.date, this.programId });
+class DayScreen extends StatefulWidget {
+  DayScreen({this.id, this.name,  this.target, this.completed, this.weekId, this.programId});
   final int id;
   final String name;
+  final String target;
   final int completed;
-  final int date;
+  final int weekId;
   final int programId;
-   
+
   @override
-  _WeekScreenState createState() => _WeekScreenState();
+  _StartDayScreenState createState() => _StartDayScreenState();
 }
+class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
+  TextEditingController _targetController = TextEditingController();
 
-class _WeekScreenState extends State<WeekScreen> { 
-  
-  TextEditingController _weekNameController = TextEditingController();
-
-  TextEditingController _dayNameController = TextEditingController();
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    _targetController.text = widget.target;
+   ;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<TodosModel>(builder: (context, programs, child) {
-    Week _week;
-    try {
-      _week = programs.weeks.firstWhere((week) => week.id == widget.id, orElse: () => null);
-    } catch (e) {
-      return Container(
-        color: Colors.white,
-      );
-    }
-    var _days = programs.allDays.where((day) => day.weekId == widget.id).toList();
-    return Scaffold(
+      Day _day;
+      try {
+        _day = programs.days.firstWhere((day) => day.id == widget.id, orElse: () => null);
+      } catch (e) {
+        return Container(
+          color: Colors.white,
+        );
+      }
+      var _exercises = programs.allExercises.where((exercise) => exercise.dayId == widget.id).toList();
+      // return WillPopScope(
+        
+      return Scaffold(
       // key: _scaffoldKey,
       appBar: AppBar(
-        // title: Text(_week.name),
         elevation: 0,
         // iconTheme: IconThemeData(color: _color),
         // backgroundColor: Colors.blue,
@@ -51,14 +56,14 @@ class _WeekScreenState extends State<WeekScreen> {
             // color: Colors.green,
             onPressed: () {
                   showDialog( context: context, builder: (BuildContext context) {
-                    _weekNameController.text = _week.name;
+                    _targetController.text = _day.target;
                     return AlertDialog(
                       title: Text("New Week"),
                       content: TextField(
                         style: new TextStyle(fontSize: 20.0),
                         keyboardType: TextInputType.text,
-                        controller: _weekNameController,
-                        onSubmitted: (value) => _weekNameController.text = value,
+                        controller: _targetController,
+                        onSubmitted: (value) => _targetController.text = value,
                       ),
                       actions: <Widget>[
                         FlatButton(
@@ -68,7 +73,7 @@ class _WeekScreenState extends State<WeekScreen> {
                         FlatButton(
                           child: Text("Save"),
                           onPressed: () {
-                            if (_weekNameController.text.isEmpty) {
+                            if (_targetController.text.isEmpty) {
                               final snackBar = SnackBar(
                                 content: Text('Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
                                 // backgroundColor: _color,
@@ -76,7 +81,7 @@ class _WeekScreenState extends State<WeekScreen> {
                               Scaffold.of(context).showSnackBar(snackBar);
                             } else {
                               // print():
-                              Provider.of<TodosModel>(context, listen: false).updateWeek(Week(id: _week.id, name: _weekNameController.text, completed: _week.completed, date: _week.completed, programId: _week.programId));
+                              // Provider.of<TodosModel>(context, listen: false).updateDay(Day(id: _day.id, name: _day.name, target: _targetController.text, completed: _day.completed, weekId: _day.weekId, programId: _day.programId));
                               // model.addWeek(Week(
                               //   _weekNameController.text,
                               //   program: _program.id,
@@ -93,7 +98,7 @@ class _WeekScreenState extends State<WeekScreen> {
               SimpleAlertDialog(
                 color: Colors.white,
                 onActionPressed: () {
-                  Provider.of<TodosModel>(context, listen: false).removeWeek(_week);
+                  Provider.of<TodosModel>(context, listen: false).removeDay(_day);
                   Navigator.of(context).pop(true);
                 },
               ),
@@ -105,7 +110,7 @@ class _WeekScreenState extends State<WeekScreen> {
               Container(
                 child: Hero(
                   tag: 'title_hero_unused',
-                  child: Text(_week.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
+                  child: Text(_day.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
                 ),
               ),
               Expanded(
@@ -114,104 +119,51 @@ class _WeekScreenState extends State<WeekScreen> {
                   child: ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
                       // _weeks.sort((a, b) => b.id.compareTo(a.id));
-                      if (index == _days.length) {
+                      if (index == _exercises.length) {
                         return SizedBox(height: 56);
                       }
-                      var day = _days[index];
+                      var exercise = _exercises[index];
                      
                       return ListTile(
                         onTap: () {
                           Navigator.push( context,
                             MaterialPageRoute(
-                              builder: (context) => DayScreen(
-                                id: day.id,
-                                name: day.name,
-                                target: day.target,
-                                completed: day.completed,
-                                weekId: day.weekId,
-                                programId: day.programId
-                              ),
+                              // builder: (context) => WeekScreen(
+                              //   id: week.id,
+                              //   name: week.name,
+                              //   completed: week.completed,
+                              //   date: week.date,
+                              //   programId: _program.id
+                              // ),
                             ),
                           );
                         },
                         leading: Checkbox(
-                          onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleDay(day),
-                          value: day.completed == 1 ? true : false,
+                          onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleExercise(exercise),
+                          value: _exercises[index].completed == 1 ? true : false,
                         ),
                         title: Text(
-                          day.name,
+                          _exercises[index].name,
                           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                         ),
-                        subtitle: Text(day.target, 
-                        ),
+                        // subtitle: Text(_exercises[index].target, ),
                         trailing: Icon(Icons.chevron_right, color: Colors.black54),
                       );
-                    }, itemCount: _days.length + 1,
+                    }, itemCount: _exercises.length + 1,
                   ),
                 ),
               ),
 
             ])
-          ),
-
-
-          floatingActionButton: FloatingActionButton(
-              heroTag: 'fab_new_program',
-              onPressed: () {
-                showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  // _weekNameController.text = "Week ${model.getTotalTodosFrom(_program) + 1}";
-                  // _weekNameController.text = "New Week Name";
-                  _dayNameController.text = "";
-                  return AlertDialog(
-                    title: Text("New Day"),
-                    content: TextField(
-                      style: new TextStyle(fontSize: 20.0, color: Colors.blue),
-                      keyboardType: TextInputType.text,
-                      controller: _dayNameController,
-                      onSubmitted: (value) => _dayNameController.text = value,
-                    ),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text("Close"),
-                        onPressed: () => Navigator.of(context).pop(),
-                      ),
-                      FlatButton(
-                        child: Text("Save"),
-                        onPressed: () {
-                          if (_weekNameController.text.isEmpty) {
-                            final snackBar = SnackBar(
-                              content: Text('Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
-                              backgroundColor: Colors.white,
-                            );
-                            Scaffold.of(context).showSnackBar(snackBar);
-                          } else {
-                            // print():
-                            Provider.of<TodosModel>(context, listen: false).addDay(Day(name: _dayNameController.text, target: _dayNameController.text, weekId: widget.id, programId: widget.programId ));
-                            // model.addWeek(Week(
-                            //   _weekNameController.text,
-                            //   program: _program.id,
-                            // ));
-                            Navigator.pop(context);
-                          }
-                        },
-                      )
-                    ],
-                  );
-                });
-              },
-              tooltip: 'New Day',
-              backgroundColor: Colors.green,
-              foregroundColor: Colors.white,
-              child: Icon(Icons.add),
-            ),
+          )
 
         );
-      },
-    );
-  }
+       
 
+
+      // );
+    });
+  }
 }
 
 typedef void Callback();

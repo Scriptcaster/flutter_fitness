@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness/models/program.dart';
 import '../models/day.dart';
+import '../models/exercise.dart';
 import '../models/week.dart';
 import 'database.dart';
 import 'package:flutter_fitness/providers/default_data.dart';
@@ -15,11 +16,13 @@ class TodosModel extends ChangeNotifier {
   List<Program> _programs = [];
   List<Week> _weeks = [];
   List<Day> _days = [];
+  List<Exercise> _exercises = [];
 
 
   UnmodifiableListView<Program> get allPrograms => UnmodifiableListView(_programs);
   UnmodifiableListView<Week> get allWeeks => UnmodifiableListView(_weeks);
   UnmodifiableListView<Day> get allDays => UnmodifiableListView(_days);
+  UnmodifiableListView<Exercise> get allExercises => UnmodifiableListView(_exercises);
   // UnmodifiableListView<Program> get incompletePrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 0));
   // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
 
@@ -30,6 +33,7 @@ class TodosModel extends ChangeNotifier {
   List<Program> get programs => _programs.toList();
   List<Week> get weeks => _weeks.toList();
   List<Day> get days => _days.toList();
+  List<Exercise> get exercises => _exercises.toList();
 
   void getPrograms() async {
    var isNew = !await DBProvider.db.dbExists();
@@ -38,12 +42,13 @@ class TodosModel extends ChangeNotifier {
       await _db.addPrograms(DefaultData.defaultData.programs);
       await _db.addWeeks(DefaultData.defaultData.weeks);
       await _db.addDays(DefaultData.defaultData.days);
-      // await _db.addExercises(DefaultData.defaultData.exercises);
+      await _db.addExercises(DefaultData.defaultData.exercises);
       // await _db.addRounds(DefaultData.defaultData.rounds);
     }
     _programs = await _db.getAllPrograms();
     _weeks = await _db.getAllWeeks();
     _days = await _db.getAllDays();
+    _exercises = await _db.getAllExercises();
     // _weeks.forEach((element) {
     //   print(element.toJson());
     // });
@@ -75,6 +80,12 @@ class TodosModel extends ChangeNotifier {
     getPrograms();
   }
 
+  void addDay(Day day) {
+    _days.add(day);
+    _db.addDay(day);
+    notifyListeners();
+  }
+
   void updateProgram(Program program) {
     var oldTask = _programs.firstWhere((it) => it.id == program.id);
     var replaceIndex = _programs.indexOf(oldTask);
@@ -101,7 +112,6 @@ class TodosModel extends ChangeNotifier {
   void toggleWeek(Week week) {
     final weekIndex = _weeks.indexOf(week);
     _weeks[weekIndex].toggleCompleted();
-    // print(week.toJson());
     _db.updateWeek(week);
     notifyListeners();
   }
@@ -109,8 +119,14 @@ class TodosModel extends ChangeNotifier {
   void toggleDay(Day day) {
     final dayIndex = _days.indexOf(day);
     _days[dayIndex].toggleCompleted();
-    // print(week.toJson());
-    // _db.updateDay(day);
+    _db.updateDay(day);
+    notifyListeners();
+  }
+
+  void toggleExercise(Exercise exercise) {
+    final exerciseIndex = _exercises.indexOf(exercise);
+    _exercises[exerciseIndex].toggleCompleted();
+    _db.updateExercise(exercise);
     notifyListeners();
   }
 
@@ -123,6 +139,12 @@ class TodosModel extends ChangeNotifier {
   void removeWeek(Week week) {
     _weeks.remove(week);
     _db.removeWeek(week);
+    notifyListeners();
+  }
+
+   void removeDay(Day day) {
+    _days.remove(day);
+    _db.removeDay(day);
     notifyListeners();
   }
 }
