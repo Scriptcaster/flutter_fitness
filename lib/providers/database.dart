@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 
 
+import '../models/day.dart';
 import '../models/program.dart';
 import '../models/week.dart';
 // import '../models/day.dart';
@@ -30,7 +31,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy102.db");
+    return p.join(documentsDirectory, "db_benchy106.db");
   }
 
   Future<bool> dbExists() async {
@@ -55,15 +56,14 @@ class DBProvider {
         date INTEGER,
         programId INTEGER
       )""");
-      // await db.execute("""CREATE TABLE Day (
-      //   id INTEGER PRIMARY KEY,
-      //   dayName TEXT,
-      //   target TEXT,
-      //   isCompleted INTEGER NOT NULL DEFAULT 0,
-      //   weekId TEXT,
-      //   programId TEXT,
-      //   FOREIGN KEY (weekId) REFERENCES Week (id) ON DELETE NO ACTION ON UPDATE NO ACTION
-      // )""");
+      await db.execute("""CREATE TABLE Day (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        target TEXT,
+        completed INTEGER NOT NULL DEFAULT 0,
+        weekId INTEGER,
+        programId INTEGER
+      )""");
       // await db.execute("""CREATE TABLE Exercise (
       //   id INTEGER PRIMARY KEY,
       //   name TEXT,
@@ -96,7 +96,7 @@ class DBProvider {
     // programs.forEach((element) { 
     //   print(element.toJson());
     // });
-    programs.forEach((it) async { var res = await db.insert("Program", it.toJson()); });
+    programs.forEach((program) async { var res = await db.insert("Program", program.toJson()); });
   }
 
   addWeeks(List<Week> weeks) async {
@@ -104,10 +104,10 @@ class DBProvider {
     weeks.forEach((week) async { var res = await db.insert("Week", week.toJson()); });
   }
 
-  // addDays(List<Day> days) async {
-  //   final db = await database;
-  //   days.forEach((day) async { var res = await db.insert("Day", day.toMap()); });
-  // }
+  addDays(List<Day> days) async {
+    final _db = await database;
+    days.forEach((day) async { var res = await _db.insert("Day", day.toJson()); });
+  }
 
   // addExercises(List<Exercise> exercises) async {
   //   final db = await database;
@@ -193,19 +193,19 @@ class DBProvider {
   }
 
   Future<List<Week>> getAllWeeks() async {
-    final db = await database;
-    var result = await db.query('Week ORDER BY id DESC');
+    final _db = await database;
+    var result = await _db.query('Week ORDER BY id DESC');
     // print(result);
     // print(result);
     // print('get Weeks');
     return result.map((it) => Week.fromJson(it)).toList();
   }
 
-  // Future<List<Day>> getAllDaysAll() async {
-  //   final db = await database;
-  //   var result = await db.query('Day');
-  //   return result.map((it) => Day.fromJson(it)).toList();
-  // }
+  Future<List<Day>> getAllDays() async {
+    final _db = await database;
+    var result = await _db.query('Day');
+    return result.map((it) => Day.fromJson(it)).toList();
+  }
 
 
 

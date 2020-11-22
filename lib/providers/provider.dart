@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness/models/program.dart';
+import '../models/day.dart';
 import '../models/week.dart';
 import 'database.dart';
 import 'package:flutter_fitness/providers/default_data.dart';
@@ -13,10 +14,12 @@ class TodosModel extends ChangeNotifier {
   // final List<Program> _programs = [];
   List<Program> _programs = [];
   List<Week> _weeks = [];
+  List<Day> _days = [];
 
 
   UnmodifiableListView<Program> get allPrograms => UnmodifiableListView(_programs);
   UnmodifiableListView<Week> get allWeeks => UnmodifiableListView(_weeks);
+  UnmodifiableListView<Day> get allDays => UnmodifiableListView(_days);
   // UnmodifiableListView<Program> get incompletePrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 0));
   // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
 
@@ -26,6 +29,7 @@ class TodosModel extends ChangeNotifier {
 
   List<Program> get programs => _programs.toList();
   List<Week> get weeks => _weeks.toList();
+  List<Day> get days => _days.toList();
 
   void getPrograms() async {
    var isNew = !await DBProvider.db.dbExists();
@@ -33,12 +37,13 @@ class TodosModel extends ChangeNotifier {
       // print(DefaultData.defaultData.programs);
       await _db.addPrograms(DefaultData.defaultData.programs);
       await _db.addWeeks(DefaultData.defaultData.weeks);
-      // await _db.addDays(DefaultData.defaultData.days);
+      await _db.addDays(DefaultData.defaultData.days);
       // await _db.addExercises(DefaultData.defaultData.exercises);
       // await _db.addRounds(DefaultData.defaultData.rounds);
     }
     _programs = await _db.getAllPrograms();
     _weeks = await _db.getAllWeeks();
+    _days = await _db.getAllDays();
     // _weeks.forEach((element) {
     //   print(element.toJson());
     // });
@@ -98,6 +103,14 @@ class TodosModel extends ChangeNotifier {
     _weeks[weekIndex].toggleCompleted();
     // print(week.toJson());
     _db.updateWeek(week);
+    notifyListeners();
+  }
+
+  void toggleDay(Day day) {
+    final dayIndex = _days.indexOf(day);
+    _days[dayIndex].toggleCompleted();
+    // print(week.toJson());
+    // _db.updateDay(day);
     notifyListeners();
   }
 

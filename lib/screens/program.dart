@@ -35,6 +35,11 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
     _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0)).animate(_controller);
   }
 
+  // getTotal() async {
+  //   _weeeks = await TodosModel().getTotalWeeks();
+  //   setState(() {});
+  // }
+
   getContainer(bool isCompleted, {Widget child}) {
     if (isCompleted) {
       return Container(
@@ -137,11 +142,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                       Container(
                         child: Hero(
                           tag: 'title_hero_unused', //_hero.titleId,
-                          child: Text(_program.name,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .title
-                                  .copyWith(color: Colors.black54)),
+                          child: Text(_program.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
                         ),
                       ),
                       Spacer(),
@@ -155,9 +156,6 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                     ],
                   ),
                 ),
-
-
-
                 Expanded(
                   child: Padding(
                     padding: EdgeInsets.only(top: 16.0),
@@ -210,36 +208,22 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                                 ),
                               );
                             },
-                            // onTap: () => model.updateTodo(week.copy(isCompleted: week.isCompleted == 1 ? 0 : 1)),
-                            // contentPadding: EdgeInsets.symmetric(horizontal: 0, vertical: 8.0),
 
                             leading: Checkbox(
-                                onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleWeek(week),
-                                value: week.completed == 1 ? true : false
+                              onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleWeek(week),
+                              value: week.completed == 1 ? true : false
                             ),
-
-                            // trailing: IconButton(
-                            //   icon: Icon(Icons.delete_outline),
-                            //   onPressed: () => model.removeTodo(week),
-                            // ),
 
                             title: Text(
                               week.name,
                               style: TextStyle(
                                 fontSize: 18.0,
                                 fontWeight: FontWeight.w600,
-                                color: week.completed == 1
-                                    ? _color
-                                    : Colors.black54,
-                                decoration: week.completed == 1
-                                    ? TextDecoration.lineThrough
-                                    : TextDecoration.none,
+                                color: week.completed == 1 ? _color : Colors.black54,
+                                decoration: week.completed == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                               ),
                             ),
-                            subtitle: Text(DateFormat('MMM d')
-                                .format(DateTime.fromMillisecondsSinceEpoch(
-                                    week.date))
-                                .toString()),
+                            subtitle: Text(DateFormat('MMM d').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString()),
                             trailing: Icon(Icons.chevron_right),
                           ),
                         );
@@ -248,12 +232,6 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                     ),
                   ),
                 ),
-
-
-
-
-
-
 
               ]),
             ),
@@ -264,7 +242,8 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                 context: context,
                 builder: (BuildContext context) {
                   // _weekNameController.text = "Week ${model.getTotalTodosFrom(_program) + 1}";
-                  _weekNameController.text = "New Week Name";
+                  // _weekNameController.text = "New Week Name";
+                  _weekNameController.text = "Week ${_weeks.length + 1}";
                   return AlertDialog(
                     title: Text("New Week"),
                     content: TextField(
@@ -304,7 +283,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
               },
               tooltip: 'New Week',
               backgroundColor: _color,
-              foregroundColor: Colors.white,
+              foregroundColor: Colors.red,
               child: Icon(Icons.add),
             ),
           ),

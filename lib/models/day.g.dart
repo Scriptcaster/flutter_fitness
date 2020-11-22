@@ -1,28 +1,28 @@
-// // GENERATED CODE - DO NOT MODIFY BY HAND
+// GENERATED CODE - DO NOT MODIFY BY HAND
 
-// part of 'day.dart';
+part of 'day.dart';
 
-// // **************************************************************************
-// // JsonSerializableGenerator
-// // **************************************************************************
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
 
-// Day _$TodoFromJson(Map<String, dynamic> json) {
-//   return Day(
-//     id: json['id'] as int,
-//     dayName: json['dayName'] as String,
-//     target: json['target'] as String,
-//     isCompleted: json['completed'] as int,
-//     weekId: json['weekId'] as String,
-//     programId: json['programId'] as String
-//   );
-// }
+Day _$DayFromJson(Map<String, dynamic> json) {
+  return Day(
+    id: json['id'] as int,
+    name: json['name'] as String,
+    target: json['target'] as String,
+    completed: json['completed'] as int,
+    weekId: json['weekId'] as int,
+    programId: json['programId'] as int
+  );
+}
 
-// Map<String, dynamic> _$TodoToJson(Day instance) => <String, dynamic>{
-//   'id': instance.id,
-//   'dayName': instance.dayName,
-//   'target': instance.target,
-//   'isCompleted': instance.isCompleted,
-//   'weekId': instance.weekId,
-//   'programId': instance.programId
-// };
+Map<String, dynamic> _$DayToJson(Day instance) => <String, dynamic>{
+  'id': instance.id,
+  'name': instance.name,
+  'target': instance.target,
+  'completed': instance.completed,
+  'weekId': instance.weekId,
+  'programId': instance.programId
+};
 

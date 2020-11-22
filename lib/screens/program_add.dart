@@ -96,7 +96,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'New Category',
+              'New Program',
               style: TextStyle(color: Colors.black),
             ),
             centerTitle: true,
@@ -112,7 +112,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Category will help you group related program!',
+                  'Program will help you group related program!',
                   style: TextStyle(
                     color: Colors.black38,
                     fontWeight: FontWeight.w600,
@@ -129,7 +129,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                   autofocus: true,
                   decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: 'Category Name...',
+                    hintText: 'Program Name...',
                     hintStyle: TextStyle(
                       color: Colors.black26,
                     )),
@@ -137,7 +137,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                   style: TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.w500,
-                    fontSize: 36.0),
+                    fontSize: 28.0),
                 ),
                 Container(
                   height: 26.0,
@@ -167,7 +167,7 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                 heroTag: 'fab_new_card',
                 icon: Icon(Icons.save),
                 backgroundColor: taskColor,
-                label: Text('Create New Card'),
+                label: Text('Create New Program'),
                 onPressed: () {
                   if (newTask.isEmpty) {
                     final snackBar = SnackBar(

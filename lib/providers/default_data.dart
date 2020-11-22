@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/program.dart';
 import '../models/week.dart';
-// import '../models/day.dart';
+import '../models/day.dart';
 // import '../models/exercise.dart';
 // import '../models/round.dart';
 
@@ -49,26 +49,25 @@ class DefaultData {
   //   Exercise( id: 12, name: ' Standing Press 1.5', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
   // ];
 
-  // var days = [
-  //   Day(id: 1, dayName: 'Monday', target: 'Chest & Triceps', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 2, dayName: 'Tuesday', target: 'Legs', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 3, dayName: 'Wednesday', target: 'Abs', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 4, dayName: 'Thursday', target: 'Back & Biceps', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 5, dayName: 'Friday', target: 'Shoulder', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 6, dayName: 'Saturday', target: 'Day Off', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Day(id: 7, dayName: 'Sunday', target: 'Day Off', isCompleted: 0, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  // ];
+  var days = [
+    Day(name: 'Monday', target: 'Chest & Triceps', weekId: 1, programId: 1),
+    Day(name: 'Tuesday', target: 'Legs', weekId: 1, programId: 1),
+    Day(name: 'Wednesday', target: 'Abs',  weekId: 1, programId: 1),
+    Day(name: 'Thursday', target: 'Back & Biceps', weekId: 1, programId: 1),
+    Day(name: 'Friday', target: 'Shoulder', weekId: 1, programId: 1),
+    Day(name: 'Saturday', target: 'Day Off',  weekId: 1, programId: 1),
+    Day(name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1)
+  ];
 
   var weeks = [
-    Week(name: 'First Week', programId: 1),
-    Week(name: 'Second Week', programId: 1),
+    Week(name: 'Week 1', programId: 1)
   ];
 
   var programs = [
     // Program('5 Days Split', id: '1',  color: Colors.purple.value, codePoint: Icons.fitness_center.codePoint),
     // Program('Pull & Push', id: '2', color: Colors.pink.value, codePoint: Icons.fitness_center.codePoint),
     Program(name: 'Awesome Program One'),
-    Program(name: 'Awesome Program Two'),
+    Program(name: 'Awesome Program Two')
   ];
 
 }
