@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/day.dart';
 import '../models/exercise.dart';
 import '../providers/provider.dart';
+import 'exercise.dart';
 
 // import 'package:scoped_model/scoped_model.dart';
 // import '../scopedmodel/program.dart';
@@ -22,11 +23,11 @@ class DayScreen extends StatefulWidget {
 }
 class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
   TextEditingController _targetController = TextEditingController();
+  TextEditingController _exerciseController = TextEditingController();
 
   @override
   void initState() {
     _targetController.text = widget.target;
-   ;
     super.initState();
   }
 
@@ -36,6 +37,7 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
       Day _day;
       try {
         _day = programs.days.firstWhere((day) => day.id == widget.id, orElse: () => null);
+        print(_day.toJson());
       } catch (e) {
         return Container(
           color: Colors.white,
@@ -43,60 +45,59 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
       }
       var _exercises = programs.allExercises.where((exercise) => exercise.dayId == widget.id).toList();
       // return WillPopScope(
-        
-      return Scaffold(
-      // key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        // iconTheme: IconThemeData(color: _color),
-        // backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit),
-            // color: Colors.green,
-            onPressed: () {
-                  showDialog( context: context, builder: (BuildContext context) {
-                    _targetController.text = _day.target;
-                    return AlertDialog(
-                      title: Text("New Week"),
-                      content: TextField(
-                        style: new TextStyle(fontSize: 20.0),
-                        keyboardType: TextInputType.text,
-                        controller: _targetController,
-                        onSubmitted: (value) => _targetController.text = value,
+      var _color = Colors.pink;
+      return Theme(
+        data: ThemeData(primarySwatch: _color),
+        child: Scaffold(
+           backgroundColor: Colors.white,
+        // key: _scaffoldKey,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: _color),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                showDialog( context: context, builder: (BuildContext context) {
+                  _targetController.text = widget.target;
+                  return AlertDialog(
+                    title: Text("Edit Week"),
+                    content: TextField(
+                      style: new TextStyle(fontSize: 20.0),
+                      keyboardType: TextInputType.text,
+                      controller: _targetController,
+                      onSubmitted: (value) => _targetController.text = value,
+                    ),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("Close"),
+                        onPressed: () => Navigator.of(context).pop(),
                       ),
-                      actions: <Widget>[
-                        FlatButton(
-                          child: Text("Close"),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ),
-                        FlatButton(
-                          child: Text("Save"),
-                          onPressed: () {
-                            if (_targetController.text.isEmpty) {
-                              final snackBar = SnackBar(
-                                content: Text('Ummm... It seems that you are trying to add an invisible program which is not allowed in this realm.'),
-                                // backgroundColor: _color,
-                              );
-                              Scaffold.of(context).showSnackBar(snackBar);
-                            } else {
-                              // print():
-                              // Provider.of<TodosModel>(context, listen: false).updateDay(Day(id: _day.id, name: _day.name, target: _targetController.text, completed: _day.completed, weekId: _day.weekId, programId: _day.programId));
-                              // model.addWeek(Week(
-                              //   _weekNameController.text,
-                              //   program: _program.id,
-                              // ));
-                              // Navigator.pop(context);
-                            }
-                          },
-                        )
-                      ],
-                    );
-                  });
-                },
-              ),
+                      FlatButton(
+                        child: Text("Save"),
+                        onPressed: () {
+                          if (_targetController.text.isEmpty) {
+                          } else {
+                            Provider.of<TodosModel>(context, listen: false).updateDay(Day(
+                              id: widget.id, 
+                              name: _day.name, 
+                              target: _targetController.text, 
+                              completed: _day.completed, 
+                              weekId: _day.weekId, 
+                              programId: _day.programId
+                            ));
+                            Navigator.pop(context);
+                          }
+                        },
+                      )
+                    ],
+                  );
+                });
+              },
+            ),
               SimpleAlertDialog(
-                color: Colors.white,
+                color: _color,
                 onActionPressed: () {
                   Provider.of<TodosModel>(context, listen: false).removeDay(_day);
                   Navigator.of(context).pop(true);
@@ -110,7 +111,7 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
               Container(
                 child: Hero(
                   tag: 'title_hero_unused',
-                  child: Text(_day.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
+                  child: Text(_day.target, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
                 ),
               ),
               Expanded(
@@ -128,13 +129,16 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
                         onTap: () {
                           Navigator.push( context,
                             MaterialPageRoute(
-                              // builder: (context) => WeekScreen(
-                              //   id: week.id,
-                              //   name: week.name,
-                              //   completed: week.completed,
-                              //   date: week.date,
-                              //   programId: _program.id
-                              // ),
+                              builder: (context) => ExerciseScreen(
+                                id: exercise.id,
+                                name: exercise.name,
+                                bestVolume: exercise.bestVolume,
+                                previousVolume: exercise.previousVolume,
+                                currentVolume: exercise.currentVolume,
+                                dayId: exercise.dayId,
+                                weekId: exercise.weekId,
+                                programId: exercise.programId
+                              ),
                             ),
                           );
                         },
@@ -146,7 +150,9 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
                           _exercises[index].name,
                           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w600),
                         ),
-                        // subtitle: Text(_exercises[index].target, ),
+                        subtitle: Text(
+                          _exercises[index].id.toString(), 
+                        ),
                         trailing: Icon(Icons.chevron_right, color: Colors.black54),
                       );
                     }, itemCount: _exercises.length + 1,
@@ -155,13 +161,59 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
               ),
 
             ])
-          )
+          ),
 
-        );
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'fab_new_week',
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    _exerciseController.text = "";
+                    return AlertDialog(
+                      title: Text("New Exercise"),
+                      content: TextField(
+                        style: new TextStyle(fontSize: 20.0, color: Colors.blue),
+                        keyboardType: TextInputType.text,
+                        controller: _exerciseController,
+                        onSubmitted: (value) => _exerciseController.text = value,
+                      ),
+                      actions: <Widget>[
+                        FlatButton(
+                          child: Text("Close"),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ),
+                        FlatButton(
+                          child: Text("Save"),
+                          onPressed: () {
+                            if (_exerciseController.text.isEmpty) {
+                              final snackBar = SnackBar(
+                                content: Text('Ummm... It seems that you are trying to add an invisible week which is not allowed in this realm.'),
+                                backgroundColor: _color,
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
+                            } else {
+                              Provider.of<TodosModel>(context, listen: false).addExercise(Exercise(name: _exerciseController.text, dayId: widget.id, weekId: widget.weekId, programId: widget.programId));
+                              Navigator.pop(context);
+                            }
+                          },
+                        )
+                      ],
+                    );
+                  }
+                );
+              },
+              tooltip: 'New Week',
+              backgroundColor: _color,
+              foregroundColor: Colors.white,
+              child: Icon(Icons.add),
+            ),
+
+        )
        
 
 
-      // );
+      );
     });
   }
 }

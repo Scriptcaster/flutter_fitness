@@ -67,7 +67,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
         Program _program;
         try {
           _program = programs.allPrograms.singleWhere((program) => program.id == widget.id, orElse: () => null);
-           print(_program.toJson());
+          //  print(_program.toJson());
           // print(_program.toJson());
         } catch (e) {
           return Container(
@@ -75,7 +75,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
           );
         }
         var _hero = widget.heroIds;
-        var _color = Colors.green;
+        var _color = Colors.pink;
         var _weeks = programs.allWeeks.where((week) => week.programId == widget.id).toList();
         return Theme(
           data: ThemeData(primarySwatch: _color),
@@ -83,7 +83,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
             backgroundColor: Colors.white,
             appBar: AppBar(
               elevation: 0,
-              iconTheme: IconThemeData(color: Colors.black26),
+              iconTheme: IconThemeData(color: _color),
               brightness: Brightness.light,
               backgroundColor: Colors.white,
               actions: [
@@ -162,38 +162,9 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
                         // _weeks.sort((a, b) => b.id.compareTo(a.id));
-                        if (index == _weeks.length) {
-                          return SizedBox(height: 56);
-                        }
+                        if (index == _weeks.length) { return SizedBox(height: 56); }
                         var week = _weeks[index];
-                        return Dismissible(
-                          key: UniqueKey(),
-                          background: Container(color: Colors.red),
-                          confirmDismiss: (DismissDirection direction) async {
-                            return await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Confirm Removal"),
-                                  content: const Text("Are you sure you wish to delete this item?"),
-                                  actions: <Widget>[
-                                    // FlatButton(
-                                    //     child: const Text("DELETE"),
-                                    //     onPressed: () {
-                                    //       model.removeWeek(week);
-                                    //       Navigator.of(context).pop(true);
-                                    //     }),
-                                    // FlatButton(
-                                    //   onPressed: () =>
-                                    //       Navigator.of(context).pop(false),
-                                    //   child: const Text("CANCEL"),
-                                    // ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
-                          child: ListTile(
+                          return ListTile(
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -208,12 +179,10 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                                 ),
                               );
                             },
-
                             leading: Checkbox(
                               onChanged: (value) => Provider.of<TodosModel>(context, listen: false).toggleWeek(week),
                               value: week.completed == 1 ? true : false
                             ),
-
                             title: Text(
                               week.name,
                               style: TextStyle(
@@ -223,10 +192,13 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                                 decoration: week.completed == 1 ? TextDecoration.lineThrough : TextDecoration.none,
                               ),
                             ),
-                            subtitle: Text(DateFormat('MMM d').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString()),
+                            subtitle: Text(
+                               week.id.toString(),
+                              // DateFormat('MMM d').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString()
+                            ),
                             trailing: Icon(Icons.chevron_right),
-                          ),
-                        );
+                          );
+                        // );
                       },
                       itemCount: _weeks.length + 1,
                     ),
@@ -267,12 +239,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                             );
                             Scaffold.of(context).showSnackBar(snackBar);
                           } else {
-                            // print():
                             Provider.of<TodosModel>(context, listen: false).addWeek(Week(name: _weekNameController.text, programId: widget.id));
-                            // model.addWeek(Week(
-                            //   _weekNameController.text,
-                            //   program: _program.id,
-                            // ));
                             Navigator.pop(context);
                           }
                         },
@@ -283,7 +250,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
               },
               tooltip: 'New Week',
               backgroundColor: _color,
-              foregroundColor: Colors.red,
+              foregroundColor: Colors.white,
               child: Icon(Icons.add),
             ),
           ),

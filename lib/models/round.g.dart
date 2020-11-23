@@ -14,8 +14,8 @@ Round _$TodoFromJson(Map<String, dynamic> json) {
     rep: json['rep'] as int,
     exerciseId: json['exerciseId'] as int,
     dayId: json['dayId'] as int,
-    weekId: json['weekId'] as String,
-    programId: json['programId'] as String
+    weekId: json['weekId'] as int,
+    programId: json['programId'] as int
   );
 }
 

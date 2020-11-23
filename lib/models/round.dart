@@ -6,49 +6,51 @@ part 'round.g.dart';
 
 class Round {
 
-  Round({
-    this.id,
-    this.weight,
-    this.round,
-    this.rep,
-    this.exerciseId,
-    this.dayId,
-    this.weekId,
-    this.programId
-  });
-
   int id;
   int weight;
   int round;
   int rep;
   int exerciseId;
   int dayId;
-  String weekId;
-  String programId;
+  int weekId;
+  int programId;
 
-  static final columns = ['id', 'weight', 'round', 'rep', 'exerciseId', 'dayId', 'weekId', 'programId'];
+  Round({
+    this.id,
+    this.weight = 0,
+    this.round = 0,
+    this.rep = 0,
+    this.exerciseId,
+    this.dayId,
+    this.weekId,
+    this.programId
+  });
 
-  Map<String, dynamic> toMap() => {
-    'id': id,
-    'weight': weight,
-    'round': round,
-    'rep': rep,
-    'exerciseId': exerciseId,
-    'dayId': dayId,
-    'weekId': weekId,
-    'programId': programId
-  };
 
-  factory Round.fromMap(Map<String, dynamic> json) => new Round(
-    id: json['id'],
-    weight: json['weight'],
-    round: json['round'],
-    rep: json['rep'],
-    exerciseId: json['exerciseId'],
-    dayId: json['dayId'],
-    weekId: json['weekId'],
-    programId: json['programId']
-  );
+
+  // static final columns = ['id', 'weight', 'round', 'rep', 'exerciseId', 'dayId', 'weekId', 'programId'];
+
+  // Map<String, dynamic> toMap() => {
+  //   'id': id,
+  //   'weight': weight,
+  //   'round': round,
+  //   'rep': rep,
+  //   'exerciseId': exerciseId,
+  //   'dayId': dayId,
+  //   'weekId': weekId,
+  //   'programId': programId
+  // };
+
+  // factory Round.fromMap(Map<String, dynamic> json) => new Round(
+  //   id: json['id'],
+  //   weight: json['weight'],
+  //   round: json['round'],
+  //   rep: json['rep'],
+  //   exerciseId: json['exerciseId'],
+  //   dayId: json['dayId'],
+  //   weekId: json['weekId'],
+  //   programId: json['programId']
+  // );
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$TodoFromJson()` constructor.

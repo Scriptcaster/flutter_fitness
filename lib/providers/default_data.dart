@@ -1,34 +1,32 @@
-import 'package:flutter/material.dart';
-
-import '../models/program.dart';
-import '../models/week.dart';
-import '../models/day.dart';
-import '../models/exercise.dart';
-// import '../models/round.dart';
+import 'package:flutter_fitness/models/program.dart';
+import 'package:flutter_fitness/models/week.dart';
+import 'package:flutter_fitness/models/day.dart';
+import 'package:flutter_fitness/models/exercise.dart';
+import 'package:flutter_fitness/models/round.dart';
 
 class DefaultData {
 
   DefaultData._();
   static final DefaultData defaultData = DefaultData._();
  
-  // var rounds = [
-  //   Round( id: 1, weight: 120, round: 4, rep: 16, exerciseId: 1, dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 2, weight: 120, round: 4, rep: 16, exerciseId: 2, dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 3, weight: 100, round: 4, rep: 16, exerciseId: 3, dayId: 1, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+  var rounds = [
+    Round( weight: 120, round: 4, rep: 12, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round( weight: 140, round: 4, rep: 14, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round( weight: 160, round: 4, rep: 16, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
 
-  //   Round( id: 4, weight: 50, round: 4, rep: 16, exerciseId: 4, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 5, weight: 60, round: 4, rep: 16, exerciseId: 5, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 6, weight: 120, round: 4, rep: 16, exerciseId: 6, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 4, weight: 50, round: 4, rep: 16, exerciseId: 4, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 5, weight: 60, round: 4, rep: 16, exerciseId: 5, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 6, weight: 120, round: 4, rep: 16, exerciseId: 6, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     
-  //   Round( id: 7, weight: 100, round: 4, rep: 8, exerciseId: 7, dayId: 3, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 7, weight: 100, round: 4, rep: 8, exerciseId: 7, dayId: 3, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
 
-  //   Round( id: 8, weight: 100, round: 4, rep: 8, exerciseId: 8, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 9, weight: 100, round: 4, rep: 8, exerciseId: 9, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 10, weight: 60, round: 4, rep: 14, exerciseId: 10, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 8, weight: 100, round: 4, rep: 8, exerciseId: 8, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 9, weight: 100, round: 4, rep: 8, exerciseId: 9, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 10, weight: 60, round: 4, rep: 14, exerciseId: 10, dayId: 4, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     
-  //   Round( id: 11, weight: 120, round: 4, rep: 11, exerciseId: 11, dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  //   Round( id: 12, weight: 50, round: 4, rep: 12, exerciseId: 12, dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
-  // ];
+    // Round( id: 11, weight: 120, round: 4, rep: 11, exerciseId: 11, dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+    // Round( id: 12, weight: 50, round: 4, rep: 12, exerciseId: 12, dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
+  ];
 
    var exercises = [
     Exercise( name: 'Chest Press', dayId: 1, weekId: 1, programId: 1),

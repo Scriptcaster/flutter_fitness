@@ -1,30 +1,27 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
 import 'package:flutter_fitness/models/program.dart';
+import 'package:flutter_fitness/models/round.dart';
 import '../models/day.dart';
 import '../models/exercise.dart';
 import '../models/week.dart';
 import 'database.dart';
 import 'package:flutter_fitness/providers/default_data.dart';
 
-
-// import 'db.dart';
-
 class TodosModel extends ChangeNotifier {
   var _db = DBProvider.db;
-  // final List<Program> _programs = [];
+
   List<Program> _programs = [];
   List<Week> _weeks = [];
   List<Day> _days = [];
   List<Exercise> _exercises = [];
-
+  List<Round> _rounds = [];
 
   UnmodifiableListView<Program> get allPrograms => UnmodifiableListView(_programs);
   UnmodifiableListView<Week> get allWeeks => UnmodifiableListView(_weeks);
   UnmodifiableListView<Day> get allDays => UnmodifiableListView(_days);
   UnmodifiableListView<Exercise> get allExercises => UnmodifiableListView(_exercises);
-  // UnmodifiableListView<Program> get incompletePrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 0));
-  // UnmodifiableListView<Program> get completedPrograms => UnmodifiableListView(_programs.where((program) => program.completed  == 1));
+  UnmodifiableListView<Round> get allRounds => UnmodifiableListView(_rounds);
 
   bool get isLoading => _isLoading;
 
@@ -34,6 +31,7 @@ class TodosModel extends ChangeNotifier {
   List<Week> get weeks => _weeks.toList();
   List<Day> get days => _days.toList();
   List<Exercise> get exercises => _exercises.toList();
+  List<Round> get rounds => _rounds.toList();
 
   void getPrograms() async {
    var isNew = !await DBProvider.db.dbExists();
@@ -43,20 +41,14 @@ class TodosModel extends ChangeNotifier {
       await _db.addWeeks(DefaultData.defaultData.weeks);
       await _db.addDays(DefaultData.defaultData.days);
       await _db.addExercises(DefaultData.defaultData.exercises);
-      // await _db.addRounds(DefaultData.defaultData.rounds);
+      await _db.addRounds(DefaultData.defaultData.rounds);
     }
     _programs = await _db.getAllPrograms();
     _weeks = await _db.getAllWeeks();
     _days = await _db.getAllDays();
     _exercises = await _db.getAllExercises();
-    // _weeks.forEach((element) {
-    //   print(element.toJson());
-    // });
-    // _days = await _db.getAllDaysAll();
-    // _exercises = await _db.getAllExercisesAll();
-    // _rounds = await _db.getAllRoundsAll();
-    // _programs.forEach((it) => _calcTaskCompletionPercent(it.id));
-    // _isLoading = false;
+    _rounds = await _db.getAllRounds();
+
     await Future.delayed(Duration(milliseconds: 300));
     notifyListeners();
   }
@@ -84,6 +76,21 @@ class TodosModel extends ChangeNotifier {
     _days.add(day);
     _db.addDay(day);
     notifyListeners();
+    getPrograms();
+  }
+
+  void addExercise(Exercise exercise) {
+    _exercises.add(exercise);
+    _db.addExercise(exercise);
+    notifyListeners();
+    getPrograms();
+  }
+
+  void addRound(Round round) {
+    _rounds.add(round);
+    _db.addRound(round);
+    notifyListeners();
+    getPrograms();
   }
 
   void updateProgram(Program program) {
@@ -94,11 +101,36 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-   void updateWeek(Week week) {
+  void updateWeek(Week week) {
     var oldWeek = _weeks.firstWhere((week) => week.id == week.id);
     var replaceIndex = _weeks.indexOf(oldWeek);
     _weeks.replaceRange(replaceIndex, replaceIndex + 1, [week]);
     _db.updateWeek(week);
+    notifyListeners();
+  }
+
+  void updateDay(Day day) {
+    var oldDay = _days.firstWhere((day) => day.id == day.id);
+    var replaceIndex = _days.indexOf(oldDay);
+    _days.replaceRange(replaceIndex, replaceIndex + 1, [day]);
+    _db.updateDay(day);
+    notifyListeners();
+  }
+
+  void updateExercise(Exercise exercise) {
+    var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
+    var replaceIndex = _exercises.indexOf(oldExercise);
+    _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
+    _db.updateExercise(exercise);
+    notifyListeners();
+  }
+
+  void updateRound(Round round) {
+    // var oldRound = _rounds.firstWhere((round) => round.id == round.id);
+    // var replaceIndex = _rounds.indexOf(oldRound);
+    // _rounds.replaceRange(replaceIndex, replaceIndex + 1, [round]);
+    _db.updateRound(round);
+    print(round.toJson());
     notifyListeners();
   }
 
@@ -145,6 +177,11 @@ class TodosModel extends ChangeNotifier {
    void removeDay(Day day) {
     _days.remove(day);
     _db.removeDay(day);
+    notifyListeners();
+  }
+  void removeRound(Round round) {
+    _rounds.remove(round);
+    _db.removeRound(round);
     notifyListeners();
   }
 }

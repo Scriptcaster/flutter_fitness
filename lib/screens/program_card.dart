@@ -98,13 +98,17 @@ class ProgramCard extends StatelessWidget {
               // ),
               Container(
                 margin: EdgeInsets.only(bottom: 4.0),
-                  child: Text(DateFormat('MMM d yyyy').format(DateTime.fromMillisecondsSinceEpoch(program.date)).toString(), style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey[500]),
+                  child: Text(
+                    // DateFormat('MMM d yyyy').format(DateTime.fromMillisecondsSinceEpoch(program.date)).toString(), style: Theme.of(context).textTheme.body1.copyWith(color: Colors.grey[500]),
+                    program.id.toString(), style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)
                 ),
               ),
               Container(
                 child: Hero(
                   tag: heroIds.titleId,
-                  child: Text(program.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)),
+                  child: Text(
+                    program.name, style: Theme.of(context).textTheme.title.copyWith(color: Colors.black54)
+                  ),
                 ),
               ),
               Spacer(),

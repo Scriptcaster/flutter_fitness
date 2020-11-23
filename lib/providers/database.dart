@@ -1,5 +1,5 @@
 // import 'package:bench_more/home/subscriber_series.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_fitness/models/round.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -10,9 +10,7 @@ import '../models/day.dart';
 import '../models/exercise.dart';
 import '../models/program.dart';
 import '../models/week.dart';
-// import '../models/day.dart';
-// import '../models/exercise.dart';
-// import '../models/round.dart';
+import 'default_data.dart';
 
 // import 'default_data.dart';
 
@@ -32,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy109.db");
+    return p.join(documentsDirectory, "db_benchy116.db");
   }
 
   Future<bool> dbExists() async {
@@ -40,16 +38,14 @@ class DBProvider {
   }
 
   initDB() async {
-    // print('INIT DB');
     String path = await _dbPath;
-    return await openDatabase(path, version: 1, onOpen: (db) {},
-      onCreate: (Database db, int version) async {
-      await db.execute("CREATE TABLE Program ("
-        "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "name TEXT,"
-        "completed INTEGER NOT NULL DEFAULT 0,"
-        "date INTEGER"
-      ")");
+    return await openDatabase(path, version: 1, onOpen: (db) {}, onCreate: (Database db, int version) async {
+      await db.execute("""CREATE TABLE Program (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        completed INTEGER NOT NULL DEFAULT 0,
+        date INTEGER
+      )""");
       await db.execute("""CREATE TABLE Week (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
@@ -76,53 +72,43 @@ class DBProvider {
         weekId INTEGER,
         programId INTEGER
       )""");
-      // await db.execute("""CREATE TABLE  Round (
-      //   id INTEGER PRIMARY KEY,
-      //   weight INTEGER,
-      //   round INTEGER,
-      //   rep INTEGER,
-      //   rounds TEXT,
-      //   dayId INTEGER,
-      //   exerciseId INTEGER,
-      //   weekId TEXT,
-      //   programId TEXT,
-      //   FOREIGN KEY (exerciseId) REFERENCES Exercise (id) ON DELETE NO ACTION ON UPDATE NO ACTION
-      // )""");
+      await db.execute("""CREATE TABLE Round (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        weight INTEGER,
+        round INTEGER,
+        rep INTEGER,
+        exerciseId INTEGER,
+        dayId INTEGER,
+        weekId INTEGER,
+        programId INTEGER
+      )""");
     });
   }
 
   addPrograms(List<Program> programs) async {
     final db = await database;
-    // programs.forEach((element) { 
-    //   print(element.toJson());
-    // });
-    programs.forEach((program) async { var res = await db.insert("Program", program.toJson()); });
+    programs.forEach((program) async { await db.insert("Program", program.toJson()); });
   }
 
   addWeeks(List<Week> weeks) async {
     final db = await database;
-    weeks.forEach((week) async { var res = await db.insert("Week", week.toJson()); });
+    weeks.forEach((week) async { await db.insert("Week", week.toJson()); });
   }
 
   addDays(List<Day> days) async {
     final _db = await database;
-    days.forEach((day) async { var res = await _db.insert("Day", day.toJson()); });
+    days.forEach((day) async { await _db.insert("Day", day.toJson()); });
   }
 
   addExercises(List<Exercise> exercises) async {
     final _db = await database;
-    exercises.forEach((exercise) async { var res = await _db.insert("Exercise", exercise.toJson()); });
+    exercises.forEach((exercise) async { await _db.insert("Exercise", exercise.toJson()); });
   }
 
-  // addExercises(List<Exercise> exercises) async {
-  //   final db = await database;
-  //   exercises.forEach((exercise) async { var res = await db.insert("Exercise", exercise.toMap()); });
-  // }
-
-  // addRounds(List<Round> rounds) async {
-  //   final db = await database;
-  //   rounds.forEach((round) async { var res = await db.insert("Round", round.toMap()); });
-  // }
+  addRounds(List<Round> rounds) async {
+    final _db = await database;
+    rounds.forEach((round) async { await _db.insert("Round", round.toJson()); });
+  }
 
   Future<int> addProgram(Program program) async {
     final _db = await database;
@@ -131,16 +117,27 @@ class DBProvider {
 
   Future<int> addWeek(Week week) async {
     final _db = await database;
+    var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
+    int _weekId = _weekTable.first["id"];
+    DefaultData.defaultData.days.forEach((day) async {
+      await _db.insert("Day", Day(name: day.name, target: day.target, weekId: _weekId, programId: week.programId).toJson());
+    });
     return _db.insert('Week', week.toJson());
-    // DefaultData.defaultData.days.forEach((day) async {
-    //   await db.insert("Day", Day(dayName: day.dayName, target: day.target, weekId: week.id, programId: week.program).toMap());
-    // });
-    // return await db.rawInsert("INSERT Into Week (id, program, seq, name, completed, date)"" VALUES (?,?,?,?,?,?)", [week.id, week.program, week.seq, week.name, week.isCompleted, week.date]);
   }
 
   Future<int> addDay(Day day) async {
     final _db = await database;
     return _db.insert('Day', day.toJson());
+  }
+
+  Future<int> addExercise(Exercise exercise) async {
+    final _db = await database;
+    return _db.insert('Exercise', exercise.toJson());
+  }
+
+  Future<int> addRound(Round round) async {
+    final _db = await database;
+    return _db.insert('Round', round.toJson());
   }
 
   // Future<int> addExercise(Exercise exercise) async {
@@ -215,6 +212,12 @@ class DBProvider {
     final _db = await database;
     var result = await _db.query('Exercise');
     return result.map((it) => Exercise.fromJson(it)).toList();
+  }
+
+  Future<List<Round>> getAllRounds() async {
+    final _db = await database;
+    var result = await _db.query('Round');
+    return result.map((it) => Round.fromJson(it)).toList();
   }
 
 
@@ -440,12 +443,17 @@ class DBProvider {
 
   Future<int> updateDay(Day day) async {
     final _db = await database;
-    return _db.update('Week', day.toJson(), where: 'id = ?', whereArgs: [day.id]);
+    return _db.update('Day', day.toJson(), where: 'id = ?', whereArgs: [day.id]);
   }
 
   Future<int> updateExercise(Exercise exercise) async {
     final _db = await database;
     return _db.update('Exercise', exercise.toJson(), where: 'id = ?', whereArgs: [exercise.id]);
+  }
+
+  Future<int> updateRound(Round round) async {
+    final _db = await database;
+    return _db.update('Round', round.toJson(), where: 'id = ?', whereArgs: [round.id]);
   }
 
   // Future<int> updateDayTarget(Day day) async {
@@ -581,9 +589,9 @@ class DBProvider {
   Future<void> removeProgram(Program program) async {
     final _db = await database;
     return _db.transaction<void>((txn) async {
-      // await txn.delete('Round', where: 'programId = ?', whereArgs: [program.id]);
-      // await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
-      // await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
+      await txn.delete('Round', where: 'programId = ?', whereArgs: [program.id]);
+      await txn.delete('Exercise', where: 'programId = ?', whereArgs: [program.id]);
+      await txn.delete('Day', where: 'programId = ?', whereArgs: [program.id]);
       await txn.delete('Week', where: 'programId = ?', whereArgs: [program.id]);
       await txn.delete('Program', where: 'id = ?', whereArgs: [program.id]);
     });
@@ -592,9 +600,9 @@ class DBProvider {
   Future<void> removeWeek(Week week) async {
     final _db = await database;
     return _db.transaction<void>((txn) async {
-      // await txn.delete('Round', where: 'weekId = ?', whereArgs: [week.id]);
-      // await txn.delete('Exercise', where: 'weekId = ?', whereArgs: [week.id]);
-      // await txn.delete('Day', where: 'weekId = ?', whereArgs: [week.id]);
+      await txn.delete('Round', where: 'weekId = ?', whereArgs: [week.id]);
+      await txn.delete('Exercise', where: 'weekId = ?', whereArgs: [week.id]);
+      await txn.delete('Day', where: 'weekId = ?', whereArgs: [week.id]);
       await txn.delete('Week', where: 'id = ?', whereArgs: [week.id]);
     });
   }
@@ -602,25 +610,25 @@ class DBProvider {
   Future<void> removeDay(Day day) async {
     final db = await database;
     return db.transaction<void>((txn) async {
-      // await txn.delete('Round', where: 'dayId = ?', whereArgs: [day.id]);
-      // await txn.delete('Exercise', where: 'dayId = ?', whereArgs: [day.id]);
+      await txn.delete('Round', where: 'dayId = ?', whereArgs: [day.id]);
+      await txn.delete('Exercise', where: 'dayId = ?', whereArgs: [day.id]);
       await txn.delete('Day', where: 'id = ?', whereArgs: [day.id]);
     });
   }
 
-  // Future<void> removeExercise(Exercise exercise) async {
-  //   final db = await database;
-  //   return db.transaction<void>((txn) async {
-  //     await txn.delete('Round', where: 'exerciseId = ?', whereArgs: [exercise.id]);
-  //     await txn.delete('Exercise', where: 'id = ?', whereArgs: [exercise.id]);
-  //   });
-  // }
+  Future<void> removeExercise(Exercise exercise) async {
+    final db = await database;
+    return db.transaction<void>((txn) async {
+      await txn.delete('Round', where: 'exerciseId = ?', whereArgs: [exercise.id]);
+      await txn.delete('Exercise', where: 'id = ?', whereArgs: [exercise.id]);
+    });
+  }
 
-  // Future<void> removeRound(int exerciseId) async {
-  //   final _db = await database;
-  //   var _table = await _db.query("Round", where: "exerciseId = ?", whereArgs: [exerciseId]);
-  //   return _db.delete("Round", where: "id = ?", whereArgs: [_table.last["id"]]);
-  // }
+  Future<void> removeRound(Round round) async {
+    final _db = await database;
+    var _table = await _db.query("Round", where: "exerciseId = ?", whereArgs: [round.exerciseId]);
+    return _db.delete("Round", where: "id = ?", whereArgs: [_table.last["id"]]);
+  }
 
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
