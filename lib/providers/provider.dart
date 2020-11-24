@@ -117,7 +117,8 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void updateExercise(Exercise exercise) {
+  void updateExercise(exercise) {
+    print(exercise.toJson());
     var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
     var replaceIndex = _exercises.indexOf(oldExercise);
     _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
@@ -130,7 +131,7 @@ class TodosModel extends ChangeNotifier {
     // var replaceIndex = _rounds.indexOf(oldRound);
     // _rounds.replaceRange(replaceIndex, replaceIndex + 1, [round]);
     _db.updateRound(round);
-    print(round.toJson());
+    // print(round.toJson());
     notifyListeners();
   }
 
@@ -174,11 +175,18 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-   void removeDay(Day day) {
+  void removeDay(Day day) {
     _days.remove(day);
     _db.removeDay(day);
     notifyListeners();
   }
+
+  void removeExercise(Exercise exercise) {
+    _exercises.remove(exercise);
+    _db.removeExercise(exercise);
+    notifyListeners();
+  }
+
   void removeRound(Round round) {
     _rounds.remove(round);
     _db.removeRound(round);

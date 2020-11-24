@@ -22,19 +22,23 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
   TextEditingController _exerciseController = TextEditingController();
   int previousExerciseVolume  = 0;
   int bestExerciseVolume = 0;
+  int myCurrentVolume;
   String exerciseName;
 
   @override
   void initState() {
-    _exerciseController.text = widget.name;
     super.initState();
-    setState(() {
+    _exerciseController.text = widget.name;
+    myCurrentVolume = widget.currentVolume;
+    // setState(() {
       exerciseName = widget.name;
-    });
+    // });
   }
 
   List<Color> colors = [Colors.blue, Colors.white, Colors.white];
   List<bool> _selected = [true, false, false];
+
+
 
   _updateCurrentVolume(_round, subtract) async {
     setState(() {
@@ -55,6 +59,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
           _round.rep += 1;
         }
       }
+      // print(_round.toJson());
       // widget.exercise.currentVolume = 0;
       // widget.exercise.round.forEach((i) {
       // widget.exercise.currentVolume += i.weight*i.round*i.rep;
@@ -91,15 +96,15 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
   }
 
   _updateCurrentVolumeOnAdd(exercise) async {
-    exercise.round.add(exercise.round.last);
-    exercise.currentVolume = 0;
-    for (int i = 0; i < exercise.round.length; i++) {   
-      exercise.currentVolume += exercise.round[i].weight*exercise.round[i].round*exercise.round[i].rep;
-    }
-    // await DBProvider.db.updateExercise(Exercise( id: exercise.id, name: exercise.name, bestVolume: exercise.bestVolume, previousVolume: exercise.previousVolume, currentVolume: exercise.currentVolume, dayId: widget.id, weekId: widget.weekId, programId: widget.programId )); 
-    // await DBProvider.db.addRound( Round( weight: 0, round: 0, rep: 0, exerciseId: exercise.id, dayId: widget.id, weekId: widget.weekId, programId: widget.programId )); 
+    // exercise.round.add(exercise.round.last);
+    // exercise.currentVolume = 0;
+    // for (int i = 0; i < exercise.round.length; i++) {   
+    //   exercise.currentVolume += exercise.round[i].weight*exercise.round[i].round*exercise.round[i].rep;
+    // }
+    // // await DBProvider.db.updateExercise(Exercise( id: exercise.id, name: exercise.name, bestVolume: exercise.bestVolume, previousVolume: exercise.previousVolume, currentVolume: exercise.currentVolume, dayId: widget.id, weekId: widget.weekId, programId: widget.programId )); 
+    // // await DBProvider.db.addRound( Round( weight: 0, round: 0, rep: 0, exerciseId: exercise.id, dayId: widget.id, weekId: widget.weekId, programId: widget.programId )); 
 
-    setState(() {});                     
+    // setState(() {});                    
   }
 
   @override
@@ -158,6 +163,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                 completed: _exercise.completed, 
                                 bestVolume: _exercise.bestVolume, 
                                 previousVolume: _exercise.previousVolume,
+                                currentVolume: myCurrentVolume,
                                 dayId: _exercise.dayId, 
                                 weekId: _exercise.weekId, 
                                 programId: _exercise.programId
@@ -174,7 +180,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
               SimpleAlertDialog(
                 color: _color,
                 onActionPressed: () {
-                  // Provider.of<TodosModel>(context, listen: false).removeDay(_day);
+                  Provider.of<TodosModel>(context, listen: false).removeExercise(_exercise);
                   Navigator.of(context).pop(true);
                 },
               ),
@@ -229,7 +235,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                 child: Text(previousExerciseVolume.toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
                               ),
                               Container(width: 100, padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
-                                child: Text(widget.currentVolume.toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
+                                child: Text(myCurrentVolume.toString(), textAlign: TextAlign.center, style: TextStyle(fontSize: 16))
                               ),
                               Expanded(flex: 1, child: Container(height: 10)),
                             ],
@@ -313,6 +319,34 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                           onPressed: () {    
                                             _updateCurrentVolume(_round, false);
                                             Provider.of<TodosModel>(context, listen: false).updateRound(_round);
+
+                                            myCurrentVolume = 0;
+                                            _rounds.forEach((round) {
+                                              // print(round.weight);
+                                              myCurrentVolume += (round.weight * round.round * round.rep);
+                                            });
+
+                                            print(_exercise.toJson());
+
+                                            Provider.of<TodosModel>(context, listen: false).updateExercise(Exercise(
+                                              id: 1, 
+                                              name: 'ok', 
+                                              completed: 1, 
+                                              bestVolume: 100, 
+                                              previousVolume: 200,
+                                              currentVolume: myCurrentVolume,
+                                              dayId: _exercise.dayId, 
+                                              weekId: _exercise.weekId, 
+                                              programId: _exercise.programId
+                                            ));
+
+
+
+
+
+
+
+
                                           }
                                         )
                                       )
