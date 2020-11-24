@@ -48,24 +48,24 @@ class DefaultData {
   ];
 
   var days = [
-    Day(name: 'Monday', target: 'Chest & Triceps', weekId: 1, programId: 1),
-    Day(name: 'Tuesday', target: 'Legs', weekId: 1, programId: 1),
-    Day(name: 'Wednesday', target: 'Abs',  weekId: 1, programId: 1),
-    Day(name: 'Thursday', target: 'Back & Biceps', weekId: 1, programId: 1),
-    Day(name: 'Friday', target: 'Shoulder', weekId: 1, programId: 1),
-    Day(name: 'Saturday', target: 'Day Off',  weekId: 1, programId: 1),
-    Day(name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1)
+    Day(id: 1, name: 'Monday', target: 'Chest & Triceps', weekId: 1, programId: 1),
+    Day(id: 2, name: 'Tuesday', target: 'Legs', weekId: 1, programId: 1),
+    Day(id: 3, name: 'Wednesday', target: 'Abs',  weekId: 1, programId: 1),
+    Day(id: 4, name: 'Thursday', target: 'Back & Biceps', weekId: 1, programId: 1),
+    Day(id: 5, name: 'Friday', target: 'Shoulder', weekId: 1, programId: 1),
+    Day(id: 6, name: 'Saturday', target: 'Day Off',  weekId: 1, programId: 1),
+    Day(id: 7, name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1)
   ];
 
   var weeks = [
-    Week(name: 'Week 1', programId: 1)
+    Week(id: 1, name: 'Week 1', programId: 1)
   ];
 
   var programs = [
     // Program('5 Days Split', id: '1',  color: Colors.purple.value, codePoint: Icons.fitness_center.codePoint),
     // Program('Pull & Push', id: '2', color: Colors.pink.value, codePoint: Icons.fitness_center.codePoint),
-    Program(name: 'Awesome Program One'),
-    Program(name: 'Awesome Program Two')
+    Program(id: 1, name: 'Awesome Program One'),
+    Program(id: 2, name: 'Awesome Program Two')
   ];
 
 }

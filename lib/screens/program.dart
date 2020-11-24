@@ -68,7 +68,6 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
         try {
           _program = programs.allPrograms.singleWhere((program) => program.id == widget.id, orElse: () => null);
           //  print(_program.toJson());
-          // print(_program.toJson());
         } catch (e) {
           return Container(
             color: Colors.white,
@@ -246,7 +245,6 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                           } else {
                             if (_weeks.length > 0) {
                                Provider.of<TodosModel>(context, listen: false).addWeek(
-                                // Week(name: _weekNameController.text, programId: widget.id)
                                 Week( 
                                   id: _weeks.first.id,
                                   seq: _weeks.first.seq + 1, 
@@ -255,19 +253,13 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                                 )
                               );
                             } else {
-                              // print('safe as new');
                               Provider.of<TodosModel>(context, listen: false).addWeek(
                                 Week(
-                                  // seq: _weeks.last.seq,
                                   name: _weekNameController.text, 
                                   programId: widget.id
                                 )
                               );
                             }
-                            // setState(() {
-                              
-                            // });
-                            
                             Navigator.pop(context);
                           }
                         },

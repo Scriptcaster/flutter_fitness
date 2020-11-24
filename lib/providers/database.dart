@@ -30,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy134.db");
+    return p.join(documentsDirectory, "db_benchy145.db");
   }
 
   Future<bool> dbExists() async {
@@ -41,13 +41,13 @@ class DBProvider {
     String path = await _dbPath;
     return await openDatabase(path, version: 1, onOpen: (db) {}, onCreate: (Database db, int version) async {
       await db.execute("""CREATE TABLE Program (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
         date INTEGER
       )""");
       await db.execute("""CREATE TABLE Week (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER,
         seq INTEGER,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
@@ -127,13 +127,14 @@ class DBProvider {
   //   return _db.insert('Week', week.toJson());
   // }
 
-  Future<int> addWeek(Week week) async {
+  Future<int> addNewWeek(Week week) async {
     final _db = await database;
     // var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
     // int _weekId = _weekTable.first["id"];
-    // DefaultData.defaultData.days.forEach((day) async {
-    //   await _db.insert("Day", Day(name: day.name, target: day.target, weekId: _weekId, programId: week.programId).toJson());
-    // });
+    DefaultData.defaultData.days.forEach((day) async {
+      print(week.toJson());
+      await _db.insert("Day", Day(name: day.name, target: day.target, weekId: week.id, programId: week.programId).toJson());
+    });
     return _db.insert('Week', week.toJson());
   }
 
@@ -257,18 +258,15 @@ class DBProvider {
 
   Future<List<Program>> getAllPrograms() async {
     final _db = await database;
-    // var result = await _db.query('Program');
-    var result =  await _db.query('Program ORDER BY date DESC');
-    // print(result);
+    var result = await _db.query('Program');
+    // var result =  await _db.query('Program ORDER BY date DESC');
     return result.map((it) => Program.fromJson(it)).toList();
   }
 
   Future<List<Week>> getAllWeeks() async {
     final _db = await database;
-    var result = await _db.query('Week ORDER BY id DESC');
-    // print(result);
-    // print(result);
-    // print('get Weeks');
+    var result = await _db.query('Week');
+    // var result = await _db.query('Week ORDER BY id DESC');
     return result.map((it) => Week.fromJson(it)).toList();
   }
 

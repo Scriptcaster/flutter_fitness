@@ -178,8 +178,18 @@ class _AddProgramScreenState extends State<AddProgramScreen> {
                     Scaffold.of(context).showSnackBar(snackBar);
                     // _scaffoldKey.currentState.showSnackBar(snackBar);
                   } else {
-                    final Program program = Program(name: newTask);
-                    Provider.of<TodosModel>(context, listen: false).addProgram(program);
+                    if (programs.allPrograms.length > 0) {
+                        Provider.of<TodosModel>(context, listen: false).addProgram(
+                        Program( 
+                          id: programs.allPrograms.first.id,
+                          name: newTask, 
+                        )
+                      );
+                    } else {
+                      Provider.of<TodosModel>(context, listen: false).addProgram(
+                        Program(name: newTask)
+                      );
+                    }
                     Navigator.pop(context);
                   }
                 }

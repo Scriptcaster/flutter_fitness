@@ -59,62 +59,34 @@ class TodosModel extends ChangeNotifier {
   }
 
   void addProgram(Program program) {
-    _programs.add(program);
-    _db.addProgram(program);
+    if (_programs.length > 0) {
+      var lastProgramId = _programs.last.id + 1;
+      _programs.add(Program(id: lastProgramId, name: program.name));
+      _db.addProgram(Program(id: lastProgramId, name: program.name));
+    } else {
+      _programs.add(Program(id: 1, name: program.name));
+      _db.addProgram(Program(id: 1, name: program.name));
+    }
     notifyListeners();
-    // getPrograms();
   }
 
   void addWeek(Week week) {
-    // var lastWeek = _weeks.firstWhere((it) => it.programId == week.programId);
-    // if (_weeks.length > 0) {
-    //   // _weeks.add(week);
-    //   // _db.addWeek(week);  
-    // //   // print(lastWeek.toJson());
-    //   // _db.addPreviousWeek(week, lastWeek.id);
-    //   _weeks.add(Week(id: lastWeek.id + 1, name: week.name, programId: week.programId,));
-    // } else  {
-      // print(week.toJson());
-      // _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId,));
-    //   // _db.addWeek(week);
-    // }
-    
-    // print(week.toJson());
-    // _weeks.forEach((element) { 
-    //   print(element.toJson());
-    // });
-
-    // print(_weeks.firstWhere((it) => it.programId == week.programId));
-    
-    // if (week.id == null) {
-      print(week.toJson());
-      _weeks.add(Week(id: _weeks.last.id + 1, seq: week.seq,  name: week.name, programId: week.programId));
-    // } else {
-    //   // print(_weeks);
-    //   // _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId));
-    //   // _db.addWeek(Week(id: week.id + 1, name: week.name, programId: week.programId));
-    // }
-
-    // _weeks.forEach((element) {
-    //   print(element.toJson());
-    // });
-    // print(_weeks.first.id + 1);
-    
-    // _weeks.forEach((element) { 
-    //   print(element.toJson());
-    // });
-    // _db.addWeek(Week(id: _weeks.first.id + 1, name: week.name, programId: week.programId));
-    // }
-    // print(week.toJson());
+    if (_weeks.length > 0) {
+      var lastWeekId = _weeks.last.id + 1;
+      _weeks.add(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
+      // _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
+    } else {
+      _weeks.add(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
+      _db.addNewWeek(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
+    } 
     notifyListeners();
-    // getPrograms();
   }
 
   void addDay(Day day) {
     _days.add(day);
     _db.addDay(day);
     notifyListeners();
-    getPrograms();
+    // getPrograms();
   }
 
   void addExercise(Exercise exercise) {
