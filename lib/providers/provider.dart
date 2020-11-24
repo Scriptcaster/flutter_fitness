@@ -62,23 +62,51 @@ class TodosModel extends ChangeNotifier {
     _programs.add(program);
     _db.addProgram(program);
     notifyListeners();
-    getPrograms();
+    // getPrograms();
   }
 
   void addWeek(Week week) {
-    if (_weeks.length > 0) {
-      var lastWeek = _weeks.firstWhere((it) => it.programId == week.programId);
-      _weeks.add(week);
-      // _db.addWeek(week);  
-    //   // print(lastWeek.toJson());
-      _db.addPreviousWeek(week, lastWeek.id);
-      getPrograms();
-    } else  {
-      _weeks.add(week);
-      _db.addWeek(week);
+    // var lastWeek = _weeks.firstWhere((it) => it.programId == week.programId);
+    // if (_weeks.length > 0) {
+    //   // _weeks.add(week);
+    //   // _db.addWeek(week);  
+    // //   // print(lastWeek.toJson());
+    //   // _db.addPreviousWeek(week, lastWeek.id);
+    //   _weeks.add(Week(id: lastWeek.id + 1, name: week.name, programId: week.programId,));
+    // } else  {
+      // print(week.toJson());
+      // _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId,));
+    //   // _db.addWeek(week);
+    // }
+    
+    // print(week.toJson());
+    // _weeks.forEach((element) { 
+    //   print(element.toJson());
+    // });
+
+    // print(_weeks.firstWhere((it) => it.programId == week.programId));
+    
+    if (week.id == null) {
+    // //   print(_weeks.length);
+      _weeks.add(Week(id: 1, name: week.name, programId: week.programId));
+    } else {
+      _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId));
+      // _db.addWeek(Week(id: week.id + 1, name: week.name, programId: week.programId));
     }
+
+    // _weeks.forEach((element) {
+    //   print(element.toJson());
+    // });
+    // print(_weeks.first.id + 1);
+    
+    // _weeks.forEach((element) { 
+    //   print(element.toJson());
+    // });
+    // _db.addWeek(Week(id: _weeks.first.id + 1, name: week.name, programId: week.programId));
+    // }
+    // print(week.toJson());
     notifyListeners();
-    getPrograms();
+    // getPrograms();
   }
 
   void addDay(Day day) {
@@ -179,6 +207,7 @@ class TodosModel extends ChangeNotifier {
   }
 
   void removeWeek(Week week) {
+    print(week.toJson());
     _weeks.remove(week);
     _db.removeWeek(week);
     notifyListeners();

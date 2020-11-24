@@ -161,7 +161,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                     padding: EdgeInsets.only(top: 16.0),
                     child: ListView.builder(
                       itemBuilder: (BuildContext context, int index) {
-                        // _weeks.sort((a, b) => b.id.compareTo(a.id));
+                        _weeks.sort((a, b) => b.id.compareTo(a.id));
                         if (index == _weeks.length) { return SizedBox(height: 56); }
                         var week = _weeks[index];
                           return ListTile(
@@ -239,7 +239,29 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                             );
                             Scaffold.of(context).showSnackBar(snackBar);
                           } else {
-                            Provider.of<TodosModel>(context, listen: false).addWeek(Week(name: _weekNameController.text, programId: widget.id));
+                            // if (_weeks.length > 0) {
+                            //    Provider.of<TodosModel>(context, listen: false).addWeek(
+                            //     // Week(name: _weekNameController.text, programId: widget.id)
+                            //     Week( 
+                            //       id: _weeks.first.id, 
+                            //       name: _weekNameController.text, 
+                            //       programId: widget.id
+                            //     )
+                            //   );
+                            // } else {
+                              // print('safe as new');
+                              Provider.of<TodosModel>(context, listen: false).addWeek(
+                                Week(
+                                  id: _weeks.first.id,
+                                  name: _weekNameController.text, 
+                                  programId: widget.id
+                                )
+                              );
+                            // }
+                            // setState(() {
+                              
+                            // });
+                            
                             Navigator.pop(context);
                           }
                         },

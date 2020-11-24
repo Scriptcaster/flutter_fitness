@@ -30,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy124.db");
+    return p.join(documentsDirectory, "db_benchy130.db");
   }
 
   Future<bool> dbExists() async {
@@ -128,12 +128,11 @@ class DBProvider {
 
   Future<int> addWeek(Week week) async {
     final _db = await database;
-    var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
-    int _weekId = _weekTable.first["id"];
-    DefaultData.defaultData.days.forEach((day) async {
-      print('add day');
-      await _db.insert("Day", Day(name: day.name, target: day.target, weekId: _weekId, programId: week.programId).toJson());
-    });
+    // var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
+    // int _weekId = _weekTable.first["id"];
+    // DefaultData.defaultData.days.forEach((day) async {
+    //   await _db.insert("Day", Day(name: day.name, target: day.target, weekId: _weekId, programId: week.programId).toJson());
+    // });
     return _db.insert('Week', week.toJson());
   }
 
