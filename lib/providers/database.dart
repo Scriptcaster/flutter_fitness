@@ -30,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy130.db");
+    return p.join(documentsDirectory, "db_benchy134.db");
   }
 
   Future<bool> dbExists() async {
@@ -48,6 +48,7 @@ class DBProvider {
       )""");
       await db.execute("""CREATE TABLE Week (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        seq INTEGER,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
         date INTEGER,

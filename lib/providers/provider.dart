@@ -86,13 +86,14 @@ class TodosModel extends ChangeNotifier {
 
     // print(_weeks.firstWhere((it) => it.programId == week.programId));
     
-    if (week.id == null) {
-    // //   print(_weeks.length);
-      _weeks.add(Week(id: 1, name: week.name, programId: week.programId));
-    } else {
-      _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId));
-      // _db.addWeek(Week(id: week.id + 1, name: week.name, programId: week.programId));
-    }
+    // if (week.id == null) {
+      print(week.toJson());
+      _weeks.add(Week(id: _weeks.last.id + 1, seq: week.seq,  name: week.name, programId: week.programId));
+    // } else {
+    //   // print(_weeks);
+    //   // _weeks.add(Week(id: week.id + 1, name: week.name, programId: week.programId));
+    //   // _db.addWeek(Week(id: week.id + 1, name: week.name, programId: week.programId));
+    // }
 
     // _weeks.forEach((element) {
     //   print(element.toJson());

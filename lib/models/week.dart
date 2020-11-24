@@ -8,6 +8,7 @@ part 'week.g.dart';
 @JsonSerializable()
 class Week {
   int id;
+  int seq;
   String name;
   int completed;
   int date;
@@ -22,6 +23,7 @@ class Week {
 
   Week({
     this.id,
+    this.seq = 1,
     this.programId,
     this.name, 
     this.completed = 0,
