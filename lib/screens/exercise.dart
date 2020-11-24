@@ -120,9 +120,6 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
         );
       }
       var _rounds = programs.allRounds.where((round) => round.exerciseId == widget.id).toList();
-      _rounds.forEach((element) { 
-        // print(element.toJson());
-      });
       var _color = Colors.pink;
       return Theme(
         data: ThemeData(primarySwatch: _color),
@@ -275,6 +272,23 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                           onPressed: () {
                                             _updateCurrentVolume(_round, true);
                                             Provider.of<TodosModel>(context, listen: false).updateRound(_round);
+
+                                             myCurrentVolume = 0;
+                                            _rounds.forEach((round) {
+                                              myCurrentVolume += (round.weight * round.round * round.rep);
+                                            });
+                                            Provider.of<TodosModel>(context, listen: false).updateExercise(Exercise(
+                                              id: _exercise.id, 
+                                              name: _exercise.name, 
+                                              completed: _exercise.completed, 
+                                              bestVolume: _exercise.bestVolume, 
+                                              previousVolume: _exercise.previousVolume,
+                                              currentVolume: myCurrentVolume,
+                                              dayId: _exercise.dayId, 
+                                              weekId: _exercise.weekId, 
+                                              programId: _exercise.programId
+                                            ));
+
                                           }
                                         )
                                       ),
@@ -322,30 +336,19 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
 
                                             myCurrentVolume = 0;
                                             _rounds.forEach((round) {
-                                              // print(round.weight);
                                               myCurrentVolume += (round.weight * round.round * round.rep);
                                             });
-
-                                            print(_exercise.toJson());
-
                                             Provider.of<TodosModel>(context, listen: false).updateExercise(Exercise(
-                                              id: 1, 
-                                              name: 'ok', 
-                                              completed: 1, 
-                                              bestVolume: 100, 
-                                              previousVolume: 200,
+                                              id: _exercise.id, 
+                                              name: _exercise.name, 
+                                              completed: _exercise.completed, 
+                                              bestVolume: _exercise.bestVolume, 
+                                              previousVolume: _exercise.previousVolume,
                                               currentVolume: myCurrentVolume,
                                               dayId: _exercise.dayId, 
                                               weekId: _exercise.weekId, 
                                               programId: _exercise.programId
                                             ));
-
-
-
-
-
-
-
 
                                           }
                                         )
@@ -383,6 +386,25 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                           // refreshVolumes(exercise.id, exercise.name);
                                           Provider.of<TodosModel>(context, listen: false).removeRound(_rounds.last);
                                           // setState(() {});
+
+                                           var _newRounds = programs.allRounds.where((round) => round.exerciseId == widget.id).toList();
+
+                                          myCurrentVolume = 0;
+                                          _newRounds.forEach((round) {
+                                            myCurrentVolume += (round.weight * round.round * round.rep);
+                                          });
+                                          Provider.of<TodosModel>(context, listen: false).updateExercise(Exercise(
+                                            id: _exercise.id, 
+                                            name: _exercise.name, 
+                                            completed: _exercise.completed, 
+                                            bestVolume: _exercise.bestVolume, 
+                                            previousVolume: _exercise.previousVolume,
+                                            currentVolume: myCurrentVolume,
+                                            dayId: _exercise.dayId, 
+                                            weekId: _exercise.weekId, 
+                                            programId: _exercise.programId
+                                          ));
+
                                         }
                                       )
                                     ),
@@ -390,7 +412,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                       child: new IconButton(
                                         padding: new EdgeInsets.all(0.0),
                                         icon: new Icon(Icons.add_circle, size: 24.0),
-                                        onPressed: () async {
+                                        onPressed: () {
                                           if (_rounds.length > 0) {
                                             Provider.of<TodosModel>(context, listen: false).addRound(Round(
                                               weight: _rounds.last.weight,
@@ -401,6 +423,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                               weekId: widget.weekId, 
                                               programId: widget.programId
                                             ));
+
                                           } else {
                                             Provider.of<TodosModel>(context, listen: false).addRound(Round(
                                               exerciseId: widget.id, 
@@ -409,10 +432,25 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
                                               programId: widget.programId
                                             ));
                                           }
-                                          
-                                          // setState(() {});
-                                          // _updateCurrentVolumeOnAdd(_exercise.single);
-                                          // refreshVolumes(exercise.id, exercise.name);
+
+                                          var _newRounds = programs.allRounds.where((round) => round.exerciseId == widget.id).toList();
+
+                                          myCurrentVolume = 0;
+                                          _newRounds.forEach((round) {
+                                            myCurrentVolume += (round.weight * round.round * round.rep);
+                                          });
+                                          Provider.of<TodosModel>(context, listen: false).updateExercise(Exercise(
+                                            id: _exercise.id, 
+                                            name: _exercise.name, 
+                                            completed: _exercise.completed, 
+                                            bestVolume: _exercise.bestVolume, 
+                                            previousVolume: _exercise.previousVolume,
+                                            currentVolume: myCurrentVolume,
+                                            dayId: _exercise.dayId, 
+                                            weekId: _exercise.weekId, 
+                                            programId: _exercise.programId
+                                          ));
+
                                         },      
                                       )
                                     ),

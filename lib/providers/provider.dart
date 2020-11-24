@@ -66,8 +66,17 @@ class TodosModel extends ChangeNotifier {
   }
 
   void addWeek(Week week) {
-    _weeks.add(week);
-    _db.addWeek(week);
+    if (_weeks.length > 0) {
+      var lastWeek = _weeks.firstWhere((it) => it.programId == week.programId);
+      _weeks.add(week);
+      // _db.addWeek(week);  
+    //   // print(lastWeek.toJson());
+      _db.addPreviousWeek(week, lastWeek.id);
+      getPrograms();
+    } else  {
+      _weeks.add(week);
+      _db.addWeek(week);
+    }
     notifyListeners();
     getPrograms();
   }
@@ -119,9 +128,9 @@ class TodosModel extends ChangeNotifier {
 
   void updateExercise(exercise) {
     print(exercise.toJson());
-    var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
-    var replaceIndex = _exercises.indexOf(oldExercise);
-    _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
+    // var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
+    // var replaceIndex = _exercises.indexOf(oldExercise);
+    // _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
     _db.updateExercise(exercise);
     notifyListeners();
   }
