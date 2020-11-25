@@ -127,72 +127,73 @@ class DBProvider {
   //   return _db.insert('Week', week.toJson());
   // }
 
-  Future<int> addNewWeek(Week week) async {
+  Future<int> addWeek(Week week) async {
     final _db = await database;
-    // var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
-    // int _weekId = _weekTable.first["id"];
-    DefaultData.defaultData.days.forEach((day) async {
-      print(week.toJson());
-      await _db.insert("Day", Day(name: day.name, target: day.target, weekId: week.id, programId: week.programId).toJson());
-    });
-    // return _db.insert('Week', week.toJson());
+
+    // // var _weekTable = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Week");
+    // // int _weekId = _weekTable.first["id"];
+    // DefaultData.defaultData.days.forEach((day) async {
+    //   print(week.toJson());
+    //   await _db.insert("Day", Day(name: day.name, target: day.target, weekId: week.id, programId: week.programId).toJson());
+    // });
+    return _db.insert('Week', week.toJson());
   }
 
 
-  Future<int> addPreviousWeek(Week week, previousWeekId, ) async {
-    final _db = await database;
-    await _db.insert('Week', week.toJson());
-    // var _newDayId = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Day");
-    // var _newExerciseId = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Exercise");
+  Future<int> addPreviousWeek(Week week) async {
+    // final _db = await database;
+    // await _db.insert('Week', week.toJson());
+    // // var _newDayId = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Day");
+    // // var _newExerciseId = await _db.rawQuery("SELECT MAX(id)+1 as id FROM Exercise");
 
-    var _oldDays = await _db.query("Day", where: "weekId = ?", whereArgs: [previousWeekId]);
-    var _oldExercises = await _db.query("Exercise", where: "weekId = ?", whereArgs: [previousWeekId]);
-    var _oldRounds = await _db.query("Round", where: "weekId = ?", whereArgs: [previousWeekId]);
+    // var _oldDays = await _db.query("Day", where: "weekId = ?", whereArgs: [previousWeekId]);
+    // var _oldExercises = await _db.query("Exercise", where: "weekId = ?", whereArgs: [previousWeekId]);
+    // var _oldRounds = await _db.query("Round", where: "weekId = ?", whereArgs: [previousWeekId]);
 
+    // // print(previousWeekId);
+    // // // // int incrementDay = _newDayId.first['id'];
+    // // // // int incrementExercise = _newExerciseId.first['id'];
     // print(previousWeekId);
-    // // // int incrementDay = _newDayId.first['id'];
-    // // // int incrementExercise = _newExerciseId.first['id'];
-    print(previousWeekId);
-    if (_oldDays.asMap().isNotEmpty) {
-      _oldDays.forEach((element) async {
-        print(element);
-        await _db.insert("Day", Day( name: element['name'], target: element['target'], weekId: previousWeekId + 1, programId: element['programId']).toJson());
-        // if (_oldExercises.isNotEmpty) {
-        //   _oldExercises.asMap().forEach((index2, element2) {
-        //     if (element['id'] == element2['dayId']) {
-        //       // _db.insert("Exercise", {
-        //       //   'name': element2['name'],
-        //       //   'bestVolume': element2['bestVolume'],
-        //       //   'previousVolume': element2['previousVolume'],
-        //       //   'currentVolume': element2['currentVolume'],
-        //       //   'dayId': incrementDay,
-        //       //   'weekId': week.id,
-        //       //   'programId': element['programId']
-        //       // });
-        //       if (_oldRounds.isNotEmpty) {
-        //         _oldRounds.asMap().forEach((index3, element3) {
-        //           if (element2['id'] == element3['exerciseId']) {
-        //             // _db.insert("Round", {
-        //             //   'weight': element3['weight'],
-        //             //   'round': element3['round'],
-        //             //   'rep': element3['rep'],
-        //             //   'dayId': incrementDay,
-        //             //   'exerciseId': incrementExercise,
-        //             //   'weekId': week.id,
-        //             //   'programId': element['programId']
-        //             // });
-        //           }
-        //         });
-        //       }
-        //       // incrementExercise++;
-        //     }
-        //   });
-        // }
-        // // incrementDay++;
-      });
-    }
+    // if (_oldDays.asMap().isNotEmpty) {
+    //   _oldDays.forEach((element) async {
+    //     print(element);
+    //     await _db.insert("Day", Day( name: element['name'], target: element['target'], weekId: previousWeekId + 1, programId: element['programId']).toJson());
+    //     // if (_oldExercises.isNotEmpty) {
+    //     //   _oldExercises.asMap().forEach((index2, element2) {
+    //     //     if (element['id'] == element2['dayId']) {
+    //     //       // _db.insert("Exercise", {
+    //     //       //   'name': element2['name'],
+    //     //       //   'bestVolume': element2['bestVolume'],
+    //     //       //   'previousVolume': element2['previousVolume'],
+    //     //       //   'currentVolume': element2['currentVolume'],
+    //     //       //   'dayId': incrementDay,
+    //     //       //   'weekId': week.id,
+    //     //       //   'programId': element['programId']
+    //     //       // });
+    //     //       if (_oldRounds.isNotEmpty) {
+    //     //         _oldRounds.asMap().forEach((index3, element3) {
+    //     //           if (element2['id'] == element3['exerciseId']) {
+    //     //             // _db.insert("Round", {
+    //     //             //   'weight': element3['weight'],
+    //     //             //   'round': element3['round'],
+    //     //             //   'rep': element3['rep'],
+    //     //             //   'dayId': incrementDay,
+    //     //             //   'exerciseId': incrementExercise,
+    //     //             //   'weekId': week.id,
+    //     //             //   'programId': element['programId']
+    //     //             // });
+    //     //           }
+    //     //         });
+    //     //       }
+    //     //       // incrementExercise++;
+    //     //     }
+    //     //   });
+    //     // }
+    //     // // incrementDay++;
+    //   });
+    // }
     
-    // return _db.insert('Week', Week(id: previousWeekId + 1 , name: week.name, programId: week.programId).toJson());
+    // // return _db.insert('Week', Week(id: previousWeekId + 1 , name: week.name, programId: week.programId).toJson());
   }
   
 

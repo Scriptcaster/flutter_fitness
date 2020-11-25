@@ -79,20 +79,20 @@ class TodosModel extends ChangeNotifier {
       _days.toList().forEach((day) {
         var lastDayId = _days.last.id + 1;
         if (day.weekId == _weeks.last.id) {
-          print(day.toJson());
           _days.add(Day(id: lastDayId, name: day.name, target: day.target, completed: 0, weekId: lastWeekId, programId: day.programId));
+          _db.addDay(Day(id: lastDayId, name: day.name, target: day.target, completed: 0, weekId: lastWeekId, programId: day.programId));
         }
       });
 
       _weeks.add(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
-
-      // _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
+      _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
     } else {
       _weeks.add(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
       DefaultData.defaultData.newDays.forEach((day) {
         _days.add(day);
+        _db.addDay(day);
       });
-      // _db.addNewWeek(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
+      _db.addWeek(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
     } 
     notifyListeners();
   }
@@ -190,25 +190,34 @@ class TodosModel extends ChangeNotifier {
 
   void removeProgram(Program program) {
     _programs.remove(program);
+    _weeks.removeWhere((it) => it.programId == program.id);
+    _days.removeWhere((it) => it.programId == program.id);
+    _exercises.removeWhere((it) => it.programId == program.id);
+    _rounds.removeWhere((it) => it.programId == program.id);
     _db.removeProgram(program);
     notifyListeners();
   }
 
   void removeWeek(Week week) {
-    print(week.toJson());
     _weeks.remove(week);
+    _days.removeWhere((it) => it.weekId == week.id);
+    _exercises.removeWhere((it) => it.weekId == week.id);
+    _rounds.removeWhere((it) => it.weekId == week.id);
     _db.removeWeek(week);
     notifyListeners();
   }
 
   void removeDay(Day day) {
     _days.remove(day);
+    _exercises.removeWhere((it) => it.dayId == day.id);
+    _rounds.removeWhere((it) => it.dayId == day.id);
     _db.removeDay(day);
     notifyListeners();
   }
 
   void removeExercise(Exercise exercise) {
     _exercises.remove(exercise);
+    _rounds.removeWhere((it) => it.exerciseId == exercise.id);
     _db.removeExercise(exercise);
     notifyListeners();
   }
