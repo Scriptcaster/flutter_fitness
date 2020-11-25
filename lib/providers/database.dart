@@ -30,7 +30,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy145.db");
+    return p.join(documentsDirectory, "db_benchy154.db");
   }
 
   Future<bool> dbExists() async {
@@ -41,13 +41,13 @@ class DBProvider {
     String path = await _dbPath;
     return await openDatabase(path, version: 1, onOpen: (db) {}, onCreate: (Database db, int version) async {
       await db.execute("""CREATE TABLE Program (
-        id INTEGER,
+        id INTEGER PRIMARY KEY,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
         date INTEGER
       )""");
       await db.execute("""CREATE TABLE Week (
-        id INTEGER,
+        id INTEGER PRIMARY KEY,
         seq INTEGER,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
@@ -55,7 +55,7 @@ class DBProvider {
         programId INTEGER
       )""");
       await db.execute("""CREATE TABLE Day (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name TEXT,
         target TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
@@ -63,7 +63,7 @@ class DBProvider {
         programId INTEGER
       )""");
       await db.execute("""CREATE TABLE Exercise (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         name TEXT,
         completed INTEGER NOT NULL DEFAULT 0,
         bestVolume INTEGER,
@@ -74,7 +74,7 @@ class DBProvider {
         programId INTEGER
       )""");
       await db.execute("""CREATE TABLE Round (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        id INTEGER PRIMARY KEY,
         weight INTEGER,
         round INTEGER,
         rep INTEGER,

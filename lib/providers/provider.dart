@@ -39,7 +39,7 @@ class TodosModel extends ChangeNotifier {
       // print(DefaultData.defaultData.programs);
       await _db.addPrograms(DefaultData.defaultData.programs);
       await _db.addWeeks(DefaultData.defaultData.weeks);
-      await _db.addDays(DefaultData.defaultData.days);
+      await _db.addDays(DefaultData.defaultData.newDays);
       await _db.addExercises(DefaultData.defaultData.exercises);
       await _db.addRounds(DefaultData.defaultData.rounds);
     }
@@ -74,18 +74,47 @@ class TodosModel extends ChangeNotifier {
    
     if (_weeks.length > 0) {
 
-       var lastWeekId = _weeks.last.id + 1;
+      var lastWeekId = _weeks.last.id + 1;
 
       _days.toList().forEach((day) {
         var lastDayId = _days.last.id + 1;
         if (day.weekId == _weeks.last.id) {
-          _days.add(Day(id: lastDayId, name: day.name, target: day.target, completed: 0, weekId: lastWeekId, programId: day.programId));
-          _db.addDay(Day(id: lastDayId, name: day.name, target: day.target, completed: 0, weekId: lastWeekId, programId: day.programId));
+
+           _exercises.toList().forEach((exercise) {
+            var lastExerciseId = _exercises.last.id + 1;
+            if (exercise.dayId == day.id) { 
+
+               _rounds.toList().forEach((round) {
+                var lastRoundId = _rounds.last.id + 1;
+                if (round.exerciseId == exercise.id) {
+                  _rounds.add(Round(id: lastRoundId, weight: round.weight, round: round.round, rep: round.rep, exerciseId: lastExerciseId, dayId: lastDayId, weekId: lastWeekId, programId: round.programId));
+                  // _db.addRound(Round(id: lastRoundId, weight: round.weight, round: round.round, rep: round.rep, exerciseId: lastExerciseId, dayId: lastDayId, weekId: lastWeekId, programId: round.programId));
+                }
+              });
+
+              int calcBestVolume;
+              
+              if (exercise.currentVolume > exercise.previousVolume) {
+                calcBestVolume = exercise.currentVolume;
+              } else {
+                calcBestVolume = exercise.previousVolume;
+              }
+              print(calcBestVolume);
+
+              _exercises.add(Exercise(id: lastExerciseId, name: exercise.name, bestVolume: calcBestVolume, previousVolume: exercise.currentVolume, currentVolume: exercise.currentVolume, dayId: lastDayId, weekId: lastWeekId, programId: exercise.programId));
+              // _db.addExercise(Exercise(id: lastExerciseId, name: exercise.name, dayId: lastDayId, weekId: lastWeekId, programId: exercise.programId));
+
+            }
+            
+          });
+
+          _days.add(Day(id: lastDayId, name: day.name, target: day.target, weekId: lastWeekId, programId: day.programId));
+          // _db.addDay(Day(id: lastDayId, name: day.name, target: day.target, weekId: lastWeekId, programId: day.programId));
         }
       });
 
       _weeks.add(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
-      _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
+      // _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
     } else {
       _weeks.add(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
       DefaultData.defaultData.newDays.forEach((day) {
@@ -98,24 +127,40 @@ class TodosModel extends ChangeNotifier {
   }
 
   void addDay(Day day) {
-    _days.add(day);
-    _db.addDay(day);
+    if (_days.length > 0) {
+      var lastDayId = _days.last.id + 1;
+      _days.add(Day(id: lastDayId, name: day.name, target: day.target, weekId: day.weekId, programId: day.programId));
+      _db.addDay(Day(id: lastDayId, name: day.name, target: day.target, weekId: day.weekId, programId: day.programId));
+    } else {
+      _days.add(Day(id: 1, name: day.name, target: day.target, weekId: day.weekId, programId: day.programId));
+      _db.addDay(Day(id: 1, name: day.name, target: day.target, weekId: day.weekId, programId: day.programId));
+    }
     notifyListeners();
-    // getPrograms();
   }
 
   void addExercise(Exercise exercise) {
-    _exercises.add(exercise);
-    _db.addExercise(exercise);
+    if (_exercises.length > 0) {
+      var lastExerciseId = _exercises.last.id + 1;
+      _exercises.add(Exercise(id: lastExerciseId, name: exercise.name, dayId: exercise.dayId, weekId: exercise.weekId, programId: exercise.programId));
+      _db.addExercise(Exercise(id: lastExerciseId, name: exercise.name,  dayId: exercise.dayId, weekId: exercise.weekId, programId: exercise.programId));
+    } else {
+      _exercises.add(Exercise(id: 1, name: exercise.name, dayId: exercise.dayId, weekId: exercise.weekId, programId: exercise.programId));
+      _db.addExercise(Exercise(id: 1, name: exercise.name, dayId: exercise.dayId, weekId: exercise.weekId, programId: exercise.programId));
+    }
     notifyListeners();
-    getPrograms();
   }
 
   void addRound(Round round) {
-    _rounds.add(round);
-    _db.addRound(round);
+   if (_rounds.length > 0) {
+      var lastRoundId = _rounds.last.id + 1;
+      print(lastRoundId);
+      _rounds.add(Round(id: lastRoundId, weight: round.weight, round: round.round, rep: round.rep, exerciseId: round.exerciseId, dayId: round.dayId, weekId: round.weekId, programId: round.programId));
+      _db.addRound(Round(id: lastRoundId, weight: round.weight, round: round.round, rep: round.rep, exerciseId: round.exerciseId, dayId: round.dayId, weekId: round.weekId, programId: round.programId));
+    } else {
+      _rounds.add(Round(id: 1, weight: round.weight, round: round.round, rep: round.rep, exerciseId: round.exerciseId, dayId: round.dayId, weekId: round.weekId, programId: round.programId));
+      _db.addRound(Round(id: 1, weight: round.weight, round: round.round, rep: round.rep, exerciseId: round.exerciseId, dayId: round.dayId, weekId: round.weekId, programId: round.programId));
+    }
     notifyListeners();
-    getPrograms();
   }
 
   void updateProgram(Program program) {
@@ -144,9 +189,9 @@ class TodosModel extends ChangeNotifier {
 
   void updateExercise(exercise) {
     print(exercise.toJson());
-    // var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
-    // var replaceIndex = _exercises.indexOf(oldExercise);
-    // _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
+    var oldExercise = _exercises.firstWhere((exercise) => exercise.id == exercise.id);
+    var replaceIndex = _exercises.indexOf(oldExercise);
+    _exercises.replaceRange(replaceIndex, replaceIndex + 1, [exercise]);
     _db.updateExercise(exercise);
     notifyListeners();
   }
@@ -156,7 +201,6 @@ class TodosModel extends ChangeNotifier {
     // var replaceIndex = _rounds.indexOf(oldRound);
     // _rounds.replaceRange(replaceIndex, replaceIndex + 1, [round]);
     _db.updateRound(round);
-    // print(round.toJson());
     notifyListeners();
   }
 

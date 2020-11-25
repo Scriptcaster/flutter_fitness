@@ -10,9 +10,8 @@ class DefaultData {
   static final DefaultData defaultData = DefaultData._();
  
   var rounds = [
-    Round( weight: 120, round: 4, rep: 12, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
-    Round( weight: 140, round: 4, rep: 14, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
-    Round( weight: 160, round: 4, rep: 16, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round( weight: 10, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round( weight: 20, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
 
     // Round( id: 4, weight: 50, round: 4, rep: 16, exerciseId: 4, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Round( id: 5, weight: 60, round: 4, rep: 16, exerciseId: 5, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
@@ -29,7 +28,7 @@ class DefaultData {
   ];
 
    var exercises = [
-    Exercise( name: 'Chest Press', dayId: 1, weekId: 1, programId: 1),
+    Exercise( name: 'Chest Press', currentVolume: 30, dayId: 1, weekId: 1, programId: 1),
     Exercise( name: 'Incline Press', dayId: 1, weekId: 1, programId: 1),
     Exercise( name: 'Dips', dayId: 1, weekId: 1, programId: 1),
 
@@ -75,7 +74,7 @@ class DefaultData {
     // Program('5 Days Split', id: '1',  color: Colors.purple.value, codePoint: Icons.fitness_center.codePoint),
     // Program('Pull & Push', id: '2', color: Colors.pink.value, codePoint: Icons.fitness_center.codePoint),
     Program(id: 1, name: 'Awesome Program One'),
-    Program(id: 2, name: 'Awesome Program Two')
+    // Program(id: 2, name: 'Awesome Program Two')
   ];
 
 }

@@ -37,7 +37,7 @@ class _StartDayScreenState extends State<DayScreen> { _StartDayScreenState();
       Day _day;
       try {
         _day = programs.days.firstWhere((day) => day.id == widget.id, orElse: () => null);
-        // print(_day.toJson());
+        print(_day.toJson());
       } catch (e) {
         return Container(
           color: Colors.white,
