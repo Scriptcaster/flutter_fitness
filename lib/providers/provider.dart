@@ -71,13 +71,28 @@ class TodosModel extends ChangeNotifier {
   }
 
   void addWeek(Week week) {
+   
     if (_weeks.length > 0) {
-      var lastWeekId = _weeks.last.id + 1;
+
+       var lastWeekId = _weeks.last.id + 1;
+
+      _days.toList().forEach((day) {
+        var lastDayId = _days.last.id + 1;
+        if (day.weekId == _weeks.last.id) {
+          print(day.toJson());
+          _days.add(Day(id: lastDayId, name: day.name, target: day.target, completed: 0, weekId: lastWeekId, programId: day.programId));
+        }
+      });
+
       _weeks.add(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
+
       // _db.addWeek(Week(id: lastWeekId, seq: week.seq,  name: week.name, programId: week.programId));
     } else {
       _weeks.add(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
-      _db.addNewWeek(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
+      DefaultData.defaultData.newDays.forEach((day) {
+        _days.add(day);
+      });
+      // _db.addNewWeek(Week(id: 1, seq: week.seq,  name: week.name, programId: week.programId));
     } 
     notifyListeners();
   }

@@ -47,7 +47,7 @@ class DefaultData {
     // Exercise( id: 12, name: ' Standing Press 1.5', bestVolume: 2400, previousVolume: 0, currentVolume: 2400, round: [], dayId: 5, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
   ];
 
-  var days = [
+  var newDays = [
     Day(id: 1, name: 'Monday', target: 'Chest & Triceps', weekId: 1, programId: 1),
     Day(id: 2, name: 'Tuesday', target: 'Legs', weekId: 1, programId: 1),
     Day(id: 3, name: 'Wednesday', target: 'Abs',  weekId: 1, programId: 1),
@@ -55,6 +55,16 @@ class DefaultData {
     Day(id: 5, name: 'Friday', target: 'Shoulder', weekId: 1, programId: 1),
     Day(id: 6, name: 'Saturday', target: 'Day Off',  weekId: 1, programId: 1),
     Day(id: 7, name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1)
+  ];
+
+  var days = [
+    Day(name: 'Monday', target: 'Chest & Triceps',),
+    Day(name: 'Tuesday', target: 'Legs',),
+    Day(name: 'Wednesday', target: 'Abs',),
+    Day(name: 'Thursday', target: 'Back & Biceps',),
+    Day(name: 'Friday', target: 'Shoulder',),
+    Day(name: 'Saturday', target: 'Day Off',),
+    Day(name: 'Sunday', target: 'Day Off',)
   ];
 
   var weeks = [

@@ -135,7 +135,7 @@ class DBProvider {
       print(week.toJson());
       await _db.insert("Day", Day(name: day.name, target: day.target, weekId: week.id, programId: week.programId).toJson());
     });
-    return _db.insert('Week', week.toJson());
+    // return _db.insert('Week', week.toJson());
   }
 
 
