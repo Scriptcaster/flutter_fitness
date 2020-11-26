@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_fitness/models/subscriber_series.dart';
+import 'package:flutter_fitness/providers/subscriber_chart.dart';
 import 'package:flutter_fitness/screens/program_card_add.dart';
 import 'package:flutter_fitness/screens/program_card.dart';
 import 'package:flutter_fitness/utils/datetime_utils.dart';
@@ -37,6 +39,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   PageController _pageController;
   int _currentPageIndex = 0;
   int _total;
+  List<SubscriberSeries> data = [];
+
   @override
   void initState() {
     super.initState();
@@ -52,6 +56,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     getTotal();
   }
 
+  // void loadChart() async {
+  //   data = await _db.getChartData();
+  // }
+
   getTotal() async {
     _total = await TodosModel().getTotal();
     setState(() {});
@@ -61,6 +69,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer<TodosModel>(builder: (context, programs, child) {
       var _programs = programs.programs;
+      var newData = programs.getChart();
       var _isLoading = false;
       return GradientBackground(
         color: Colors.pink,
@@ -96,7 +105,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Text('${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}', style: Theme.of(context).textTheme.title.copyWith( color: Colors.white.withOpacity(0.7))),
                     Container(height: 16.0),
                     Text('You have $_total programs to complete', style: Theme.of(context).textTheme.body1.copyWith( color: Colors.white.withOpacity(0.7))),
-                    // Container(child: SubscriberChart(data: newData)),
+                    Container(child: SubscriberChart(data: newData)),
                   ],
                 ),
               ),

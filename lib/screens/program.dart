@@ -67,8 +67,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
         Program _program;
         try {
           _program = programs.allPrograms.singleWhere((program) => program.id == widget.id, orElse: () => null);
-          print(_program.toJson());
-          //  print(_program.toJson());
+          // print(_program.toJson());
         } catch (e) {
           return Container(
             color: Colors.white,

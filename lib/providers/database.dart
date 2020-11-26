@@ -1,5 +1,7 @@
 // import 'package:bench_more/home/subscriber_series.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_fitness/models/round.dart';
+import 'package:flutter_fitness/models/subscriber_series.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
@@ -10,11 +12,10 @@ import '../models/day.dart';
 import '../models/exercise.dart';
 import '../models/program.dart';
 import '../models/week.dart';
-import 'default_data.dart';
 
 // import 'default_data.dart';
 
-// import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:charts_flutter/flutter.dart' as charts;
 
 class DBProvider {
   static Database _database;
@@ -30,7 +31,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy154.db");
+    return p.join(documentsDirectory, "db_benchy164.db");
   }
 
   Future<bool> dbExists() async {
@@ -706,6 +707,52 @@ class DBProvider {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
+
+
+
+
+
+
+
+  // Future<List<SubscriberSeries>> getChartData() async {
+  //   final db = await database;
+  //   var currentWeek = await db.query('Week ORDER BY date DESC LIMIT 1');
+  //   List fullListDaysIds = [];
+  //   for (int i = 0; i < currentWeek.length; i++) {
+  //     var _allDays = await db.query("Day", where: "weekId = ?", whereArgs: [currentWeek[i]['id']]);
+  //     for (int k = 0; k < _allDays.length; k++) {
+  //       fullListDaysIds.add(_allDays[k]);
+  //     }
+  //   }
+  //   List<SubscriberSeries> data = [];
+  //   List dayExercises = [];
+  //   for (int i = 0; i < 7; i++) {
+  //     var dayExercises = await db.query("Exercise", where: "dayId = ?", whereArgs: [fullListDaysIds[i]['id']]);
+  //     List volumes = [];
+  //     dayExercises.toList().forEach((day) {
+  //       volumes.add(day['currentVolume']);
+  //     });
+  //     var sum;
+  //     if(volumes.length > 1) {
+  //       sum = volumes.reduce((a, b) => a + b);
+  //     } else if (volumes.length > 0) {
+  //       sum = volumes[0];
+  //     } else if (volumes.length == 0) {
+  //       sum = 0;
+  //     }
+  //       data.add(
+  //         SubscriberSeries(
+  //           year: fullListDaysIds[i]['dayName'].substring(0, 3),
+  //           subscribers: sum,
+  //           barColor:charts.ColorUtil.fromDartColor(Colors.blue),
+  //         ),
+  //       );
+  //   }
+  //   // return resultWeeks.map((it) => Week.fromJson(it)).toList();
+  //   return data;
+  // }
+
+  
 
   closeDB() {
     if (_database != null) {

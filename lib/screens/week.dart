@@ -70,7 +70,7 @@ class _WeekScreenState extends State<WeekScreen> with SingleTickerProviderStateM
         Week _week;
         try {
           _week = programs.weeks.firstWhere((week) => week.id == widget.id, orElse: () => null);
-          print(_week.toJson());
+          // print(_week.toJson());
         } catch (e) {
           return Container(
             color: Colors.white,

@@ -10,8 +10,11 @@ class DefaultData {
   static final DefaultData defaultData = DefaultData._();
  
   var rounds = [
-    Round( weight: 10, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
-    Round( weight: 20, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round(id:1, weight: 10, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round(id:2, weight: 20, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+
+    Round(id:3, weight: 10, round: 1, rep: 1, exerciseId: 4, dayId: 8, weekId: 2, programId: 1),
+    Round(id:4, weight: 20, round: 1, rep: 1, exerciseId: 4, dayId: 8, weekId: 2, programId: 1),
 
     // Round( id: 4, weight: 50, round: 4, rep: 16, exerciseId: 4, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Round( id: 5, weight: 60, round: 4, rep: 16, exerciseId: 5, dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
@@ -28,9 +31,13 @@ class DefaultData {
   ];
 
    var exercises = [
-    Exercise( name: 'Chest Press', currentVolume: 30, dayId: 1, weekId: 1, programId: 1),
-    Exercise( name: 'Incline Press', dayId: 1, weekId: 1, programId: 1),
-    Exercise( name: 'Dips', dayId: 1, weekId: 1, programId: 1),
+    Exercise(id: 1, name: 'Chest Press', currentVolume: 30, dayId: 1, weekId: 1, programId: 1),
+    Exercise(id: 2, name: 'Incline Press', currentVolume: 90, dayId: 2, weekId: 1, programId: 1),
+    Exercise(id: 3, name: 'Dips', dayId: 1, weekId: 1, programId: 1),
+
+    Exercise(id: 4, name: 'Chest Press', currentVolume: 60, dayId: 8, weekId: 2, programId: 1),
+    Exercise(id: 5, name: 'Incline Press', currentVolume: 90, dayId: 9, weekId: 2, programId: 1),
+    Exercise(id: 6,name: 'Dips', dayId: 8, weekId: 2, programId: 1),
 
     // Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Exercise( id: 5, name: 'Squat', bestVolume: 3600, previousVolume: 0, currentVolume: 3600, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
@@ -53,7 +60,15 @@ class DefaultData {
     Day(id: 4, name: 'Thursday', target: 'Back & Biceps', weekId: 1, programId: 1),
     Day(id: 5, name: 'Friday', target: 'Shoulder', weekId: 1, programId: 1),
     Day(id: 6, name: 'Saturday', target: 'Day Off',  weekId: 1, programId: 1),
-    Day(id: 7, name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1)
+    Day(id: 7, name: 'Sunday', target: 'Day Off',  weekId: 1, programId: 1),
+
+    Day(id: 8, name: 'Monday', target: 'Chest & Triceps', weekId: 2, programId: 1),
+    Day(id: 9, name: 'Tuesday', target: 'Legs', weekId: 2, programId: 1),
+    Day(id: 10, name: 'Wednesday', target: 'Abs',  weekId: 2, programId: 1),
+    Day(id: 11, name: 'Thursday', target: 'Back & Biceps', weekId: 2, programId: 1),
+    Day(id: 12, name: 'Friday', target: 'Shoulder', weekId: 2, programId: 1),
+    Day(id: 13, name: 'Saturday', target: 'Day Off',  weekId: 2, programId: 1),
+    Day(id: 14, name: 'Sunday', target: 'Day Off',  weekId: 2, programId: 1)
   ];
 
   var days = [
@@ -67,7 +82,8 @@ class DefaultData {
   ];
 
   var weeks = [
-    Week(id: 1, name: 'Week 1', programId: 1)
+    Week(id: 1, name: 'Week 1', programId: 1),
+    Week(id: 2, name: 'Week 2', programId: 1)
   ];
 
   var programs = [

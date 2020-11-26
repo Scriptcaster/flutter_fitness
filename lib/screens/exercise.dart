@@ -110,7 +110,7 @@ class _StartExerciseScreenState extends State<ExerciseScreen> { _StartExerciseSc
       Exercise _exercise;
       try {
         _exercise = programs.exercises.firstWhere((exercise) => exercise.id == widget.id, orElse: () => null);
-        print(_exercise.toJson());
+        // print(_exercise.toJson());
       } catch (e) {
         return Container(
           color: Colors.white,
