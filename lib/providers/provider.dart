@@ -279,41 +279,38 @@ class TodosModel extends ChangeNotifier {
     // _weeks.forEach((element) {
     //   print(element.toJson());
     // });
-    var allDays = _days.where((i) => i.programId == _programs.last.toJson()['id']).toList();
+    var allDays = _days.where((d) => d.programId == _programs.last.toJson()['id']).toList();
   
     // allDays.forEach((element) {
     //   print(element.toJson());
     // });
     List<SubscriberSeries> data = [];
-    for (int i = 0; i < allWeeks.length; i++) {
-      var dayExercises = _exercises.where((it) => it.programId == allWeeks[i].programId).toList();
+    for (var i = 0; i < allWeeks.length; i++) {
+      var dayExercises = _exercises.where((it) => it.weekId == allWeeks[i].id).toList();
       List volumes = [];
       dayExercises.forEach((day) {
-        print('hey!');
+       
         if(day.currentVolume != 0) {
-         
           volumes.add(day.currentVolume);
-        } 
-        // else {
-        //   volumes.add(0);
-        // }
+        } else {
+          volumes.add(0);
+        }
       });
-       print(volumes);
       var sum;
+     
       if(volumes.length > 1) {
         sum = volumes.reduce((a, b) => a + b);
-        print(sum);
       } else if (volumes.length > 0) {
         sum = volumes[0];
       } else if (volumes.length == 0) {
         sum = 0;
       }
-      print(volumes[i]);
-      print(allWeeks[i]);
+      print(allWeeks[i].name.substring(0, 6));
+      
       data.add(
         SubscriberSeries(
-          year: allWeeks[i].name.substring(0, 3),
-          subscribers: volumes[i],
+          year: allWeeks[i].name.substring(0, 6),
+          subscribers: sum,
           barColor:charts.ColorUtil.fromDartColor(Colors.blue),
         ),
       );

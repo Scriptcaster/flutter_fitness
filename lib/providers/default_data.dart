@@ -10,8 +10,8 @@ class DefaultData {
   static final DefaultData defaultData = DefaultData._();
  
   var rounds = [
-    Round(id:1, weight: 10, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
-    Round(id:2, weight: 20, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round(id:1, weight: 100, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
+    Round(id:2, weight: 200, round: 1, rep: 1, exerciseId: 1, dayId: 1, weekId: 1, programId: 1),
 
     Round(id:3, weight: 10, round: 1, rep: 1, exerciseId: 4, dayId: 8, weekId: 2, programId: 1),
     Round(id:4, weight: 20, round: 1, rep: 1, exerciseId: 4, dayId: 8, weekId: 2, programId: 1),
@@ -31,12 +31,12 @@ class DefaultData {
   ];
 
    var exercises = [
-    Exercise(id: 1, name: 'Chest Press', currentVolume: 30, dayId: 1, weekId: 1, programId: 1),
-    Exercise(id: 2, name: 'Incline Press', currentVolume: 90, dayId: 2, weekId: 1, programId: 1),
+    Exercise(id: 1, name: 'Chest Press', currentVolume: 100, dayId: 1, weekId: 1, programId: 1),
+    Exercise(id: 2, name: 'Incline Press', currentVolume: 200, dayId: 2, weekId: 1, programId: 1),
     Exercise(id: 3, name: 'Dips', dayId: 1, weekId: 1, programId: 1),
 
-    Exercise(id: 4, name: 'Chest Press', currentVolume: 60, dayId: 8, weekId: 2, programId: 1),
-    Exercise(id: 5, name: 'Incline Press', currentVolume: 90, dayId: 9, weekId: 2, programId: 1),
+    Exercise(id: 4, name: 'Chest Press', currentVolume: 10, dayId: 8, weekId: 2, programId: 1),
+    Exercise(id: 5, name: 'Incline Press', currentVolume: 20, dayId: 9, weekId: 2, programId: 1),
     Exercise(id: 6,name: 'Dips', dayId: 8, weekId: 2, programId: 1),
 
     // Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),

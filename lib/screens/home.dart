@@ -70,6 +70,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Consumer<TodosModel>(builder: (context, programs, child) {
       var _programs = programs.programs;
       var newData = programs.getChart();
+      // print(newData);
       var _isLoading = false;
       return GradientBackground(
         color: Colors.pink,

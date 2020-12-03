@@ -31,7 +31,7 @@ class DBProvider {
 
   get _dbPath async {
     String documentsDirectory = await _localPath;
-    return p.join(documentsDirectory, "db_benchy164.db");
+    return p.join(documentsDirectory, "db_benchy166.db");
   }
 
   Future<bool> dbExists() async {
