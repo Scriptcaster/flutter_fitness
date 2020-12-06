@@ -33,11 +33,19 @@ class DefaultData {
    var exercises = [
     Exercise(id: 1, name: 'Chest Press', currentVolume: 100, dayId: 1, weekId: 1, programId: 1),
     Exercise(id: 2, name: 'Incline Press', currentVolume: 200, dayId: 2, weekId: 1, programId: 1),
-    Exercise(id: 3, name: 'Dips', dayId: 1, weekId: 1, programId: 1),
+    Exercise(id: 3, name: 'Dips', dayId: 3, weekId: 1, programId: 1),
 
-    Exercise(id: 4, name: 'Chest Press', currentVolume: 10, dayId: 8, weekId: 2, programId: 1),
-    Exercise(id: 5, name: 'Incline Press', currentVolume: 20, dayId: 9, weekId: 2, programId: 1),
-    Exercise(id: 6,name: 'Dips', dayId: 8, weekId: 2, programId: 1),
+    Exercise(id: 4, name: 'Chest Press', currentVolume: 150, dayId: 8, weekId: 2, programId: 1),
+    Exercise(id: 5, name: 'Incline Press', currentVolume: 250, dayId: 9, weekId: 2, programId: 1),
+    Exercise(id: 6,name: 'Dips', dayId: 10, weekId: 2, programId: 1),
+
+    Exercise(id: 7, name: 'Chest Press', currentVolume: 200, dayId: 15, weekId: 3, programId: 1),
+    Exercise(id: 8, name: 'Incline Press', currentVolume: 300, dayId: 16, weekId: 3, programId: 1),
+    Exercise(id: 9, name: 'Dips', dayId: 17, weekId: 3, programId: 1),
+
+    Exercise(id: 10, name: 'Chest Press', currentVolume: 250, dayId: 15, weekId: 4, programId: 1),
+    Exercise(id: 11, name: 'Incline Press', currentVolume: 350, dayId: 16, weekId: 4, programId: 1),
+    Exercise(id: 12, name: 'Dips', dayId: 17, weekId: 4, programId: 1),
 
     // Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Exercise( id: 5, name: 'Squat', bestVolume: 3600, previousVolume: 0, currentVolume: 3600, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
@@ -68,7 +76,24 @@ class DefaultData {
     Day(id: 11, name: 'Thursday', target: 'Back & Biceps', weekId: 2, programId: 1),
     Day(id: 12, name: 'Friday', target: 'Shoulder', weekId: 2, programId: 1),
     Day(id: 13, name: 'Saturday', target: 'Day Off',  weekId: 2, programId: 1),
-    Day(id: 14, name: 'Sunday', target: 'Day Off',  weekId: 2, programId: 1)
+    Day(id: 14, name: 'Sunday', target: 'Day Off',  weekId: 2, programId: 1),
+
+    Day(id: 15, name: 'Monday', target: 'Chest & Triceps', weekId: 3, programId: 1),
+    Day(id: 16, name: 'Tuesday', target: 'Legs', weekId: 3, programId: 1),
+    Day(id: 17, name: 'Wednesday', target: 'Abs',  weekId: 3, programId: 1),
+    Day(id: 18, name: 'Thursday', target: 'Back & Biceps', weekId: 3, programId: 1),
+    Day(id: 19, name: 'Friday', target: 'Shoulder', weekId: 3, programId: 1),
+    Day(id: 20, name: 'Saturday', target: 'Day Off',  weekId: 3, programId: 1),
+    Day(id: 21, name: 'Sunday', target: 'Day Off',  weekId: 3, programId: 1),
+
+    Day(id: 22, name: 'Monday', target: 'Chest & Triceps', weekId: 4, programId: 1),
+    Day(id: 23, name: 'Tuesday', target: 'Legs', weekId: 4, programId: 1),
+    Day(id: 24, name: 'Wednesday', target: 'Abs',  weekId: 4, programId: 1),
+    Day(id: 25, name: 'Thursday', target: 'Back & Biceps', weekId: 4, programId: 1),
+    Day(id: 26, name: 'Friday', target: 'Shoulder', weekId: 4, programId: 1),
+    Day(id: 27, name: 'Saturday', target: 'Day Off',  weekId: 4, programId: 1),
+    Day(id: 28, name: 'Sunday', target: 'Day Off',  weekId: 4, programId: 1)
+
   ];
 
   var days = [
@@ -82,8 +107,11 @@ class DefaultData {
   ];
 
   var weeks = [
-    Week(id: 1, name: 'Week 1', programId: 1),
-    Week(id: 2, name: 'Week 2', programId: 1)
+    Week(id: 1, name: 'Week 1', date: 1601596511000, programId: 1),
+    Week(id: 2, name: 'Week 2', date: 1601682911000, programId: 1),
+    Week(id: 3, name: 'Week 3', date: 1604278511000, programId: 1),
+    Week(id: 4, name: 'Week 4', date: 1606870511000, programId: 1),
+    Week(id: 5, name: 'Week 5', date: 1609548911000, programId: 1)
   ];
 
   var programs = [

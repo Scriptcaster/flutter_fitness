@@ -163,6 +163,7 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                         _weeks.sort((a, b) => b.date.compareTo(a.date));
                         if (index == _weeks.length) { return SizedBox(height: 56); }
                         var week = _weeks[index];
+                        // print(week.date);
                           return ListTile(
                             onTap: () {
                               Navigator.push(
@@ -192,8 +193,8 @@ class _ProgramScreenState extends State<DetailScreen> with SingleTickerProviderS
                               ),
                             ),
                             subtitle: Text(
-                               week.id.toString(),
-                              // DateFormat('MMM d').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString()
+                              //  week.id.toString(),
+                              DateFormat('MMM d y').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString()
                             ),
                             trailing: Icon(Icons.chevron_right),
                           );

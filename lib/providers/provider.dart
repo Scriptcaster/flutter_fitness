@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter_fitness/models/program.dart';
 import 'package:flutter_fitness/models/round.dart';
 import 'package:flutter_fitness/models/subscriber_series.dart';
@@ -275,64 +276,91 @@ class TodosModel extends ChangeNotifier {
   }
 
   getChart() {
-    _weeks.sort((a, b) => a.date.compareTo(b.date));
-    // _weeks.forEach((element) {
-    //   print(element.toJson());
-    // });
-    var allDays = _days.where((d) => d.programId == _programs.last.toJson()['id']).toList();
-  
-    // allDays.forEach((element) {
-    //   print(element.toJson());
-    // });
+    // _weeks.sort((a, b) => a.date.compareTo(b.date));
     List<SubscriberSeries> data = [];
-    for (var i = 0; i < allWeeks.length; i++) {
-      var dayExercises = _exercises.where((it) => it.weekId == allWeeks[i].id).toList();
-      List volumes = [];
-      dayExercises.forEach((day) {
-       
-        if(day.currentVolume != 0) {
-          volumes.add(day.currentVolume);
+
+    // var months = _weeks.where((it) => it.date > 1604188800 
+    // // && it.date > 1604188800
+    // ).toList();
+    List months = [];
+    _weeks.sort((a, b) => a.date.compareTo(b.date));
+    _weeks.forEach((week) {
+      String monnth = DateFormat('MMM y').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString();
+      if (months.contains(monnth)) {
+      } else {
+        var dayExercises = _exercises.where((it) => it.weekId == week.id).toList();
+        // print(dayExercises);
+        if (dayExercises.isEmpty) {
+          
         } else {
-          volumes.add(0);
+           months.add(monnth);
         }
-      });
-      var sum;
-     
-      if(volumes.length > 1) {
-        sum = volumes.reduce((a, b) => a + b);
-      } else if (volumes.length > 0) {
-        sum = volumes[0];
-      } else if (volumes.length == 0) {
-        sum = 0;
+       
       }
-      print(allWeeks[i].name.substring(0, 6));
+
+      // DateFormat('MMM d y').format( DateTime.fromMillisecondsSinceEpoch(week.date) ).toString();
+
+      // if(day.currentVolume != 0) {
+      //   volumes.add(day.currentVolume);
+      // } else {
+      //   volumes.add(0);
+      // }
+    });
+
+    for (var i = 0; i < months.length && i < 7; i++) {
+      // List myWeeks = [];
+
+      // if (months.contains(monnth)) {
+      // } else {
+      //   months.add(monnth);
+      // }
+      // print(months[i]);
+      var monthWeeks = _weeks.where((it) => DateFormat('MMM y').format(DateTime.fromMillisecondsSinceEpoch(it.date)).toString() == months[i]).toList();
       
-      data.add(
-        SubscriberSeries(
-          year: allWeeks[i].name.substring(0, 6),
-          subscribers: sum,
-          barColor:charts.ColorUtil.fromDartColor(Colors.blue),
-        ),
-      );
+      monthWeeks.forEach((element) {
+ 
+        var dayExercises = _exercises.where((it) => it.weekId == element.id).toList();
+      
+        List volumes = [];
+        dayExercises.forEach((day) {
+          if(day.currentVolume != 0) {
+            volumes.add(day.currentVolume);
+          } else {
+            volumes.add(0);
+          }
+        });
+        var sum;
+        if(volumes.length > 1) {
+          sum = volumes.reduce((a, b) => a + b);
+        } else if (volumes.length > 0) {
+          sum = volumes[0];
+        } else if (volumes.length == 0) {
+          sum = 0;
+        }
+        data.add(
+          SubscriberSeries(
+            year: months[i].substring(0, 3),
+            subscribers: sum,
+            barColor:charts.ColorUtil.fromDartColor(Colors.blue),
+          ),
+        );
+      
+      });
+
+     
+
+     
     }
     return data;
   }
 
   // getChart() {
   //   _weeks.sort((a, b) => a.date.compareTo(b.date));
-  //   // _weeks.forEach((element) {
-  //   //   print(element.toJson());
-  //   // });
-  //   var allDays = _days.where((i) => i.weekId == _weeks.last.toJson()['id']).toList();
-  //   // allDays.forEach((element) {
-  //   //   print(element.toJson());
-  //   // });
   //   List<SubscriberSeries> data = [];
-  //   for (int i = 0; i < allDays.length; i++) {
-  //     var dayExercises = _exercises.where((it) => it.dayId == allDays[i].id).toList();
+  //   for (var i = 0; i < allWeeks.length && i < 7; i++) {
+  //     var dayExercises = _exercises.where((it) => it.weekId == allWeeks[i].id).toList();
   //     List volumes = [];
   //     dayExercises.forEach((day) {
-  //       // print(day.currentVolume);
   //       if(day.currentVolume != 0) {
   //         volumes.add(day.currentVolume);
   //       } else {
@@ -347,7 +375,39 @@ class TodosModel extends ChangeNotifier {
   //     } else if (volumes.length == 0) {
   //       sum = 0;
   //     }
-  //     print(sum);
+  //     data.add(
+  //       SubscriberSeries(
+  //         year: (i + 1).toString(),
+  //         subscribers: sum,
+  //         barColor:charts.ColorUtil.fromDartColor(Colors.blue),
+  //       ),
+  //     );
+  //   }
+  //   return data;
+  // }
+
+  // getChart() {
+  //   _weeks.sort((a, b) => a.date.compareTo(b.date));
+  //   var allDays = _days.where((i) => i.weekId == _weeks.last.toJson()['id']).toList();
+  //   List<SubscriberSeries> data = [];
+  //   for (int i = 0; i < allDays.length && i < 14; i++) {
+  //     var dayExercises = _exercises.where((it) => it.dayId == allDays[i].id).toList();
+  //     List volumes = [];
+  //     dayExercises.forEach((day) {
+  //       if(day.currentVolume != 0) {
+  //         volumes.add(day.currentVolume);
+  //       } else {
+  //         volumes.add(0);
+  //       }
+  //     });
+  //     var sum;
+  //     if(volumes.length > 1) {
+  //       sum = volumes.reduce((a, b) => a + b);
+  //     } else if (volumes.length > 0) {
+  //       sum = volumes[0];
+  //     } else if (volumes.length == 0) {
+  //       sum = 0;
+  //     }
   //     data.add(
   //       SubscriberSeries(
   //         year: allDays[i].name.substring(0, 3),
