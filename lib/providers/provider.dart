@@ -275,13 +275,57 @@ class TodosModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  getChart() {
-    // _weeks.sort((a, b) => a.date.compareTo(b.date));
+  getYears() {
     List<SubscriberSeries> data = [];
+    List years = [];
+    _weeks.sort((a, b) => a.date.compareTo(b.date));
+    _weeks.forEach((week) {
+      String year = DateFormat('y').format(DateTime.fromMillisecondsSinceEpoch(week.date)).toString();
+      if (years.contains(year)) {
+      } else {
+        var dayExercises = _exercises.where((it) => it.weekId == week.id).toList();
+        if (dayExercises.isEmpty) {
+        } else {
+           years.add(year);
+        }
+      }
+    });
 
-    // var months = _weeks.where((it) => it.date > 1604188800 
-    // // && it.date > 1604188800
-    // ).toList();
+    for (var i = 0; i < years.length && i < 7; i++) {
+      var yearWeeks = _weeks.where((it) => DateFormat('y').format(DateTime.fromMillisecondsSinceEpoch(it.date)).toString() == years[i]).toList();
+      yearWeeks.forEach((element) {
+        var dayExercises = _exercises.where((it) => it.weekId == element.id).toList();
+        List volumes = [];
+        dayExercises.forEach((day) {
+          if(day.currentVolume != 0) {
+            volumes.add(day.currentVolume);
+          } else {
+            volumes.add(0);
+          }
+        });
+        var sum;
+        if(volumes.length > 1) {
+          sum = volumes.reduce((a, b) => a + b);
+        } else if (volumes.length > 0) {
+          sum = volumes[0];
+        } else if (volumes.length == 0) {
+          sum = 0;
+        }
+        data.add(
+          SubscriberSeries(
+            year: years[i].substring(0, 4),
+            subscribers: sum,
+            barColor: charts.ColorUtil.fromDartColor(Colors.blue),
+          ),
+        );
+      
+      });
+    }
+    return data;
+  }
+
+  getMonths() {
+    List<SubscriberSeries> data = [];
     List months = [];
     _weeks.sort((a, b) => a.date.compareTo(b.date));
     _weeks.forEach((week) {
@@ -289,38 +333,18 @@ class TodosModel extends ChangeNotifier {
       if (months.contains(monnth)) {
       } else {
         var dayExercises = _exercises.where((it) => it.weekId == week.id).toList();
-        // print(dayExercises);
         if (dayExercises.isEmpty) {
-          
         } else {
            months.add(monnth);
         }
        
       }
-
-      // DateFormat('MMM d y').format( DateTime.fromMillisecondsSinceEpoch(week.date) ).toString();
-
-      // if(day.currentVolume != 0) {
-      //   volumes.add(day.currentVolume);
-      // } else {
-      //   volumes.add(0);
-      // }
     });
 
     for (var i = 0; i < months.length && i < 7; i++) {
-      // List myWeeks = [];
-
-      // if (months.contains(monnth)) {
-      // } else {
-      //   months.add(monnth);
-      // }
-      // print(months[i]);
       var monthWeeks = _weeks.where((it) => DateFormat('MMM y').format(DateTime.fromMillisecondsSinceEpoch(it.date)).toString() == months[i]).toList();
-      
       monthWeeks.forEach((element) {
- 
         var dayExercises = _exercises.where((it) => it.weekId == element.id).toList();
-      
         List volumes = [];
         dayExercises.forEach((day) {
           if(day.currentVolume != 0) {
@@ -346,77 +370,74 @@ class TodosModel extends ChangeNotifier {
         );
       
       });
-
-     
-
-     
     }
     return data;
   }
 
-  // getChart() {
-  //   _weeks.sort((a, b) => a.date.compareTo(b.date));
-  //   List<SubscriberSeries> data = [];
-  //   for (var i = 0; i < allWeeks.length && i < 7; i++) {
-  //     var dayExercises = _exercises.where((it) => it.weekId == allWeeks[i].id).toList();
-  //     List volumes = [];
-  //     dayExercises.forEach((day) {
-  //       if(day.currentVolume != 0) {
-  //         volumes.add(day.currentVolume);
-  //       } else {
-  //         volumes.add(0);
-  //       }
-  //     });
-  //     var sum;
-  //     if(volumes.length > 1) {
-  //       sum = volumes.reduce((a, b) => a + b);
-  //     } else if (volumes.length > 0) {
-  //       sum = volumes[0];
-  //     } else if (volumes.length == 0) {
-  //       sum = 0;
-  //     }
-  //     data.add(
-  //       SubscriberSeries(
-  //         year: (i + 1).toString(),
-  //         subscribers: sum,
-  //         barColor:charts.ColorUtil.fromDartColor(Colors.blue),
-  //       ),
-  //     );
-  //   }
-  //   return data;
-  // }
+  getWeeks() {
+    _weeks.sort((a, b) => a.date.compareTo(b.date));
+    List<SubscriberSeries> data = [];
+    for (var i = 0; i < allWeeks.length && i < 7; i++) {
+      var dayExercises = _exercises.where((it) => it.weekId == allWeeks[i].id).toList();
+      List volumes = [];
+      dayExercises.forEach((day) {
+        if(day.currentVolume != 0) {
+          volumes.add(day.currentVolume);
+        } else {
+          volumes.add(0);
+        }
+      });
+      var sum;
+      if(volumes.length > 1) {
+        sum = volumes.reduce((a, b) => a + b);
+      } else if (volumes.length > 0) {
+        sum = volumes[0];
+      } else if (volumes.length == 0) {
+        sum = 0;
+      }
+      data.add(
+        SubscriberSeries(
+          year: 'W' + (i + 1).toString(),
+          subscribers: sum,
+          barColor:charts.ColorUtil.fromDartColor(Colors.blue),
+        ),
+      );
+    }
+    return data;
+  }
 
-  // getChart() {
-  //   _weeks.sort((a, b) => a.date.compareTo(b.date));
-  //   var allDays = _days.where((i) => i.weekId == _weeks.last.toJson()['id']).toList();
-  //   List<SubscriberSeries> data = [];
-  //   for (int i = 0; i < allDays.length && i < 14; i++) {
-  //     var dayExercises = _exercises.where((it) => it.dayId == allDays[i].id).toList();
-  //     List volumes = [];
-  //     dayExercises.forEach((day) {
-  //       if(day.currentVolume != 0) {
-  //         volumes.add(day.currentVolume);
-  //       } else {
-  //         volumes.add(0);
-  //       }
-  //     });
-  //     var sum;
-  //     if(volumes.length > 1) {
-  //       sum = volumes.reduce((a, b) => a + b);
-  //     } else if (volumes.length > 0) {
-  //       sum = volumes[0];
-  //     } else if (volumes.length == 0) {
-  //       sum = 0;
-  //     }
-  //     data.add(
-  //       SubscriberSeries(
-  //         year: allDays[i].name.substring(0, 3),
-  //         subscribers: sum,
-  //         barColor:charts.ColorUtil.fromDartColor(Colors.blue),
-  //       ),
-  //     );
-  //   }
-  //   return data;
-  // }
+  getDays() {
+    _weeks.sort((a, b) => a.date.compareTo(b.date));
+    var allDays = _days.where((i) => i.weekId == _weeks.last.toJson()['id']).toList();
+    List<SubscriberSeries> data = [];
+    for (int i = 0; i < allDays.length && i < 14; i++) {
+      var dayExercises = _exercises.where((it) => it.dayId == allDays[i].id).toList();
+      print(dayExercises);
+      List volumes = [];
+      dayExercises.forEach((day) {
+        if(day.currentVolume != 0) {
+          volumes.add(day.currentVolume);
+        } else {
+          volumes.add(0);
+        }
+      });
+      var sum;
+      if(volumes.length > 1) {
+        sum = volumes.reduce((a, b) => a + b);
+      } else if (volumes.length > 0) {
+        sum = volumes[0];
+      } else if (volumes.length == 0) {
+        sum = 0;
+      }
+      data.add(
+        SubscriberSeries(
+          year: allDays[i].name.substring(0, 3),
+          subscribers: sum,
+          barColor:charts.ColorUtil.fromDartColor(Colors.blue),
+        ),
+      );
+    }
+    return data;
+  }
   
 }

@@ -41,6 +41,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int _total;
   List<SubscriberSeries> data = [];
 
+
+  List<bool> isSelected = [true, false, false, false];
+
   @override
   void initState() {
     super.initState();
@@ -69,9 +72,19 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Consumer<TodosModel>(builder: (context, programs, child) {
       var _programs = programs.programs;
-      var newData = programs.getChart();
-      // print(newData);
+     
+
       var _isLoading = false;
+      var newData;
+      if (isSelected[3] == true) {
+        newData = programs.getYears();
+      } else if (isSelected[2] == true) {
+        newData = programs.getMonths();
+      } else if (isSelected[1] == true) {
+        newData = programs.getWeeks();
+      } else if (isSelected[0] == true) {
+         newData = programs.getDays();
+      }
       return GradientBackground(
         color: Colors.pink,
         child: Scaffold(
@@ -106,7 +119,107 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     Text('${DateTimeUtils.currentDate} ${DateTimeUtils.currentMonth}', style: Theme.of(context).textTheme.title.copyWith( color: Colors.white.withOpacity(0.7))),
                     Container(height: 16.0),
                     Text('You have $_total programs to complete', style: Theme.of(context).textTheme.body1.copyWith( color: Colors.white.withOpacity(0.7))),
-                    Container(child: SubscriberChart(data: newData)),
+                    Container(
+                      // if (isSelected[1] == true) {
+                         child: SubscriberChart(data: newData)
+                      // }
+                     
+                    ),
+                    
+                    // Container(padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
+
+                    ToggleButtons(
+                      selectedColor: Colors.red,
+                      fillColor: Colors.blue,
+                      children: <Widget>[
+                        Container( 
+                          width: 73, 
+                          padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
+                          alignment: Alignment.center, 
+                          child: Text('Days',
+                            style: TextStyle(fontSize: 12.0, color: Colors.white)
+                          )
+                        ),
+                        Container( 
+                          width: 73, 
+                          padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
+                          alignment: Alignment.center, 
+                          child: Text('Weeks',
+                            style: TextStyle(fontSize: 12.0, color: Colors.white)
+                          )
+                        ),
+                        Container( 
+                          width: 73, 
+                          padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
+                          alignment: Alignment.center, 
+                          child: Text('Months',
+                            style: TextStyle(fontSize: 12.0, color: Colors.white)
+                          )
+                        ),
+                        Container( 
+                          width: 73, 
+                          padding: EdgeInsets.only(top: 0.0, bottom: 0.0),
+                          alignment: Alignment.center, 
+                          child: Text('Years',
+                            style: TextStyle(fontSize: 12.0, color: Colors.white)
+                          )
+                        ),
+                      ],
+                      onPressed: (int index) {
+                        setState(() {
+                          for (int buttonIndex = 0; buttonIndex < isSelected.length; buttonIndex++) {
+                            if (buttonIndex == index) {
+                              isSelected[buttonIndex] = true;
+                            } else {
+                              isSelected[buttonIndex] = false;
+                            }
+                          }
+                        });
+                      },
+                      isSelected: isSelected,
+                    ),
+
+                      // child: Row(
+                      //   children: <Widget>[
+
+                      //     Container( width: 73, padding: EdgeInsets.only(top: 0.0, bottom: 0.0), child:
+                      //      FlatButton(color: Colors.white,
+                      //       onPressed: () async {
+                      //         // setState(() {
+                      //         // });
+                      //       },
+                      //       child: Text('Years', style: TextStyle(fontSize: 12.0))
+                      //     )),
+                      //     Container( width: 76, padding: EdgeInsets.only(top: 0.0, bottom: 0.0), child:
+                      //      FlatButton(color: Colors.white,
+                      //       onPressed: () async {
+                      //         // setState(() {
+                      //         // });
+                      //       },
+                      //       child: Text('Months', style: TextStyle(fontSize: 12.0))
+                      //     )),
+                      //     Container( width: 73, padding: EdgeInsets.only(top: 0.0, bottom: 0.0), child:
+                      //      FlatButton(color: Colors.white,
+                      //       onPressed: () async {
+                      //         // setState(() {
+                      //         // });
+                      //       },
+                      //       child: Text('Weeks', style: TextStyle(fontSize: 12.0))
+                      //     )),
+                      //     Container( width: 73, padding: EdgeInsets.only(top: 0.0, bottom: 0.0), child:
+                      //      FlatButton(color: Colors.white,
+                      //       onPressed: () async {
+                      //         // setState(() {
+                      //         // });
+                      //       },
+                      //       child: Text('Days', style: TextStyle(fontSize: 12.0))
+                      //     )),
+                      //   //  Expanded(flex: 1, child: Container(height: 10)),
+                      //   ],
+                      // ),
+                      
+                    // ),
+
                   ],
                 ),
               ),
@@ -116,8 +229,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 child: NotificationListener<ScrollNotification>(
                   onNotification: (notification) {
                     if (notification is ScrollEndNotification) {
-                      var currentPage =
-                          _pageController.page.round().toInt();
+                      var currentPage = _pageController.page.round().toInt();
                       if (_currentPageIndex != currentPage) {
                         setState(() => _currentPageIndex = currentPage);
                       }

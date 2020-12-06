@@ -47,6 +47,17 @@ class DefaultData {
     Exercise(id: 11, name: 'Incline Press', currentVolume: 350, dayId: 16, weekId: 4, programId: 1),
     Exercise(id: 12, name: 'Dips', dayId: 17, weekId: 4, programId: 1),
 
+    Exercise(id: 13, name: 'Chest Press', currentVolume: 250, dayId: 18, weekId: 5, programId: 1),
+    Exercise(id: 14, name: 'Incline Press', currentVolume: 350, dayId: 19, weekId: 5, programId: 1),
+    Exercise(id: 15, name: 'Dips', dayId: 20, weekId: 5, programId: 1),
+
+    Exercise(id: 16, name: 'Chest Press', currentVolume: 250, dayId: 29, weekId: 5, programId: 1),
+    Exercise(id: 17, name: 'Incline Press', currentVolume: 350, dayId: 30, weekId: 5, programId: 1),
+    Exercise(id: 18, name: 'Dips', dayId: 31, weekId: 5, programId: 1),
+    Exercise(id: 19, name: 'Incline Press', currentVolume: 350, dayId: 32, weekId: 5, programId: 1),
+    Exercise(id: 20, name: 'Incline Press', currentVolume: 350, dayId: 33, weekId: 5, programId: 1),
+    Exercise(id: 21, name: 'Incline Press', currentVolume: 350, dayId: 34, weekId: 5, programId: 1),
+
     // Exercise( id: 4, name: 'Lunges', bestVolume: 3200, previousVolume: 0, currentVolume: 3200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Exercise( id: 5, name: 'Squat', bestVolume: 3600, previousVolume: 0, currentVolume: 3600, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
     // Exercise( id: 6, name: 'Deadlift', bestVolume: 7200, previousVolume: 0, currentVolume: 7200, round: [], dayId: 2, weekId: '39811115-7350-47a3-8f89-015e4daf64b8', programId: '1'),
@@ -92,7 +103,15 @@ class DefaultData {
     Day(id: 25, name: 'Thursday', target: 'Back & Biceps', weekId: 4, programId: 1),
     Day(id: 26, name: 'Friday', target: 'Shoulder', weekId: 4, programId: 1),
     Day(id: 27, name: 'Saturday', target: 'Day Off',  weekId: 4, programId: 1),
-    Day(id: 28, name: 'Sunday', target: 'Day Off',  weekId: 4, programId: 1)
+    Day(id: 28, name: 'Sunday', target: 'Day Off',  weekId: 4, programId: 1),
+
+    Day(id: 29, name: 'Monday', target: 'Chest & Triceps', weekId: 5, programId: 1),
+    Day(id: 30, name: 'Tuesday', target: 'Legs', weekId: 5, programId: 1),
+    Day(id: 31, name: 'Wednesday', target: 'Abs',  weekId: 5, programId: 1),
+    Day(id: 32, name: 'Thursday', target: 'Back & Biceps', weekId: 5, programId: 1),
+    Day(id: 33, name: 'Friday', target: 'Shoulder', weekId: 5, programId: 1),
+    Day(id: 34, name: 'Saturday', target: 'Day Off',  weekId: 5, programId: 1),
+    Day(id: 35, name: 'Sunday', target: 'Day Off',  weekId: 5, programId: 1)
 
   ];
 
